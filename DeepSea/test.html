@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+#Canvas{
+    border: 1px solid black;
+	margin:0px auto;
+	display:block;
+
+}
+</style>
+</head>
+<body>
+<script type="text/javascript">
+/////To Do: Collisions: ||1 -> (coins[100]), (blocks[300-1000])|| ; one object collision checking vs around 1000 objects per frame.
+/////Basic "hit and kill" first. [distance collision]. Coins.
+//This info will later be applied to a game engine.
+////Paths: Have a single "Path" block that randomly move in a direction and deletes the blocks around it based on it's "size". If the distance to and edge is around 50 pixels. Based on the edge, make it so it can't move in a certain direction based on what edge it's next to.
+////Map: Map will be made based on a 2D array (Row x Col), then a nested for loop that will place the X&Y pos. of the block based on the [r][c] indexes. So x= c*SIZE and y=r*SIZE where size is the size of the tile block.
+var WIDTH = 700
+var HEIGHT = 400
+var MouseX = 0;
+var Mousey = 0;
+var MouseDown = 0;
+
+//Change MouseDown based on events.
+document.body.onmousedown = function(){MouseDown++;}
+document.body.onmouseup = function(){MouseDown--;}
+
+//Create Dynamic Canvas
+function makeCanvas(width=WIDTH,height=HEIGHT){
+var canvas = document.createElement('canvas');
+canvas.id = "Canvas";
+canvas.width = width;
+canvas.height = height;
+document.body.appendChild(canvas);
+}
+
+//Basic Drawing and Update Test
+function getCanvas(){
+    return document.getElementById("Canvas").getContext("2d");
+}
+
+
+document.onmousemove = function(e){
+	//get mouse position on page then subtract canvas pos.
+	canvas = document.getElementById("Canvas")
+    MouseX = e.clientX - canvas.offsetLeft;
+    MouseY = e.clientY - canvas.offsetTop;
+}
+
+//Clears the Canavs. infoCanvas is for getting Height and Width, tempCanvas is for
+//painting a white screen on the Canvas.
+function clearCanvas(){
+    var infoCanvas = document.getElementById("Canvas");
+    var tempCanvas = getCanvas();
+    tempCanvas.fillStyle = "#7777FF";
+    tempCanvas.fillRect(0,0,infoCanvas.width,infoCanvas.height)
+}
+//Text(x,y,start_num)
+function Text(x=10,y=20,text="text"){
+    this.x = x;
+    this.y = y;
+    this.text = text;
+
+this.Draw = function(){
+    var canvas = getCanvas();
+    canvas.font="20px Times New Roman";
+    canvas.fillStyle = "#222222";
+	this.text="Mouse: "+MouseX+" "+MouseY;
+    canvas.fillText(this.text,this.x,this.y);
+    }
+this.Event = function(){
+    return null;//do nothing. 
+    }
+}
+//BackGround(x,y,image,speed)
+//Same as Ship but in reverse, have ship in center.
+function BackGround(x=0,y=0,image="background2.png",speed=0.0){
+    this.x = x;
+    this.y = y;
+    this.speed = speed
+    //this.edge=edge;
+	this.image = new Image()
+	this.image.src = image;
+	//this.angle = angle;
+
+this.Draw = function(){
+	//image (54x50)
+	//Get mouseX and Y, then rotate only the iamge on it's center/
+    var canvas = getCanvas();
+	canvas.drawImage(this.image, this.x, this.y);
+    }
+
+this.Event = function(){
+	return null;
+    }
+}
+
+//declare here so it can be used within Ship.
+var background = new BackGround();
+
+//Coin(x,y,image)
+function Coin(x=0,y=0,image="coin.png"){
+	this.x = x;
+	this.y = y;
+	this.image = new Image();
+	this.image.src = image;
+
+this.Draw = function(){
+	var canvas = getCanvas();
+	canvas.drawImage(this.image,this.x,this.y);
+}	
+this.Event = function(){
+	//does nothing for now. Coll will be handled by Ship.
+	return null;
+}
+}
+//declare here so it can be used within Ship.
+var coin = new Coin();
+
+//All objects need to move relative to the background. So all objects other than Ship will move.
+var ItemArray = [background,coin];
+
+//Sprite(x,y,image,speed,angle,edge)
+function Ship(x=(WIDTH/2 - 25),y=(HEIGHT/2 - 25),image="Ship.png",speed=0.0,angle=0.0,edge="WRAP"){
+    this.x = x;
+    this.y = y;
+    this.speed = speed
+    this.edge=edge;
+	this.image = new Image()
+	this.image.src = image;
+	this.angle = angle;
+	this.acc = 0.95;
+
+this.Draw = function(){
+	//image (54x50)
+	//Get mouseX and Y, then rotate only the iamge on it's center/
+    var canvas = getCanvas();
+	canvas.save();
+	xCenter = this.x+27
+	yCenter = this.y+25
+	canvas.translate(xCenter,yCenter)
+	xDistance = MouseX - (xCenter);
+	yDistance = MouseY - (yCenter);
+	this.angle = Math.atan2(yDistance, xDistance);
+	canvas.rotate(this.angle);
+	canvas.translate( -xCenter, -yCenter );
+    canvas.drawImage(this.image, this.x, this.y);
+	canvas.restore();
+    }
+
+this.Event = function(){
+	this.speed*=this.acc;//friction
+	//using the Ship speeds and changing the image pos.
+	//*CRITICAL POINT HERE!*
+	for(var i=0;i<ItemArray.length;i++){
+	ItemArray[i].x -= this.speed*Math.cos(this.angle);
+	ItemArray[i].y -= this.speed*Math.sin(this.angle)+((background.y*(-1))/500);//sinking effect, the further down you are the faster you sink.
+	//Bounds Check (Sides)
+	if(ItemArray[i].x<-4120){ItemArray[i].x=-4120;}//Right Corner
+	if(ItemArray[i].x>325){ItemArray[i].x=325;}//Left Corner
+	if(ItemArray[i].y>180){ItemArray[i].y=180;}//Top Corder
+	if(ItemArray[i].y<-2970){ItemArray[i].y=-2970;}//Top Corder
+	}
+	//Bounds Check
+
+	if(MouseDown==1){
+	this.speed+=1;
+	}
+	//if speed is small stop
+	if(this.speed>0.1 && this.speed<-0.1){this.speed=0;}
+    }
+}
+
+
+//Update clears the screen, calls events for objects, then draws them.
+function update(Array){
+    clearCanvas(); //will be taken away.
+	//*CRITICAL POINT HERE!*
+    for(var i=0;i<Array.length;i++){
+        Array[i].Event();
+        Array[i].Draw();
+    }
+}
+
+function main(){
+    makeCanvas();
+    var textBox = new Text();
+    var ship = new Ship();
+    var ObjArray = [background,coin,textBox, ship];
+    var timer = setInterval(function(){update(ObjArray)},50);
+	//Boolean so when mouse is down event will not trigger only once.
+}
+
+main();
+</script>
+</body>
+</html>

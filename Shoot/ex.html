@@ -1,0 +1,256 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <title>Shoot</title>
+    <script type="text/javascript"
+            src = "simpleGame.js"></script>
+    <script type="text/javascript">
+	//My high score: 341
+	//NOTE: Overwrite double implemented buffer with boolean assignments for keycodes.
+	//V 1.0 COMPLETE!
+	//V 1.5 (Add items [single] that respawns every 15 seconds. Is placed randomly on the map. And gives a powerup when player hits.)
+	
+    var scene;
+    var player;
+	var enemy = new Array(3);
+	var enemyPushBack = 40;
+	var bullets = new Array(8);
+	var bulletCount = 0;
+	var bulletSpeed = 20;
+	var fireRate = 0.4;
+	var WIDTH=950;
+	var HEIGHT=600;
+	var SPEED=10;
+	var eSPEED=3;
+	var score=0;//add score (kills*3 + time)
+	var kills=-3;//Since increment on reset and there are 3 enemys. This will start at 0.
+	
+	var Up = false;
+	var Left = false;
+	var Right = false;
+    
+	function Bullet(){
+	  tBullet = new Sprite(scene, "bullet.gif", 10, 10);//Constructor
+	  tBullet.setPosition(-10, -10);
+	  tBullet.setSpeed(0);
+	  tBullet.setBoundAction('STOP');
+	  tBullet.speed =  20;
+	  
+	  tBullet.Shoot = function(){
+		//Place the bullet at the tip of the players sprite and shoot. We need to revert back to radians for this.
+		var Ex = (player.width/2 - 40)*Math.cos((player.getImgAngle()-90) * (Math.PI/180));
+		var Ey = (player.width/2 - 40)*Math.sin((player.getImgAngle()-90) * (Math.PI/180));
+
+		this.setPosition(player.x +Ex, player.y +Ey);
+		this.setSpeed(this.speed);
+		this.setMoveAngle(player.getImgAngle());//Use the bullets move angle so when it hits enemy the enemy will move back based on that angle.
+		bulletCount++;
+		}
+		return tBullet;
+	  }
+	}
+	
+    function init(){
+      scene = new Scene();
+	  scene.setBG("#FFFFFF");
+	  scene.setSize(WIDTH, HEIGHT);
+	  
+      player = new Sprite(scene, "Player.gif", 89, 50);
+	  player.setPosition(WIDTH/2, HEIGHT/2);
+      player.setSpeed(0);
+	  
+	  for(var i=0;i<enemy.length;i++){
+	  enemy[i] = new Sprite(scene, "Enemy.png", 60,60);
+	  enemyReset(enemy[i])
+	  enemy[i].setSpeed(0);
+	  enemy[i].setBoundAction('CONTINUE');
+	  }
+	  
+	  for(var i=0; i<bullets.length; i++){
+	  bullets[i] = new Bullet();
+	  }
+	  
+	  
+	  playerTimer = new Timer();
+	  playerTimer.start();
+	  
+	  mainTimer = new Timer();
+	  mainTimer.start();
+
+      scene.start();
+    } // end init
+ 
+	
+    function update(){
+      scene.clear();
+	  keys();
+	  enemyHit();
+	  UpdateBullets();
+	  UpdateEnemy();
+	  Time();
+	  player.update();
+	  player.setSpeed(player.getSpeed()*0.95);
+	  moveEnemy();
+    } // end update
+	
+	function keys(){
+	
+	Left=false;
+	Right=false;
+	Up=false;
+	
+	if (keysDown[K_LEFT]){ 
+		Left=true;
+		}
+	if(keysDown[K_RIGHT]){
+		Right=true;
+		}
+	if(keysDown[K_UP]){
+		Up=true
+		}
+	
+	if(Left){ player.setImgAngle(player.getImgAngle()-SPEED); } 
+	if(Right){ player.setImgAngle(player.getImgAngle()+SPEED); }
+	if(Up){
+		player.setMoveAngle(player.getImgAngle());
+		player.setSpeed(player.getSpeed()+1);
+	}
+	
+	if(keysDown[K_A]){
+		if(playerTimer.getTimeElapsed() >= fireRate){
+			shootBullet();
+			playerTimer.reset();
+			}
+		}
+	}
+	
+	document.body.onkeyup = function(event){//Add in OnKeyUp JS function
+    var keyCode = event.keyCode;
+	if(keyCode == K_UP){ Up=false;}
+	if(keyCode == K_LEFT){ Left=false; }
+	if(keyCode == K_RIGHT){ Right=false; }
+	}
+	
+	function UpdateBullets(){
+		for(var i=0; i<bullets.length; i++){
+			bullets[i].update();
+		}
+	}
+	
+	function UpdateEnemy(){
+		for(var i=0;i<enemy.length;i++){
+		enemy[i].update();
+		}
+	}
+	
+	function shootBullet(){
+		if(bulletCount >= bullets.length){ bulletCount=0; }
+		while(bulletCount<bullets.length){
+			bullets[i].Shoot();
+			break;
+		}
+	
+	}
+	
+	function moveEnemy(){
+	  //Look at timer, the higher the time the faster the speed of enemies.
+	  eSPEED=1;
+	  if(mainTimer.getElapsedTime() >= 20){ eSPEED=2;}//After 20 seconds, increase speed
+	  if(mainTimer.getElapsedTime() >= 40){ eSPEED=3;}
+	  if(mainTimer.getElapsedTime() >= 60){ eSPEED=4;}
+	  if(mainTimer.getElapsedTime() >= 80){ eSPEED=5;}
+	  if(mainTimer.getElapsedTime() >= 100){ eSPEED=6;}
+	  if(mainTimer.getElapsedTime() >= 150){ eSPEED=7;}
+	  if(mainTimer.getElapsedTime() >= 200){ eSPEED=8;}
+	  if(mainTimer.getElapsedTime() >= 250){ eSPEED=9;}
+	  if(mainTimer.getElapsedTime() >= 300){ eSPEED=10;}
+	  if(mainTimer.getElapsedTime() >= 400){ eSPEED=12;}
+	  if(mainTimer.getElapsedTime() >= 500){ eSPEED=15;}
+	  if(mainTimer.getElapsedTime() >= 600){ eSPEED=20;}
+	  if(mainTimer.getElapsedTime() >= 750){ eSPEED=30;}
+	  
+	  for(var i=0;i<enemy.length;i++){
+	  var enemyDx = Math.abs(player.x - enemy[i].x);
+	  var enemyDy = Math.abs(player.y - enemy[i].y);
+	  var angle = Math.atan(enemyDy/enemyDx);//angle to point to player
+	  //angle = (angle-90) * (Math.PI/180)//convert to 
+	  enemyDx = eSPEED*Math.cos(angle);
+	  enemyDy = eSPEED*Math.sin(angle);
+	  if(enemy[i].x>player.x){ enemyDx = enemyDx*(-1); }//Flip if x is greater than target.
+	  if(enemy[i].y>player.y){ enemyDy = enemyDy*(-1); }
+	  enemy[i].setDX(enemyDx);
+	  enemy[i].setDY(enemyDy);
+	  
+	  }
+	}
+	
+	function enemyHit(){
+		for(var i=0;i<enemy.length;i++){
+		if(enemy[i].distanceTo(player) < 50){//Player gets hit.
+				alert('Score: '+((kills*3) + parseInt(mainTimer.getElapsedTime())));//Score = 3*Kills + Time.
+				window.open("ex.html", "_self")
+			}
+		for(var j=0; j<bullets.length; j++){//bullet gets hit.
+			if(enemy[i].distanceTo(bullets[j]) <50){
+					enemy[i].health -= 1;//lower HP
+					bullets[j].setSpeed(0);bullets[j].setPosition(-10, -10)//reset the bullet position.
+					
+					//Have the enemy get pushed back when hit.
+					 var enemyDx = Math.abs(player.x - enemy[i].x);
+					 var enemyDy = Math.abs(player.y - enemy[i].y);
+					 var angle = Math.atan(enemyDy/enemyDx) + Math.PI;
+					 enemy[i].setDX(Math.cos(angle)*enemyPushBack);
+					 enemy[i].setDY(Math.sin(angle)*enemyPushBack);
+					 if(enemy[i].x>player.x){ enemy[i].setDX(Math.cos(angle)*(-30)); }//Flip if x is greater than target.
+					 if(enemy[i].y>player.y){ enemy[i].setDY(Math.sin(angle)*(-30)); }
+					
+					enemy[i].changeImage('enemyHit.png');//show the enemy got hit.
+					if(enemy[i].health < 1)//If hp is gone then kill.
+						enemyReset(enemy[i]);
+				}
+			}
+		}
+	}
+	
+	function enemyReset(enemy){
+	  kills++;
+	  enemy.changeImage('Enemy.png');
+	  enemy.health=5;
+	  var radEdge = Math.random();//Place enemy randomly on the edge of a part of the map. Have a random method to chose with of the 4 edged it whould be placed.
+	  if(radEdge <= 0.25){
+			enemy.setPosition(Math.random()*WIDTH,0)//Place on TOP edge
+	  }
+	  else if(radEdge <= 0.5){
+			enemy.setPosition(0,Math.random()*HEIGHT)//Place on LEFT edge
+	  }
+	  else if(radEdge <= 0.75){
+			enemy.setPosition(Math.random()*WIDTH,HEIGHT)//Place on BOTTOM edge
+	  }
+	  else{
+			enemy.setPosition(WIDTH,Math.random()*HEIGHT)//Place on RIGHT edge
+	  }
+	}
+    
+	//Timer and Text
+	function Time(){
+	var C=scene.context;
+
+	C.fillStyle="#111111";
+	C.font="20px Arial";
+	C.fillText("Time: "+parseInt(mainTimer.getElapsedTime())+" seconds", 10, 30);//Display Time by seconds only.
+
+	C.font="20px Arial";
+	C.fillText("Kills: "+kills, 10, 70);
+	
+	C.fillStyle="#DDDDDD";
+	C.fillText("Score: "+((kills*3) + parseInt(mainTimer.getElapsedTime())),20,HEIGHT-20);
+	}
+	
+	
+    </script>
+</head>
+<body onload = "init()" style="background-color:#DDDDDD; text-align:center">
+    
+</body>
+</html>
