@@ -1,0 +1,373 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <title>Shoot</title>
+    <script type="text/javascript"
+            src = "simpleGame.js"></script>
+    <script type="text/javascript">
+	//V 1.0 [basic game finnished] COMPLETE
+	//V 1.1 [OOP implemented, Enemies are slower when hit] COMPLETE
+	//V 1.2 [Power-up's have been added, incrementing enemy spawn has been added.] COMPLETE
+	//V 1.3 [High Score System added, known bugs fixed] COMPLETE
+	
+    var scene;
+    var player;
+	var enemy = new Array(3);
+	var enemyPushBack = 40;
+	var enemyCount=0;
+	var bullets = new Array(15);
+	var bulletCount = 0;
+	var bulletSpeed = 25;
+	var WIDTH=950;
+	var HEIGHT=600;
+	var eSPEED=3;
+	if(!localStorage.HighScore){ localStorage.HighScore=0; } //If the local storage variable does not exsit then make it.
+	var score=0;//add score (kills*3 + time)
+	var kills=-3;//Since increment on reset and there are 3 enemys. This will start at 0.
+	
+	var Up = false;
+	var Left = false;
+	var Right = false;
+   
+    function init(){
+      scene = new Scene();
+	  scene.setBG("#FFFFFF");
+	  scene.setSize(WIDTH, HEIGHT);
+	  
+      player = new Player();
+	  
+	  power = new PowerUp();
+	  
+	  for(var i=0;i<enemy.length;i++){
+	  enemy[i] = new Enemy();
+	  }
+	  
+	  for(var i=0; i<bullets.length; i++){
+	  bullets[i] = new Bullet();
+	  }
+	  
+	  playerTimer = new Timer();
+	  playerTimer.start();
+	  
+	  mainTimer = new Timer();
+	  mainTimer.start();
+	  
+	  powerTimer = new Timer();
+	  powerTimer.start();
+
+      scene.start();
+    } // end init
+ 
+	
+    function update(){//update
+      scene.clear();
+	  keys();
+	  UpdateBullets();
+	  UpdateEnemy();
+	  Time();
+	  player.Update();
+	  power.Update();
+    } // end update
+	
+	function keys(){//keys
+	
+	Left=false;
+	Right=false;
+	Up=false;
+	
+	if (keysDown[K_LEFT]){ 
+		Left=true;
+		}
+	if(keysDown[K_RIGHT]){
+		Right=true;
+		}
+	if(keysDown[K_UP]){
+		Up=true
+		}
+	
+	if(Left){ player.TurnLeft(); } 
+	if(Right){ player.TurnRight(); }
+	if(Up){ player.Move(); }
+	
+	if(keysDown[K_A]){
+		if(playerTimer.getTimeElapsed() >= player.FireRate){
+			shootBullet();
+			playerTimer.reset();
+			}
+		}
+	}//edn keys
+	
+	document.body.onkeyup = function(event){//Add in OnKeyUp JS function
+    var keyCode = event.keyCode;
+	if(keyCode == K_UP){ Up=false;}
+	if(keyCode == K_LEFT){ Left=false; }
+	if(keyCode == K_RIGHT){ Right=false; }
+	}
+	
+	function UpdateBullets(){
+		for(var i=0; i<bullets.length; i++){
+			bullets[i].update();
+		}
+	}//end OnKeyUp JS function
+	
+	function shootBullet(){//shootBullet
+		if(bulletCount >= bullets.length){ bulletCount=0; }
+		while(bulletCount<bullets.length){
+			bullets[bulletCount].shoot();
+			bulletCount++;
+			break;
+		}
+	
+	}//END shootBullet
+	
+	function UpdateEnemy(){//UpdateEnemy
+	  //Look at timer, the higher the time the faster the speed of enemies.
+
+	  
+	  for(var i=0;i<enemy.length;i++){
+		enemy[i].Move();
+		enemy[i].Hit(); 
+		enemy[i].update();
+	  }
+	}//END Update Enemy
+    
+	//Timer and Text
+	function Time(){//Start Time
+	var C=scene.context;
+
+	C.fillStyle="#111111";
+	C.font="20px Arial";
+	C.fillText("Time: "+parseInt(mainTimer.getElapsedTime())+" seconds", 10, 30);//Display Time by seconds only.
+
+	C.font="20px Arial";
+	C.fillText("Kills: "+kills, 10, 70);
+	
+	C.fillStyle="#DDDDDD";
+	C.fillText("Score: "+((kills*3) + parseInt(mainTimer.getElapsedTime())),20,HEIGHT-20);//Display Score.
+	
+	C.fillStyle="#DDDD99";
+	C.fillText("High Score: "+localStorage.HighScore,WIDTH-250,30);//Display High Score.
+	}// End Time
+	
+	//START OBJECTS***
+	function Bullet(){//START Bullet 
+	  tBullet = new Sprite(scene, "bullet.gif", 10, 10);//Constructor
+	  tBullet.setPosition(-10, -10);
+	  tBullet.setSpeed(0);
+	  tBullet.setBoundAction('STOP');
+	  
+	  tBullet.shoot = function(){
+	    //Place the bullet at the tip of the players sprite and shoot. We need to revert back to radians for this.
+		var Ex = (player.width/2 - 40)*Math.cos((player.getImgAngle()-90) * (Math.PI/180));
+		var Ey = (player.width/2 - 40)*Math.sin((player.getImgAngle()-90) * (Math.PI/180));
+		this.setPosition(player.x +Ex, player.y +Ey);
+		this.setSpeed(bulletSpeed);
+		this.setMoveAngle(player.getImgAngle());//Use the bullets move angle so when it hits enemy the enemy will move back based on that angle.
+	  }
+	  return tBullet;
+	}//END Bullet
+	
+	function Player(){//START Player
+		tPlayer = new Sprite(scene, "Player.gif", 89, 50);
+		tPlayer.setPosition(WIDTH/2, HEIGHT/2);
+		tPlayer.setSpeed(0);
+		tPlayer.TurnSpeed = 10;//MAX 15 [up by 1 each time]
+		tPlayer.Speed = 1;//MAX 3 [up by 0.25 each time]
+		tPlayer.friction = 0.90;
+		tPlayer.Damage = 1;//MAX 5 [up by 1 each time]
+		tPlayer.FireRate = 0.4;//MAX 0.15 [down by 0.05 each time]
+		
+		tPlayer.Update = function(){
+			this.update();
+			this.setSpeed(player.getSpeed()*this.friction);
+		}
+		
+		tPlayer.TurnLeft = function(){
+		this.setImgAngle(player.getImgAngle()-this.TurnSpeed);
+		}
+		
+		tPlayer.TurnRight = function(){
+		this.setImgAngle(player.getImgAngle()+this.TurnSpeed);
+		}
+		
+		tPlayer.Move = function(){
+		this.setMoveAngle(player.getImgAngle());
+		this.setSpeed(player.getSpeed()+this.Speed);
+		}
+		
+		return tPlayer;
+	}//END Player
+	
+	function Enemy(){//START Enemy
+	  tEnemy = new Sprite(scene, "Enemy.png", 60,60);
+	  tEnemy.setSpeed(0);
+	  tEnemy.setBoundAction('CONTINUE');
+	  tEnemy.Speed=1;
+	  tEnemy.isHit=false;
+	  tEnemy.health = 6;
+	  
+	  tEnemy.Reset = function(){
+		kills++;
+		this.changeImage('Enemy.png');
+		this.health=6;
+		this.isHit=false;
+		var radEdge = Math.random();//Place enemy randomly on the edge of a part of the map. Have a random method to chose with of the 4 edged it whould be placed.
+		if(radEdge <= 0.25){
+			this.setPosition(Math.random()*WIDTH,0)//Place on TOP edge
+		}
+		else if(radEdge <= 0.5){
+			this.setPosition(0,Math.random()*HEIGHT)//Place on LEFT edge
+		}
+		else if(radEdge <= 0.75){
+			this.setPosition(Math.random()*WIDTH,HEIGHT)//Place on BOTTOM edge
+		}
+		else{
+			this.setPosition(WIDTH,Math.random()*HEIGHT)//Place on RIGHT edge
+		}
+	   }
+	  tEnemy.Reset();//Reset Here
+	  
+	  tEnemy.Hit = function(){
+		for(var i=0;i<enemy.length;i++){
+		if(this.distanceTo(player) < 50){//Player gets hit.
+				score = (kills*3) + parseInt(mainTimer.getElapsedTime());
+				if(score > localStorage.HighScore){ 
+					localStorage.HighScore=score;
+					alert('New High Score: '+localStorage.HighScore);//Score = 3*Kills + Time.
+					window.open("exOOP.html", "_self");
+					}
+				else
+				{
+				alert('You died!');
+				window.open("exOOP.html", "_self");
+				}
+				break; //So score does not repeat itself.
+			}
+		for(var j=0; j<bullets.length; j++){//bullet gets hit.
+			if(this.distanceTo(bullets[j]) <50){
+					this.health -= player.Damage;//lower HP
+					bullets[j].setSpeed(0);bullets[j].setPosition(-10, -10)//reset the bullet position.
+					
+					//Have the enemy get pushed back when hit.
+					 var enemyDx = Math.abs(player.x - this.x);
+					 var enemyDy = Math.abs(player.y - this.y);
+					 var angle = Math.atan(enemyDy/enemyDx) + Math.PI;
+					 this.setDX(Math.cos(angle)*enemyPushBack);
+					 this.setDY(Math.sin(angle)*enemyPushBack);
+					 if(this.x>player.x){ this.setDX(Math.cos(angle)*(-30)); }//Flip if x is greater than target.
+					 if(this.y>player.y){ this.setDY(Math.sin(angle)*(-30)); }
+					if(mainTimer.getElapsedTime()>20){this.isHit=true;}//enemys only slow after the first 20 seconds (so they dont stop when hit).
+					this.changeImage('enemyHit.png');//show the enemy got hit.
+					if(this.health < 1)//If hp is gone then kill.
+						this.Reset();
+				}
+			}
+		}
+	  }
+	  
+	  tEnemy.Move = function(){
+			if(mainTimer.getElapsedTime() >= 20){ this.Speed=2;}//After 20 seconds, increase speed.After 100 seconds spawn another enemy
+			if(mainTimer.getElapsedTime() >= 40){ this.Speed=3;}
+			if(mainTimer.getElapsedTime() >= 60){ this.Speed=4;}
+			if(mainTimer.getElapsedTime() >= 80){ this.Speed=5;}
+			if(mainTimer.getElapsedTime() >= 100){ this.Speed=6; }
+			if(mainTimer.getElapsedTime() >= 150){ this.Speed=7;}
+			if(mainTimer.getElapsedTime() >= 200){ this.Speed=8;}
+			if(mainTimer.getElapsedTime() >= 250){ this.Speed=9;}
+			if(mainTimer.getElapsedTime() >= 300){ this.Speed=10;}
+			if(mainTimer.getElapsedTime() >= 400){ this.Speed=12;}
+			if(mainTimer.getElapsedTime() >= 500){ this.Speed=15;}
+			if(mainTimer.getElapsedTime() >= 600){ this.Speed=20;}
+			if(mainTimer.getElapsedTime() >= 750){ this.Speed=30;}
+			if(mainTimer.getElapsedTime() >= 800){ this.Speed=35;}
+			if(mainTimer.getElapsedTime() >= 850){ this.Speed=40;}
+			if(mainTimer.getElapsedTime() >= 1000){ this.Speed=50;}//MAX at 50
+			if(this.isHit==true){ this.Speed = this.Speed/1.3; }//If enemy got hit he is slower.
+			
+			if(mainTimer.getElapsedTime() > 50 && enemyCount==0){//add a enemy after 50 seconds. 50
+			Nenemy = new Enemy(); enemy.push(Nenemy);
+			enemyCount++;
+			}
+			
+			if(mainTimer.getElapsedTime() > 150 && enemyCount==1){//150
+			Nenemy = new Enemy(); enemy.push(Nenemy);
+			enemyCount++;
+			}
+			
+			if(mainTimer.getElapsedTime() > 200 && enemyCount==2){//200
+			Nenemy = new Enemy(); enemy.push(Nenemy);
+			enemyCount++;
+			}
+			
+			if(mainTimer.getElapsedTime() > 300 && enemyCount==3){//300
+			Nenemy = new Enemy(); enemy.push(Nenemy);
+			Nenemy2 = new Enemy(); enemy.push(Nenemy2);
+			enemyCount++;
+			}
+			
+			if(mainTimer.getElapsedTime() > 500 && enemyCount==4){//500
+			Nenemy = new Enemy(); enemy.push(Nenemy);
+			Nenemy2 = new Enemy(); enemy.push(Nenemy2);
+			enemyCount++;
+			}
+			//MAX at 10
+			
+		//Look at timer, the higher the time the faster the speed of enemies.
+		var enemyDx = Math.abs(player.x - this.x);
+		var enemyDy = Math.abs(player.y - this.y);
+		var angle = Math.atan(enemyDy/enemyDx);//angle to point to player
+		enemyDx = this.Speed*Math.cos(angle);
+		enemyDy = this.Speed*Math.sin(angle);
+		if(this.x>player.x){ enemyDx = enemyDx*(-1); }//Flip if x is greater than target.
+		if(this.y>player.y){ enemyDy = enemyDy*(-1); }
+		this.setDX(enemyDx);
+		this.setDY(enemyDy);
+		
+	  }
+	  
+	  return tEnemy;
+	}//END ENEMY
+	
+	
+	
+	function PowerUp(){//Start POWERUP
+		tPower = new Sprite(scene, "FIRERATE.png", 100,100);
+		tPower.item = 'firerate';
+		tPower.setSpeed(0);
+		tPower.setBoundAction('CONTINUE');
+		tPower.setPosition(-100, -100);//Place off of map.
+		
+		tPower.Update = function(){
+			if(powerTimer.getTimeElapsed() > 15){//Every 15 seconds reset. 1/3 to be either Firerate, Speed, or Damage.
+				powerTimer.reset();
+				var selector = Math.random();
+				if(selector <= 0.3333){ tPower.setImage("FIRERATE.png"); this.item = 'firerate'; }
+				else if(selector <= 0.6666){ tPower.setImage("SPEED.png"); this.item = 'speed';} 
+				else{ tPower.setImage("DAMAGE.png"); this.item ='damage'; }
+				
+				tPower.setPosition(Math.random()*WIDTH, Math.random()*HEIGHT);//place randomly
+			}
+			if(this.collidesWith(player)){ this.HitPlayer(); }
+			this.update();
+		}
+		
+		tPower.HitPlayer = function(){
+			//Upgrade Player stats
+			if(this.item=='firerate'){ if(player.FireRate>=0.05){player.FireRate -= 0.05;}}//Make sure firerate does not go below 0.
+			else if(this.item=='speed'){ player.Speed += 0.25; }
+			else{ player.Damage += 0.25; }
+			//Make this 'despawn' by placing of map.
+			tPower.setPosition(-100, -100);//Place off of map.
+		}
+		
+		return tPower;
+	}//END PowerUp
+	
+	//END OBJECTS***
+    </script>
+</head>
+<body onload = "init()" style="background-color:#DDDDDD; text-align:center">
+    
+</body>
+</html>
