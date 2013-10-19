@@ -1,4 +1,4 @@
-This is a basic Physics Engine created in JavaScript HTML5 with no exernal libaries. The code is releaivly short (less than 200) lines.
+This is a basic Physics Engine created in JavaScript HTML5 with no exernal libaries. The code is relatively short (less than 200) lines.
 
 Gravity, drawing the balls, and collisions with the side of the canvas, are all quite simple. The harder parts was ball-to-ball
 and line-to-ball collisions and then calculating the proper vector the balls should go. For now here is an overview of the two objects in
