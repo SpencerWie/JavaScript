@@ -1,0 +1,1 @@
+BufferedImage@34e2cc: type = 6 ColorModel: #pixelBits = 32 numComponents = 4 color space = java.awt.color.ICC_ColorSpace@15ddf5 transparency = 3 has alpha = true isAlphaPre = false ByteInterleavedRaster: width = 22 height = 22 #numDataElements 4 dataOff[0] = 3
