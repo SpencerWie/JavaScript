@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h2>Image:</h2>
+<img src="flower_light.png" height="207px" width="389" id="flower" alt="Flower" hidden />
+<canvas id="CanvasPic" width="389px" height="207px" style="border:1px solid black"></canvas>
+<canvas id="CanvasOutImage" width="389px" height="207px" style="border:1px solid black"></canvas><br />
+<canvas id="Canvas" width="389px" height="207px" style="border:1px solid black"></canvas>
+<canvas id="CanvasOut" width="389px" height="207px" style="border:1px solid black"></canvas>
+<script>
+
+var repeatAvg = 10;
+
+function Pixel(R,G,B,Cl){
+   this.R = R;
+   this.G = G;
+   this.B = B;
+   this.Cl = Cl;
+   this.print = function(){
+      return +this.R+"|"+this.G;
+   }
+}
+
+function removeDuplicate(array){
+   var temp = {};
+   for (var i = 0; i < array.length; i++)
+      temp[array[i].print()] = true;
+   var newA = [];
+   for (var j in temp)
+      newA.push(j);
+   return newA;
+}
+
+function setPoints(array,k){
+   var pointArray = new Array(k);
+   //remove array dublicates.
+   array = removeDuplicate(array);
+   for(var i=0;i<k;i++){
+      var randIndex = Math.ceil(Math.random()*array.length);
+      var colors = array[randIndex].split("|");
+      var randPoint = new Pixel(colors[0],colors[1],0,0);
+      pointArray[i] = randPoint;
+   }
+   return pointArray;
+}
+
+function distance(x1,y1,x2,y2){
+   dx = x2 - x1;
+   dy = y2 - y1;
+   return Math.sqrt((dx*dx)+(dy*dy));
+}
+//Returns the minimum index of an array.
+function minIndex(array){
+   var min = 9999999;
+   var index = 0;
+   for(var i=0;i<array.length;i++){
+      if(array[i]<min){
+         index = i;
+         min = array[i];
+         }
+   }
+   return index;
+}
+
+window.onload=function(){
+   //Create Flower on Canvas.
+   var c=document.getElementById("CanvasPic");
+   var ctx=c.getContext("2d");
+   var img=document.getElementById("flower");
+   ctx.drawImage(img,0,0,img.width, img.height);
+   //Get Image Data and place into a array of pixels.
+   var imgData=ctx.getImageData(0,0,img.width,img.height);
+   var pixels = new Array(imgData.data.length/4);
+   var j=0;
+   for (var i=0;i<imgData.data.length;i+=4){
+      var pix = new Pixel(imgData.data[i],imgData.data[i+1],imgData.data[i+2],0)
+      imgData.data[i+2] = 0;
+      pixels[j] = pix;
+      j++;
+   }
+   ctx.putImageData(imgData,0,0);
+   var c=document.getElementById("Canvas");
+   var ctx=c.getContext("2d");
+   var kPoints = setPoints(pixels,7); // We will get the color at these random points and use them as the cluster color.
+   var clusterColor = new Array();
+   for(var i=0;i<kPoints.length;i++) clusterColor.push(kPoints[i]);
+   //Show a visual representation of the data based on R,G,B (3D) -> For our case lets do just R,G and show on our Cavnas.
+   var oldPixels = pixels;
+   for(var i=0;i<pixels.length;i++){
+   ctx.fillStyle = "rgb("+pixels[i].R+","+pixels[i].G+","+0+")";
+   ctx.fillRect( pixels[i].R, pixels[i].G, 1, 1 );
+   }
+   var c=document.getElementById("Canvas");
+   var ctx=c.getContext("2d");
+   var distK = new Array(kPoints.length); // temp to store distances of k-points
+   for(var k=0;k<repeatAvg;k++){
+   var clusters = new Array(kPoints.length);
+   for (var i = 0; i < kPoints.length; i++){ //make clusters and array of arrays.
+      clusters[i] = new Array();
+   }
+   for(var i=0;i<oldPixels.length;i++){
+      //Get (R,G) Distance, compare to each k-point and smallest distance belongs to cluster.
+      for(var j=0;j<kPoints.length;j++){
+         distK[j] = Math.ceil(distance(kPoints[j].R,kPoints[j].G,oldPixels[i].R,oldPixels[i].G));
+      }
+      var minI = minIndex(distK); // get the min index (since i pos are relative in kPoints and clusters array).
+      clusters[minI].push(oldPixels[i]);
+      pixels[i].Cl = minI;
+   }
+   oldkPoints = kPoints;
+   for(var i=0;i<clusters.length;i++){
+      var sumR = 0; var sumG = 0;
+      for(var j=0;j<clusters[i].length;j++){
+         sumR+=clusters[i][j].R;
+         sumG+= clusters[i][j].G;
+      }
+      sumR = parseInt(sumR/clusters[i].length);
+      sumG = parseInt(sumG/clusters[i].length);
+      kPoints[i] = new Pixel(sumR,sumG,0,0);
+   }
+   }
+   var clusters = new Array(kPoints.length);
+   for (var i = 0; i < kPoints.length; i++){ //make clusters and array of arrays.
+      clusters[i] = new Array();
+   }
+   for(var i=0;i<oldPixels.length;i++){
+      //Get (R,G) Distance, compare to each k-point and smallest distance belongs to cluster.
+      for(var j=0;j<kPoints.length;j++){
+         distK[j] = Math.ceil(distance(kPoints[j].R,kPoints[j].G,oldPixels[i].R,oldPixels[i].G));
+      }
+      var minI = minIndex(distK); // get the min index (since i pos are relative in kPoints and clusters array).
+      clusters[minI].push(oldPixels[i]);
+      pixels[i].Cl = minI;
+   }
+   //Show clusters visual
+   var c=document.getElementById("CanvasOut");
+   var ctx=c.getContext("2d");
+   var newPixels = new Array()
+   var k=0;
+   for(var i=0;i<clusters.length;i++){
+      for(var j=0;j<clusters[i].length;j++){
+         ctx.fillStyle = "rgb("+clusterColor[i].R+","+clusterColor[i].G+","+0+")";
+         ctx.fillRect( clusters[i][j].R, clusters[i][j].G, 1, 1 );
+         newPixels.push(new Pixel(clusterColor[i].R,clusterColor[i].G,0,0));
+         k++;
+      }
+   }
+   //Show image effect visual.
+   var c=document.getElementById("CanvasOutImage");
+   var ctx=c.getContext("2d");
+   var x = 0; var y = 0;
+   for (var i=0;i<pixels.length;i++){
+         //to loop
+         for(var j=0;j<clusterColor.length;j++)
+            if(pixels[i].Cl==j){ pixels[i].R = clusterColor[j].R ; pixels[i].G = clusterColor[j].G; }
+         ctx.fillStyle = "rgb("+pixels[i].R+","+pixels[i].G+","+0+")";
+         ctx.fillRect( x, y, 1, 1 );
+         x++;
+         if(x>c.width-1){ x=0 ; y++;}
+   }
+}
+</script>
+</body>
+</html> 

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h2>Image:</h2>
+<img src="basketball.jpg" height="300px" width="300" id="flower" alt="Flower" hidden />
+<canvas id="CanvasPic" width="300px" height="300px" style="border:1px solid black"></canvas>
+<canvas id="CanvasOutImage" width="1100px" height="300px" style="border:1px solid black"></canvas><br />
+<script>
+
+var K = 6;
+var numOfComputes = 25;
+
+function setPoints(array,k){
+   var pointArray = new Array(k);
+   //array = removeDuplicate(array);
+   for(var i=0;i<k;i++){
+      var x = Math.ceil(Math.random()*array[0].length)-1;
+      var y = Math.ceil(Math.random()*array.length)-1;
+      while(pointArray.indexOf(array[y][x]) > -1){
+         var x = Math.ceil(Math.random()*array[0].length)-1;
+         var y = Math.ceil(Math.random()*array.length)-1;
+      }
+      pointArray[i] = array[y][x];
+      }
+   return pointArray;
+}
+
+function removeDuplicate(array){
+   var temp = {};
+   for (var i = 0; i < array.length; i++)
+      temp[array[i]] = true;
+   var newA = [];
+   for (var j in temp)
+      newA.push(j);
+   return newA;
+}
+
+function minIndex(array){
+   var min = 9999999;
+   var index = 0;
+   for(var i=0;i<array.length;i++){
+      if(array[i]<min){
+         index = i;
+         min = array[i];
+         }
+   }
+   return index;
+}
+
+function compareNumbers(a, b) {
+  return a - b;
+}
+
+window.onload=function(){
+   //Create Flower on Canvas.
+   var c=document.getElementById("CanvasPic");
+   var ctx=c.getContext("2d");
+   var img=document.getElementById("flower");
+   ctx.drawImage(img,0,0,img.width, img.height);
+   //Get Image Data and place into a array of pixels.
+   var imgData=ctx.getImageData(0,0,img.width,img.height);
+   //Create matrix of size width*height. Contains all points on image-map including repeated colors.
+   var pixMatrix = new Array(img.height);
+   var dataCounter = new Array(K); //This will be the cluster counting array. For all grey-scale 255 (256 numbers including 0) values.
+   for (var i = 0; i < K; i++){ 
+      dataCounter[i] = new Array(256);
+      for(var j=0;j<256;j++) dataCounter[i][j] = 0;
+   }
+   for(var i=0; i<img.height; i++) {
+      pixMatrix[i] = new Array(img.width);
+   }
+   var j=0; // j & k are just variables used to store image data into a matrix.
+   var k=0;
+   for (var i=0;i<imgData.data.length;i+=4){
+      var greyData = Math.ceil((imgData.data[i]+imgData.data[i+1]+imgData.data[i+2])/3);
+      //var point = new Point(greyData,0);
+      imgData.data[i] = greyData;
+      imgData.data[i+1] = greyData;
+      imgData.data[i+2] = greyData;
+      pixMatrix[k][j] = greyData;
+      j++;
+      if(j>img.width-1) { k++; j=0; }
+   }
+   ctx.putImageData(imgData,0,0);
+   //This was a test to see if the image data was extracted properly [passed].
+   /*var c=document.getElementById("CanvasOutImage");
+   var ctx=c.getContext("2d");
+   for(var i=0; i<img.height; i++) {
+      for(var j=0; j<img.width; j++) {
+         ctx.fillStyle = "rgb("+pixMatrix[i][j]+","+pixMatrix[i][j]+","+pixMatrix[i][j]+")";
+         ctx.fillRect( j, i, 1, 1 );
+      }
+   }*/
+   
+   for(var q=0;q<numOfComputes;q++){
+   
+   //kPoints are starting centroids.
+   var kPoints = setPoints(pixMatrix,K);//Select K unquie points. The more of the same value in the matrix the more likly that point is picked.
+   console.log("old Centroids: "+kPoints);
+   var distK = new Array(kPoints.length); //Storage for distance comparision on k points.
+   var clusters = new Array(kPoints.length);
+   for (var i = 0; i < kPoints.length; i++){ 
+      clusters[i] = new Array();
+   }
+   //Lets make a new array just containing the unquie colors (our data points). Size will be at max 255. This will greatly speed up computation. Although re-formating the image may be more complex.
+   var dataPoints = [];
+   for(var i=0; i<pixMatrix.length; i++)
+   {
+      dataPoints = dataPoints.concat(pixMatrix[i]);
+   }
+   dataPoints = removeDuplicate(dataPoints);
+   //Create init clusters
+   for(var i=0;i<dataPoints.length;i++){
+       for(var j=0;j<kPoints.length;j++){
+         distK[j] = Math.abs(kPoints[j]-dataPoints[i]);
+      }
+      var minI = minIndex(distK); // get the min index (since i pos are relative in kPoints and clusters array).
+      clusters[minI].push(dataPoints[i]);
+   }
+      for(var j=0;j<clusters.length;j++){
+         console.log(clusters[j]);
+      }
+   var oldK = 0;
+   var count = 0;
+   while(oldK.toString()!=kPoints.toString()){
+   //Re-calc kPoints by taking average of each cluster. O(K^2)
+   count++
+   var oldK = kPoints.slice(); // Do a deep copy array.
+   for(var i=0;i<clusters.length;i++){
+      var sum = 0;
+      for(var j=0;j<clusters[i].length;j++){
+         sum+=parseInt(clusters[i][j]);
+      }
+      sum = Math.ceil(sum/clusters[i].length);
+      kPoints[i] = sum;
+   }
+   //Recalc clusters
+   var clusters = new Array(kPoints.length);
+   for (var i = 0; i < kPoints.length; i++){ 
+      clusters[i] = new Array();
+   }
+   for(var i=0;i<dataPoints.length;i++){
+       for(var j=0;j<kPoints.length;j++){
+         distK[j] = Math.abs(kPoints[j]-dataPoints[i]);
+      }
+      var minI = minIndex(distK); // get the min index (since i pos are relative in kPoints and clusters array).
+      clusters[minI].push(dataPoints[i]);
+   }
+   }
+      console.log("--------------------------------------------------------------------------");
+      console.log("re-calculated clusters "+count+" times.");
+      for(var j=0;j<clusters.length;j++){
+         console.log(clusters[j]);
+      }
+      console.log("new Centroids: "+kPoints);
+      console.log("----------------------------SORT-------------------------------------------");
+      kIndexPoints = new Array(kPoints.length); // We will use this to sort the elements indexed values. Then use that to apply to the cluster count.
+      for(var i=0;i<kIndexPoints.length;i++) kIndexPoints[i]=parseInt(kPoints[i]+"0"+i);
+      kIndexPoints = kIndexPoints.sort(compareNumbers);
+      for(var i=0;i<kIndexPoints.length;i++) {
+         stringPoint=kIndexPoints[i].toString();
+         kIndexPoints[i] = parseInt(stringPoint[stringPoint.length-1]);
+      }
+      console.log("Indexed Sort: "+kIndexPoints);
+      var orgClusters = clusters.slice(); // We need to apply this to the orginal clusters and not dynamicly changing one.
+      for(var j=0;j<clusters.length;j++){ // Use kIndexPoints to orginaize clusters by grey-scale values.
+         clusters[j] = orgClusters[kIndexPoints[j]];
+      }
+      for(var j=0;j<clusters.length;j++){
+         console.log(clusters[j]);
+      }
+      for(var i=0;i<clusters.length;i++){
+         for(var j=0; j<clusters[i].length; j++){
+            dataCounter[i][clusters[i][j]]++;
+         }
+      }
+      
+      }
+      console.log("Cluster count computation (25 = 100% , 0 = 0%)");
+      for(var i=0; i<K;i++) console.log(dataCounter[i]); // Shows the final number of values and how many times they were placed in the cluster
+      //Output the results as a line value image (This is just drawing the data).
+      var c=document.getElementById("CanvasOutImage");
+      var ctx=c.getContext("2d");
+      ctx.font="11px Arial";
+      ctx.fillText("From grey-scale value [ 0 -> 255 ]. Black = In Cluster 100% of time, White = 0% of time.",10,10);
+      for(var i=0; i<dataCounter.length; i++) {
+         ctx.fillStyle = "rgb("+80+","+80+","+80+")";
+         ctx.fillText("Cluster "+i,10,i*20+40);
+         ctx.fillRect( 10, 40+i*20-1, dataCounter[i].length*4, 8 );
+         ctx.fillStyle = "rgb("+255+","+255+","+255+")";
+         ctx.fillRect( 10, 40+i*20, dataCounter[i].length*4, 6 );
+         for(var j=0; j<dataCounter[i].length; j++) {
+         var scaledData = 255 - parseInt(dataCounter[i][j]*10.2); // For colors move from 0-25 to 0-255. And invert.
+         ctx.fillStyle = "rgb("+scaledData+","+scaledData+","+scaledData+")";
+         ctx.fillRect( j*4, 40+i*20+1, 3, 4 );
+         }
+      }
+}
+</script>
+</body>
+</html>
