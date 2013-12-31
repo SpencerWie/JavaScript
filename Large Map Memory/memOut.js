@@ -37,7 +37,12 @@ function generateBlocks(num){
 		var ranX = Math.ceil(numX) - canvas.width*40;
 		var ranY = Math.ceil(numY) - canvas.height*40;
 		var ranSize = Math.ceil(Math.random()*10)+10; // Size from 10 to 20.
-		blockArray.push(new Block(ranX,ranY,50,i));
+		var R = Math.ceil(Math.random()*200)+50;
+		var G = Math.ceil(Math.random()*200)+50;
+		var B = Math.ceil(Math.random()*200)+50;
+		var A = (Math.random()/2)+0.5;
+		var ranColor = "rgba("+R+","+G+","+B+","+A+")";
+		blockArray.push(new Block(ranX,ranY,50,ranColor,i));
 	}
 }
 
@@ -96,12 +101,12 @@ function Player(x,y,size){
 }
 
 //Bullet Class
-function Block(x,y,size,i){
+function Block(x,y,size,color,i){
 	this.i = i //save index of array in Bullet
 	this.x = x;
 	this.y = y;
 	this.size = size;
-	this.color = "#666666";
+	this.color = color;
 	this.update = function(){
 		ctx.fillStyle = this.color; //Draw on canvas
 		ctx.fillRect(this.x,this.y,size,size);
