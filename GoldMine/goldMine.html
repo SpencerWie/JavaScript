@@ -24,10 +24,12 @@
 //V 1.02 - Graphics cleaned. Death glitch fixed. IE bug fixed (didn't support console.log() function and crashed)
 //V 1.05 - reload now works in IE. Graphic bug fixed. Music now supported in FireFox. (added ogg file)
 //V 1.06 - Many longated code blocks have been condensed. In particually the around ~140 [if-else if-else] code block has been reduced to less than 10 lines.
+//V 1.1 - Blocked updated based on distance, Code is now much fasters ~2x less CPU use.
 //*********************************************************************************************************************************************************************
 //**Tested Browsers: IE9, FireFox 20, Chrome. BEST: Chrome , DECENT: IE (may crash), SLOW,: FireFox. Please use Chrome for best performance and display. Both FireFox and IE do not render the tile Array completely right, leaving "white-space". IE9> runs the game at a good speed. FireFox had a smaller FPS than opimized and randomly lagged.**//
 //#TileMap Data 0=None, 1=dirt1, 2=dirt2, 3=dirt3.
 var Key=0;//For storing the keycode on press.
+var ship; // Your Ship.
 //Large Amount of memory needed. An array of 8000 simple objects(Blocks) are created on a 200x40 sheet. *This was too much for my computer per update, the array changed to 180x22 so around 4000 simple objects instead, which the computer does not have a problem with.
 //*Feel free to change ROWS and COLS, the game will adjust accordingly. Remember it makes at most ROWS*COLS blocks, too high of values will slow down the game.
 var ROWS = 180;//180
@@ -65,7 +67,7 @@ var FanPower = 10;
 var Fuel = 110.0;
 var Max_Fuel = 110.0; // 110.0 Init Drill
 var dropRate = 0.10;// This is how slow/fast your fuel goes down. The higher the faster.
-var Cash = 50000;//50 Init Cash
+var Cash = 50;//50 Init Cash
 var DrillUpgrade=0;
 var StorageUpgrade=0;
 var FuelUpgrade=0;
@@ -472,10 +474,12 @@ function DrawMap(){
 	for(var i=0;i<ROWS;i++){
 		for(var j=0;j<COLS;j++){
 			if(tileMap[i][j]==0){/*do nothing, this is empty*/}
-			else{//Place and Draw Block
+			else{//If far only update position
 				tileMap[i][j].x = j*SIZE+MapX;
 				tileMap[i][j].y = i*SIZE+MapY;
-				tileMap[i][j].Draw();
+				if(distance(tileMap[i][j],ship)<235){ //If close draw block.
+					tileMap[i][j].Draw();
+				}
 			}
 		}
 	}
@@ -759,6 +763,7 @@ function BlockCollision(){
 		for(var j=0;j<COLS;j++){
 		 //We only want to check it the item in tileMap is a Block. We also don't want them to be able to dig rocks.
 		 if((tileMap[i][j] instanceof Block)){
+		 	if(distance(tileMap[i][j],ship)<100){ 	//If too far dont check. and exit function.
 			if(intersect(tileMap[i][j],ship,SIZE)){//If Ship and a block is colliding
 				//Top of Block collision. Could only count when ship is falling or not moving. Also if the ship is on the edge of the block by 10 pixels on both sides don't count it (So it will be easier for the ship to fly up in caves).
 				if(ship.y+(SIZE)<tileMap[i][j].y+(SIZE/2) && ship.ySpeed<=0 && ship.x+SIZE-10>tileMap[i][j].x && ship.x+10<tileMap[i][j].x+(SIZE)){
@@ -831,6 +836,7 @@ function BlockCollision(){
 				}
 				
 			}
+		  }
 		 }
 		}
 	}
@@ -939,6 +945,10 @@ function update(){
 	Menu.Draw();
 	Menu.Event();
 	InfoMenu.Draw();
+}
+
+function distance(obj1,obj2){ // Get distance as effiecent as possible.
+	return Math.sqrt(((obj2.x-obj1.x)*(obj2.x-obj1.x))+((obj2.y-obj1.y)*(obj2.y-obj1.y)));
 }
 
 function main(){
