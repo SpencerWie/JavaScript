@@ -6,7 +6,7 @@ http://cs.iupui.edu/~spdwiecz/JavaScript/Shoot/Shoot.html
 
 Both games are made purely in JavaScript without any external liberies.  
 
-My tutorial on JavaScript (Currently in progress) is here: 
+My tutorial on JavaScript (in progress) is here: 
 
 http://cs.iupui.edu/~spdwiecz/JavaScript/Tutorials/js_tuts_preface.html
 
