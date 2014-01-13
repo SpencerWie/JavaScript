@@ -1,0 +1,11 @@
+#canvas{
+    border: 1px solid black;
+    width: 400px; height: 250px;
+    display: block;
+    margin: auto;
+}
+
+#container{
+    text-align: center;
+    margin: auto;
+}
