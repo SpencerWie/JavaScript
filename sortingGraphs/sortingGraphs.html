@@ -7,12 +7,16 @@
 <body>
 <canvas id="canvas"></canvas>
 <div id="container">
+    <select id="sort">
+    <option>Bubble</option>
+    <option>Selection</option>
+    </select>
     <label>Size: </label>
     <input type="number" id="size" value="40" size=2 min="1" max="100"></input>
     <label>Delay: </label>
     <input type="number" id="speed" value="7" size=2 min="0" max="100">
     <button id="Run" onclick="runf();">Run</button>
-    <button id="reset" onclick="location.reload();">Reset</button>
+    <button id="reset" onclick="location.reload();">Stop</button>
 </div>
 </body>
 </html>
