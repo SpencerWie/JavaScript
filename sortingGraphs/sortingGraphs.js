@@ -4,6 +4,7 @@ window.onload = function(){
 canvas = document.getElementById("canvas");
 ctx = canvas.getContext("2d");
 loadChanges();
+enable();
 
 ctx.fillStyle = "#dddddd";
 ctx.lineWidth = 2;
@@ -50,7 +51,7 @@ function bubble(){ // Bubble Sort
 }
 
 //Go from left->right, find smallest and place in position
-function select(){ // Insertion Sort
+function select(){ // Selection Sort
    for(var i=0; i<array.length; i++){
      (function(i){setTimeout(function() { // delay for outerloop
       small = i;
@@ -66,7 +67,27 @@ function select(){ // Insertion Sort
       if(i==array.length-1){ ctx.fillStyle = "#dddddd"; draw(); }
      }, speed*(i*array.length)); })(i); // end outer loop delay
    }
-   alert("d");
+   draw();
+}
+
+//Build sorted array from left-right, placing all current right-most elements in order compared to the current sub-array
+function insert(){ // Insertion Sort
+   for(var i=0; i<array.length; i++){
+    (function(i){setTimeout(function() { // delay for outerloop
+      j=i;
+      while(j>0 && array[j]<array[j-1]){
+         t = array[j];
+         array[j] = array[j-1];
+         array[j-1] = t;
+         j--;
+      }
+      ctx.fillStyle = "#dddddd";
+      draw();
+      ctx.fillStyle = "#ffffff";
+      for(var k=i; k<array.length; k++) drawCol(k);
+      if(i==array.length-1){ ctx.fillStyle = "#dddddd"; draw(); }
+     }, speed*(i*array.length)); })(i); // end outer loop delay
+   }
    draw();
 }
 
@@ -84,9 +105,11 @@ function makeOrderedArray(){
 }
 
 function loadChanges(){
+   if(localStorage.size){
     document.getElementById("size").value = localStorage.size;
     document.getElementById("speed").value = localStorage.speed;
     document.getElementById("sort").options[localStorage.selected].selected = true;
+    }
 }
 
 function disable(){
@@ -94,6 +117,22 @@ function disable(){
    document.getElementById("size").disabled = true;
    document.getElementById("speed").disabled = true;
    document.getElementById("sort").disabled = true;
+}
+
+function enable(){
+   document.getElementById("Run").disabled = false;
+   document.getElementById("size").disabled = false;
+   document.getElementById("speed").disabled = false;
+   document.getElementById("sort").disabled = false;
+}
+
+function sleep(milliseconds) { // Make busy
+  var start = new Date().getTime();
+  for (var i = 0; i < 1e7; i++) {
+    if ((new Date().getTime() - start) > milliseconds){
+      break;
+    }
+  }
 }
 
 function runf(){
@@ -113,5 +152,7 @@ function runf(){
     option = option.options[option.selectedIndex].text;
     if(option == "Bubble")
       bubble();
-    else select();
+    else if(option == "Selection")
+      select();
+    else insert();
 }
