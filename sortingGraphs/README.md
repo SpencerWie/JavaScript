@@ -4,6 +4,7 @@ These are some basic sorting algorthims implemented in HTML5 Canvas as visual so
 <li>Bubble Sort</li>
 <li>Selection Sort</li>
 <li>Insertion Sort</li>
+<li>Quick Sort (basic visualization -> to be updated)</li>
 </ul>
 
 Bug fixes: Fixed null localStorage variables with defaults.
