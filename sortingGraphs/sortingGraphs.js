@@ -91,6 +91,33 @@ function insert(){ // Insertion Sort
    draw();
 }
 
+//Sort array by picking a partiction and recurisvly sorting all smallest and largest elements to their respective sides (sm|P|la)...
+function quickSort(Start, End){
+   if(Start < End){
+      setTimeout(function(){
+         var piv = partition(Start, End);
+          draw();
+          ctx.fillStyle = "#bbbbff";
+          drawCol(piv);
+          ctx.fillStyle = "#dddddd";
+         quickSort(Start,piv-1);
+         quickSort(piv+1, End);
+      },speed*20);
+   }
+   function swap(a,b){var t=array[a]; array[a]=array[b]; array[b]=t; }
+   function partition(start, end){
+      var pivot = array[end]; 
+      var i = start - 1;
+      for(var j=start; j<end; j++){
+         if(pivot >= array[j]){ i++; swap(i,j); }
+      }
+      swap(i+1,end);
+      return i+1;
+   }
+}
+
+
+
 function shuffle() { // shuffle by random swaps.
     for (var i = array.length - 1; i > 0; i--) {
         var j = Math.floor(Math.random() * (i + 1));
@@ -154,5 +181,7 @@ function runf(){
       bubble();
     else if(option == "Selection")
       select();
-    else insert();
+    else if(option == "Insertion") 
+      insert();
+    else quickSort(0,array.length-1);
 }
