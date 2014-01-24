@@ -8,6 +8,4 @@ These are some basic sorting algorthims implemented in HTML5 Canvas as visual so
 <li>Bogo Sort (Just for fun)</li>
 </ul>
 
-Bug fixes: Fixed null localStorage variables with defaults.
-
 URL: http://cs.iupui.edu/~spdwiecz/JavaScript/sortingGraphs/sortingGraphs.html
