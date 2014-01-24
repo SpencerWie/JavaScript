@@ -116,6 +116,30 @@ function quickSort(Start, End){
    }
 }
 
+//randomly suffles the arrays and hopes it might one day sort it.
+function bogoSort(){
+   function check(){
+      var sorted = true;
+      for(var i=0; i<array.length-1; i++){
+         if(array[i]>array[i+1]) sorted = false
+          else if(sorted){
+           ctx.fillStyle = "#22dd22";
+           drawCol(i);
+           drawCol(i+1);
+          }
+      }
+      if(sorted) return true;
+      else return false;
+   }
+   var timer = setInterval(function(){
+       //Check sorted
+       ctx.fillStyle = "#dddddd";
+       draw();
+      if(check()){ clearInterval(timer);return; }
+      shuffle();  
+   },speed*10);
+}
+
 
 
 function shuffle() { // shuffle by random swaps.
@@ -183,5 +207,7 @@ function runf(){
       select();
     else if(option == "Insertion") 
       insert();
-    else quickSort(0,array.length-1);
+    else if(option == "Quick") 
+      quickSort(0,array.length-1);
+    else bogoSort();
 }
