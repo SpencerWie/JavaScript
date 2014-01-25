@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-responsive.css" />
+<link rel="stylesheet" type="text/css" href="js_tuts.css" />
+<script src="jquery.min.js" ></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="js_tuts.js"></script>
+<title>JS Tutorial</title>
+<style>
+.smallCode{ clear: both; border: 1px solid #999999; padding: 10px ; background-color: #F5F5F5; border-radius: 2px; float: left; position: relative ; bottom: 10px;  margin: 5px}
+</style>
+</head>
+<body>
+<br />
+<div id="code-box">
+<div id="space-code">
+<textarea id="code">
+
+</textarea><br />
+</div>
+<button class="btn" id="run">Run</button>
+</div>
+<div class="slider"><i class="icon-plus plus"></i></div>
+<div class="container-fluid">
+   <div class="row-fluid">
+      <div class="span2 btnNav">
+         <br />
+         <a href="js_tuts_preface.html"><button class="btn btn-long btn-warning center">Preface</button></a><br />
+         <a href="js_tuts.html"><button class="btn btn-long btn-info center">The Basics</button></a><br />
+         <a href="js_tuts2.html"><button class="btn btn-long btn-info center" >Data & Functions</button></a><br />
+         <a href="js_tuts_branch.html"><button class="btn btn-long btn-info center" >Branching</button></a><br />
+         <button class="btn btn-long btn-info center" disabled>OOP</button><br />
+         <a href="js_tuts_events.html"><button class="btn btn-long btn-info center" >JS Events & Objects</button></a><br />
+      </div>
+      <div class="span2"></div>
+      <div class="span9 background-color:#00FF00">
+         <h1>Object Oriented Programing</h1>
+         <p>Object Oriented Programing (known as OOP for short) is a model of programing by using objects as events in our program other than independent step-by-step actions (known as <em>Procedural Programming</em>). OOP makes your code much more organized and easier to understand, and is also very useful for group projects. In this section I will explain Objects in more detail and show you how to make your own Objects.</p>
+
+ 
+<div class="accordion" id="accordion2">
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+        <h3>Classes</h3>
+      </a>
+    </div>
+    <div id="collapseOne" class="accordion-body collapse in">
+     <div class="accordion-inner">
+         <p><strong>Classes</strong> are their own structure that contain their own functions (known as <b>methods</b>), and their own variables (known as <b>properties</b>). <strong>Objects</strong> are things created from a class. For example you can look at a class as a <b>(recipe, blueprint, template)</b>, and an object something created with the (recipe, blueprint, template). Like cookies for example, you have a cookie recipe (class) and the cookies (objects). And you could make a variety of cookies from the same recipe: big or small, peanut butter or chocolate chip.</p>
+         <p>When you create something from a class it's known as an <strong>instance</strong> (a particular object of the class). Every instance is independent of other instances, changing one will not change others. Here is how to create an object/instance:</p>
+         <pre>var obj = new Object(...); // obj is an instance of the Object class.</pre>
+         <p>Calling a method from an Object: </p>
+         <pre>obj.methodName(...);</pre>
+         <p>Getting a property of an Object: </p>
+         <pre>obj.propertyName;</pre>
+         <p>For example lets look at the our Human Race as a Class, then each human would be an instance of the Human class. Some properties we would have would be: height, gender, and hair color. And some methods might be: run, breath, jump, and dance.</p>
+         <p>In fact <em>Numbers, Strings, Arrays, etc, are all Objects</em>. And they can be defined as an instance. For example lets look at a instance of the String class and it's methods and properties (shown in Data & Functions section):</p>
+<pre>
+var myString = new String("Hello world"); // Create a string as an object.
+myString.toUpperCase(); // Method to change the string to uppercase. => "HELLO WORLD"
+myString.indexOf('W'); // Method to get a index in the string. => 6
+myString.length; // returns the length Property of the string. => 11
+</pre>
+         <p>The method that is called when an object is created is called a <strong>Constructor</strong>. Often the constructor sets the default values of the properties of instance. In this case the String Constructor [ String(<em>string</em>) ] takes a single argument and sets it's string property to the given argument.</p>
+         <div class="alert alert-info">In a classical sense JavaScript does not have classes. Although this is because JavaScript is based on prototyping and not class-based, we can easily create behavior the same as a class and treat it as so. In which I will consider a class in JavaScript for simplicity.</div>
+     </div>
+    </div>
+  </div>
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+        <h3>Creating Objects</h3>
+      </a>
+    </div>
+    <div id="collapseTwo" class="accordion-body collapse">
+      <div class="accordion-inner">
+         <p>The best way to understand objects, classes, instances, and so on is to create them yourself. We can create our very own Objects, here is an outline:</p>
+<pre>
+function ClassName(...) // Creates a class called "ClassName"
+   {
+   //This is the Constructor
+   this.property1 = .. ;
+   this.property2 = .. ;
+   //End Constructor
+   
+   this.method1 = function(...) // Makes a method called "method1"
+      {
+      // Code for method1
+      }
+ 
+   this.method2 = function(...)
+      {
+      // Code for method2
+      }   
+   }
+
+var myObj = new Class(...); // Creates an instance from our Class.
+</pre>
+      <p><strong>this</strong> means <em>for this particular instance</em>. So when we say: <em>this.variable</em> , it means the variable belonging to the current instance. Don't get confused that it says: <em>function ClassName(...)</em>, read it as: <em>class ClassName(...)</em>. The <em>class</em> keyword is not yet implemented in JavaScript so the <em>function</em> keyword is used.</p>
+      <p> Lets look at some examples, here is a Ball Class:</p>
+<pre>
+function Ball( X, Y, R, Color ) // Creates a class called "Ball"
+   {
+   this.x = X; // Makes a property called: x.
+   this.y = Y; // Makes a property called: y.
+   this.r = R; // Makes a property called: r ( radius )
+   this.color = Color; // Makes a property called: color.
+   
+   this.moveTo = function(newX, newY) // Makes a method called: moveTo(newX, newY).
+      {
+         this.x = newX; // Change the x to the new position
+         this.y = newY; // Change the y to the new position
+      } 
+   }
+
+var redBall = new Ball(40,40,25,"Red"); // Creates a red ball from Ball class.
+var blueBall = new Ball(200,40,35,"Blue"); // Creates a blue ball from Ball class.
+</pre>
+      <canvas id="myCanvas" width="300" height="80" style="border:1px solid #555555; display: block; margin: auto"></canvas><br />
+      <div class="smallCode">redBall.moveTo(60,45);</div><button class="btn btn-success small" onclick="redBall.moveTo(60,45);">Run</button> <button class="btn btn-info small" onclick="redBall.moveTo(40,40);">Reset</button> <br /> <br />
+      <div class="smallCode">blueBall.moveTo(150,40);</div><button class="btn btn-success small" onclick="blueBall.moveTo(150,40);">Run</button> <button class="btn btn-info small" onclick="blueBall.moveTo(200,40);">Reset</button> 
+      </div>
+    </div>
+  </div>
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFour">
+        <h3>More Examples</h3>
+      </a>
+    </div>
+    <div id="collapseFour" class="accordion-body collapse">
+      <div class="accordion-inner">
+         <p>If the last example was a bit too complex here is a simpler example:</p>
+<pre>
+function Person( name ) // Creates a class called "Person"
+   {
+   // It's ok to use ( this.name = name ) JavaScript can tell the difference.
+   this.name = name; // Makes a property called: name. 
+   
+   this.sayHi = function() // alerts it's name
+      {
+         alert("Hello, my name is " + this.name);
+      } 
+   }
+
+var person1 = new Person("Spencer");
+var person2 = new Person("Calvin");
+
+alert( person1.name ); // => "Spencer"
+person1.sayHi(); // => "Hello, my name is Spencer"
+person2.sayHi(); // => "Hello, my name is Calvin"
+</pre>
+         <p><button class="btn btn-success" onclick="objEx_1()">Run</button> </p>
+         <hr>
+         <p>There is more than one way to create a class in JavaScript, the current why I have been showing you is the simplest in my opinion. Another way to create objects which is slightly more efficient is using: <b>prototype</b>. Which is a property to add methods to objects. For example here is the same Person class setup using prototype with a side-by-side comparison:</p>
+         <div style="width:50%; float:left">
+         <p><em>Prototype</em></p>
+<pre>
+function Person( name ){
+   this.name = name;
+}
+
+Person.prototype.sayHi = function(){
+   alert("Hello, my name is " + this.name);
+}
+</pre>
+      </div>
+         <div style="width:50%; float:left">
+         <p><em>Without Prototype</em></p>
+<pre>
+function Person( name ){
+   this.name = name;
+   
+   this.sayHi = function(){
+      alert("Hello, my name is " + this.name);
+   }
+}
+</pre>
+         </div>
+         <p> &nbsp; </p>
+         <div class="alert alert-info">The difference between using prototype and non-prototype is how methods are created. When you are not using prototype all methods are re-created for each instance, while prototype keeps a single method to use making it a bit more efficient. One way isn't particularly better than the other, for now I recommend choosing which is comfortable for you.</div>
+      
+      </div>
+    </div>
+  </div>
+  
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFive">
+        <h3>Inheritance</h3>
+      </a>
+    </div>
+    <div id="collapseFive" class="accordion-body collapse">
+      <div class="accordion-inner">
+         <p>Sometimes we want to make a class that inherits the methods and properties of another more abstract class, known as <strong>Inheritance</strong>. For example lets say we have a class called <em>Animal</em>, and we want to make another class called <em>Bird</em> with the same methods and properties, but have a few extra such as fly(). We could also have <em>Mammal</em> and <em>Reptile</em> also be based on <em>Animal</em>. We could set this up in a tree structure known as an: <strong>inheritance tree</strong>.</p>
+         <img src="inheritance_tree.png" alt="Inheritance Tree" style="display:block ;margin:auto"></img>
+         <ul>
+         <li><strong>Child</strong> : A sub-class that was created based on a main-class.</li>
+         <li><strong>Parent</strong> : A main-class that all sub-classes were based on.</li>
+         </ul>
+         <p>Here is an example is a Parent and a Child class implemented in JavaScript:</p>
+<pre>
+function Parent( *arg ){
+   this.P_prop = *arg;
+       
+   this.P_func = function(){
+        // Code for parent method.
+      }
+   }
+
+function Child( *arg ){ // The same *arg as the 'Parent' class.
+    <b>Parent.call(this, *arg);</b> // This creates 'Child' to be based on 'Parent'.
+    
+    this.C_func = function(){
+        // Code for child method.
+    }
+}
+</pre>
+      <p>And here is a implementation on the Parent class Animal, and child class Bird:</p>
+<pre>
+function Animal( name ){
+   this.name = name;
+       
+   this.getName = function(){
+        alert("It's name is "+this.name);
+      }
+   }
+
+function Bird( name ){ 
+    <b>Animal.call(this, name);</b> 
+    
+    this.fly = function(){
+        alert(this.name+" flew up in the sky.");
+    }
+}
+</pre>
+      <p>So the Animal Class as a property: name; and a method: getName(). While the Bird class inherited the property: name and method: getName(), special to it's class it has another method fly().</p>
+<pre>
+var animal = new Animal("Fred");
+var bird = new Bird("Jack");
+
+// Both Animal and Bird have getName.
+animal.getName(); // => Fred
+bird.getName(); // =>  Jack
+//animal.fly(); <-- Animal does not have a fly method
+bird.fly(); // => "Jack flew up in the sky."
+</pre>
+      </div>
+    </div>
+  </div>
+  
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseSeven">
+        <h3>Review</h3>
+      </a>
+    </div>
+    <div id="collapseSeven" class="accordion-body collapse">
+      <div class="accordion-inner">
+         <p>We went over a bunch or large topics. Here are some important  points we went over:</p>
+         <p>Objects</p>
+            <ul>
+            <li><b>Class</b> : Contain their own functions(methods) and variables(properties) [Like a Cookie Recipe]</li>
+            <li><b>Objects</b> : Are an instance that is created from a class [Like a cookie]</li>
+            <li><b>Constructor</b> : Is the method called when an instance is created</li>
+            <li><b>this</b> : Property for this particular instance</li>
+            </ul>
+         <p>Inheritance</p>
+            <ul>
+            <li><b>Inheritance</b> : Is a relationship between two classes, such that the child inherits methods and properties from a more abstract parent class.</li>
+            <li><strong>Child</strong> : A sub-class that was created based on a main-class.</li>
+            <li><strong>Parent</strong> : A main-class that all sub-classes were based on.</li>
+            <li><b>Parent.call(this, ...)</b> is placed in the Constructor of the child to inherit from some Parent. </li>
+            </ul>
+      </div>
+    </div>
+  </div>
+  
+</div>
+      
+  </div>
+ </div>
+</div>
+
+<div class="sig">Spencer Wieczorek</div>
+<script>
+
+var c=document.getElementById("myCanvas");
+var ctx=c.getContext("2d");
+
+function Ball( X,Y,R,Color ) // Creates a class called "ClassName"
+   {
+   this.x = X; // Makes a property called: x.
+   this.y = Y; // Makes a property called: y.
+   this.r = R; // Makes a property called: r ( radius )
+   this.color = Color; // Makes a property called: coor.
+   
+   this.moveTo = function(newX, newY) // Makes a method called: moveTo(newX, newY).
+      {
+        ctx.fillStyle= "White"; // Clears last drawn ball.
+        ctx.beginPath();
+        ctx.arc(this.x,this.y,this.r+1,0,2*Math.PI);
+        ctx.fill(); 
+        
+        this.x = newX; // Change the x to the new position
+        this.y = newY; // Change the y to the new position
+        this.draw(ctx);
+      }
+   this.draw = function(ctx)
+      {
+        ctx.fillStyle= this.color;
+        ctx.beginPath();
+        ctx.arc(this.x,this.y,this.r,0,2*Math.PI);
+        ctx.fill();          
+      }
+   }
+   
+function Person( name ) // Creates a class called "Person"
+   {
+   // It's ok to use ( this.name = name ) as JavaScript can tell the difference between the two variables.
+   this.name = name; // Makes a property called: name. 
+   
+   this.sayHi = function() // Makes a method called: moveTo(newX, newY).
+      {
+         alert("Hello, my name is " + this.name);
+      } 
+   }
+
+var redBall = new Ball(40,40,25,"Red"); // Creates a red ball from Ball class.
+var blueBall = new Ball(200,40,35,"Blue"); // Creates a red ball from Ball class.
+
+redBall.draw(ctx);
+blueBall.draw(ctx);
+
+function objEx_1(){
+   var person1 = new Person("Spencer");
+   var person2 = new Person("Calvin");
+   alert( person1.name ); // => "Spencer"
+   person1.sayHi(); // => "Hello, my name is Spencer"
+   person2.sayHi(); // => "Hello, my name is Calvin"
+}
+
+$(".accordion").on("shown",function(){ // This is to scroll to the top of the accordion group when shown
+        var offset = $(".accordion-body.collapse.in").position().top - 80;
+        $("html, body").animate({ scrollTop: offset+"px" });
+});
+</script>
+</body>
+</html>

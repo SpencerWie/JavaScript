@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-responsive.css" />
+<link rel="stylesheet" type="text/css" href="js_tuts.css" />
+<script src="jquery.min.js" ></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="js_tuts.js"></script>
+<title>JS Tutorial</title>
+</head>
+<body>
+<br />
+<div id="code-box">
+<div id="space-code">
+<textarea id="code">
+
+</textarea><br />
+</div>
+<button class="btn" id="run">Run</button>
+</div>
+<div class="slider"><i class="icon-plus plus"></i></div>
+<div class="container-fluid">
+   <div class="row-fluid">
+      <div class="span2 btnNav">
+         <br />
+         <a href="js_tuts_preface.html"><button class="btn btn-long btn-warning center">Preface</button></a><br />
+         <a href="js_tuts.html"><button class="btn btn-long btn-info center">The Basics</button></a><br />
+         <button class="btn btn-long btn-info center" disabled>Data & Functions</button><br />
+         <a href="js_tuts_branch.html"><button class="btn btn-long btn-info center">Branching</button></a><br />
+         <a href="js_tuts_oop.html"><button class="btn btn-long btn-info center" >OOP</button></a><br />
+         <a href="js_tuts_events.html"><button class="btn btn-long btn-info center" >JS Events & Objects</button></a><br />
+      </div>
+      <div class="span2"></div>
+      <div class="span9 background-color:#00FF00">
+         <h1>Data and Functions</h1>
+         <p>Data types and functions are essentials of programing. Functions allow us to separate out our logic and code to make our life simpler, that way we can narrow our focus and solve hard problems in baby steps. Data to the computer is simply a bunch of 0's and 1's, but we can use it to represent things such as: Numbers ,Text, Lists, etc. In this section we will take a look at Functions, Data Types, and Variables.</p>
+         <br />
+ 
+<div class="accordion" id="accordion2">
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+        <h3>Data Types</h3>
+      </a>
+    </div>
+    <div id="collapseOne" class="accordion-body collapse in">
+     <div class="accordion-inner">
+         <p><strong>Data Types</strong> are simply different ways we represent our Data. While there are a lot of different data types, we will just talk about the basics. In JavaScript data types are <strong>dynamic</strong>. Which means that the same variable can be used as a different type. Here are some examples:</p>
+         <ul>
+         <li><b>Numbers</b> - ( Integers [5] and decimals [1.205] )</li>
+         <li><b>Strings</b> - ( Text ["Hello World"] )</li>
+         <li><b>Arrays</b> - ( A list of items [1,2,3,4,5] )</li>
+         <li><b>Booleans</b> - ( True or False statements )</li>
+         <li><b>Objects</b> - ( Something that has properties[adjectives] and methods[actions] )</li>
+         <li><em>null, NaN</em> - (Something undefined, something that is not a number)</li>
+         </ul>
+         <p><strong>Variables</strong> are simply a way to store our data. In JavaScript they are represented by the keyword "var". Here is the syntax:</p>
+         <pre> var myVariable = Value; </pre>
+         <p>Here are some examples of variables being declared.</p>
+         <pre>
+&lt;script&gt;  
+   var x = 5; // x is a Number
+   var y = "Hello World"; // y is a String
+   var z = true; // z is a Boolean
+   var i = [1,2,3,4,5]; // i is a Array of Numbers
+   var j = ["Spencer","Calvin","Alex","Max","Jason"]; // j is a Array of Strings
+   x = "Im a String" // x is now a String
+&lt;/script&gt;</pre>
+      <div class="alert alert-info">We will take more about objects in the future on a sections all about objects.</div>
+     </div>
+    </div>
+  </div>
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+        <h3>Numbers</h3>
+      </a>
+    </div>
+    <div id="collapseTwo" class="accordion-body collapse">
+    <div class="accordion-inner">
+      <p>Numbers along with Booleans are simple data types. Numbers can be either whole numbers(Integers) or real numbers(Doubles in JS). We perform Arithmetic operations on numbers with add( <b>+</b> ), subtract( <b>-</b> ), multiplication( <b>*</b> ), and division( <b>/</b> ):</p>
+<pre>var x = 10; // x is 10</pre>
+      <p>Basic Arithmetic:</p>
+<pre>var x = 10/2; // => 5
+x = x * 3; // x = x*3 => 15
+x++; // This means x = x + 1, so => 16
+x+=4; // This means x = x + 4 => 20, the same thing goes with x-=n -> x = x - n.
+</pre>
+      <p>Numbers also have methods(actions):</p>
+      <ul>
+      <li><b>number.toString()</b> - Returns the number as a string.</li>
+      <li><b>number.valueOf()</b> - Returns the primitive number of the variable.</li>
+      </ul>
+      <p>You can also define all basic data-types as Objects, the format for creating an object is:</p><pre>var obj = new Object(...);</pre>
+      <p>For creating numbers as objects we do:</p><pre>var num = new Number(10); // num is 10</pre>
+      <p class="alert alert-danger">Creating a variable as an object is not the same as creating a variable as a primitive number. JavaScript will temporarily change variables that are primitive into objects with you call a method with them. Because of this I recommend simply making variables as primitive numbers like: var x = 3; This way we avoid problems with strict equality(===) and Case/Switch statements, both of which we will discuss later.</p>
+    </div>
+    </div>
+  </div>
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFour">
+        <h3>Arrays</h3>
+      </a>
+    </div>
+    <div id="collapseFour" class="accordion-body collapse">
+      <div class="accordion-inner">
+         <p>Out of all the data types we talked about Arrays are definitely the most complex. An <em>array is a list of items</em>. In all programing languages  an array's particular elements can be accessed by their index( Where the item is in the array ). The <b>index starts at 0</b>, and a item in an array can be access by the notation: <b>Array[index]</b>. For example.</p>
+<pre>//              0       1        2       3
+var array = ["Apple","Banana","Peach","Orange"]
+</pre>
+      <ul>
+      <li>array[0] = "Apple"</li>
+      <li>array[1] = "Banana"</li>
+      <li>array[2] = "Peach"</li>
+      <li>array[3] = "Orange"</li>
+      </ul>
+      <p>You can also alert an array and JavaScript will give you a nice representation of the array:<br /> <strong>alert(array) --> "Apple,Banana,Peach,Orange"</strong></p>
+      <p>You can find the number of elements in an array by saying: <b>array.length</b>, in our example the array with elements ["Apple","Banana","Peach","Orange"] has a length of 4. There are plenty of methods you can use with an array, which can always be looked up online, so you don't have to memorize these: </p>
+      <ul>
+      <li><b>array.indexOf(element)</b> - Returns the index of some element in an array.</li>
+      <li><b>array.slice([start_index], [end_index]-1)</b> - Returns a sub-array (shallow copy) from an array.</li>
+      <li><b>array.pop()</b> - Removes an element from the end of an array</li>
+      <li><b>array.push(element)</b> - Adds an element to the end of an array</li>
+      <li><b>array.sort()</b> - Sorts an array in ascending, alphabetical, or numerical order depending on the elements in the array.</li>
+      </ul>
+      <p class="challenge">Challenge:</p>
+      <p>What will be alerted?</p>
+<pre>
+var array = ["Apple","Banana","Peach","Orange","Cherry"];
+array.sort();
+array.pop();
+array.push("Lemon");
+var newArray = array.slice(1,5); 
+alert(newArray);</pre>
+      <button class="btn btn-success"onclick="arrayChallenge();">Click for Solution</button>    
+      <hr>
+      <p>You can place any datatype into an array, even another array. Known as a <b>multi-dimensional</b> arrays, for example an array within an array is a 2D array. Which can be treated like a table, grid, or matrix. For example:</p>
+<pre>
+var Array2D = [
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+];
+</pre>
+      <p>Since there is an array inside the array we need two brackets, one two go into the outer array then the next to go into each inner array, or it maybe easier to see it as a table with rows and columns.</p>
+      <ul>
+         <li>Array within Array :<b>2dArray[outerArray_index][innerArray_index]</b></li>
+         <li>A Table :<b>2dArray[row][col]</b></li>
+      </ul>
+      <p>Here is some examples of getting elements:</p>
+<pre>
+Array2D[1]    => [4,5,6]
+Array2D[1][0] => 4
+Array2D[1][1] => 5
+Array2D[0][2] => 3
+</pre>
+      </div>
+    </div>
+  </div>
+  
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFive">
+        <h3>Strings</h3>
+      </a>
+    </div>
+    <div id="collapseFive" class="accordion-body collapse">
+      <div class="accordion-inner">
+
+         <p>Strings in there basic form are actually an array of characters, although they are a bit more than advanced than that in high level languages (like JavaScript). So for example we could look at ['H','e','l','l','o'] being similar to "Hello". So it is no surprise that strings have many methods that arrays have:</p>
+         <ul>
+         <li>var str = "Hello" --> <b>str[0] is 'H' , str[1] is 'e'</b> , ...</li>
+         <li><b>string.indexOf(element)</b> - Returns the character at the index.</li>
+         <li><b>string.length</b> --> "Hello".length is 5.</li>
+         <li><b>string.slice([start_index], [end_index]-1)</b> - Returns a sub-array of strings (shallow copy) from a base string.</li>
+         </ul>
+         <p>Strings also have a property known as <strong>concatenation</strong>, which means we merging two strings together. This is used by the <b>+</b> symbol:</p>
+         <pre>var hello = "HELLO";
+var world = " WORLD"; //notice the space.
+var statement = hello+world; // statement is "HELLO WORLD"</pre>
+         <p>Some other things that strings can do:</p>
+         <ul>
+         <li><b>string.toLowerCase()</b> - Returns a string that has all the characters in the given string to be lower-case.</li>
+         <li><b>string.toUpperCase()</b> - Returns a string that has all the characters in the given string to be upper-case.</li>
+         <li><b>string.split(para)</b> - Returns an array sub-strings being separated by the parameter.</li>
+         <li><b>string.replace(original, replacement)</b> - Returns a string that Finds and replaces something in the original string.</li>
+         <li><b>string.match(str)</b> - If it finds the item in the parameter it returns it, otherwise return null.</li>
+         </ul>
+<pre>var myStr = "Hello World";
+myStr = myStr.toLowerCase(); // => "hello world"
+myStr = myStr.toUpperCase(); // => "HELLO WORLD"
+myStr = myStr.replace("WORLD","INTERNET"); // => "HELLO INTERNET"
+var anotherStr = myStr.split("E") // anotherStr => ["H","LLO INT","RN","T"]</pre>
+      </div>
+    </div>
+  </div>
+  
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseSix">
+        <h3>Functions</h3>
+      </a>
+    </div>
+    <div id="collapseSix" class="accordion-body collapse">
+      <div class="accordion-inner">
+         <p>Functions are <em>blocks of code</em> that can accept values (known as <b>arguments or parameters</b>). We can use functions to separate out our program and focus on one part at a time, in a much more organized fashion. In JavaScript the syntax of functions is: </p>
+         <pre>function nameOfFunction(arg1*,arg2*,...){ /* JavaScript Code */ }</pre>
+         <p>The brackets <b>{</b> and <b>}</b> are known as <strong>branches</strong>, which in this case means they are a separate piece of code away from our main code. We will talk alot more about branching (along with a better definition) in the next section. Just know that those squiggly brackets are where we put our code for a function.</p>
+         <p>Note that when we make a function it does not do anything until we use it, known as calling a function. Here is an example:</p>
+<pre>
+function sayHello(){
+   alert("Hello World");
+}
+sayHello(); // <-- This calls the function</pre>
+         <button class="btn btn-success" onclick="sayHello();">Run Function</button>
+         <p>All variables that are made inside a function <b>are gone</b> once we leave that function. This is known as <b>local variables</b> (Which are variables stored in the <em>Stack</em> - You don't need to know what that means).So for example this code will not work:</p>
+<pre>
+function sayBye(){
+   var imGone = "Bye!";
+   alert(imGone); // <-- This is fine
+}
+sayBye();
+alert(imGone); <-- We arn't in the function, we don't know what imGone is.</pre>
+      <p>This will output alert("Bye!"), but then you will get an error message like: imGone is not defined. </p>
+      <p><b>Global variables</b> are variables we define outside of functions, we can use these values outside and inside functions fine:</p>
+<pre>
+var imGone = "Bye!";
+function sayBye(){
+   alert(imGone); // This works!
+}
+sayBye();
+alert(imGone); //<-- This works too!</pre>
+         <button class="btn btn-success" onclick="globalEx();">Run Function</button><br /><br />
+      <p>The locality of variables and where they are defined is called the <b>scope</b>. For global variables the scope is the entire program, globals are defined everywhere. Although for local variables they are only defined within their scope or where they were made between the brackets { ...variable... } .</p>
+      <p><strong>Parameters:</strong></p>
+      <p>We can also can give variables for our functions to work with (known as <em>passing a value to a function</em>). The values are known as arguments or parameters, and they are separated by commas:</p>
+<pre>
+function addStuff(x,y){
+   var sum = x + y;
+   alert(sum); 
+}
+addStuff(5,10) // 5+10 = 15</pre>
+         <button class="btn btn-success" onclick="addStuff(10,5);">Run Function</button>  
+               <br /><br />
+         <p><strong>Returning Values:</strong></p>
+         <p>We can also give out values with our functions, by saying <b>return item</b>. If we look back we can see many functions we used above does this ( toString() , valueOf(), slice() ). For example:</p>    
+<pre>
+function giveStuff(x,y){
+   var sum = x + y;
+   return sum; 
+}
+var theSum = giveStuff(5,10) ;
+/* giveStuff(...) gives a value, 15 in thie case, it's like: var theSum = 15; */
+alert(theSum);</pre>
+      <button class="btn btn-success" onclick="returnEx();">Run Function</button> 
+      </div>
+    </div>
+  </div>
+  
+    <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseSeven">
+        <h3>Input and Data Conversion</h3>
+      </a>
+    </div>
+    <div id="collapseSeven" class="accordion-body collapse">
+     <div class="accordion-inner">
+         <p>We know that we can produce output with the <em>alert(string)</em> function. We can also get input from the user with the <strong>prompt(str_message, ~str_text)</strong>. ~ means optional. The Prompt function returns the string you gave it.</p>
+<pre>var name = prompt("What is your name?","Enter name here");
+alert("Hello "+name);</pre>
+         <button class="btn btn-success"onclick="input1();">Run</button>  
+         <hr>
+         <p>Since datatypes are dynamic in JavaScript and can change easily, it's hard to be sure which datatype some variable is. This is mostly always between Strings and Numbers. We will want to convert to either: [Number to String] or [String to Number]. And we have functions for that:</p>
+         <ul>
+         <li><b>parseInt(string)</b> - Converts in a whole number</li>
+         <li>&nbsp; parseFloat(string) - Converts to a decimal number</li>
+         <li><b>datatype.toString()</b> - Converts a datatype into a String</li>
+         </ul>
+         <p>Here is an example of a problem that can happen, lets say we ask for a number for input and we add to it:</p>
+<pre>
+var num = prompt("Enter a number");
+var sum = num + 12;
+alert(num+" + 12 = "+sum);
+</pre>
+         <button class="btn btn-success"onclick="input2();">Run</button> <br /> <br />
+         <p>At first glance this look like it would run fine, but when we test it something is wrong. If I say 4, it tells me that " 4 + 12 = 412 ". Remember that prompt returns a string, so it did a string concatenation: "4" + 12 = "412". In JavaScript: [Number + String = String] and the Number is treated as a string. If we <strong>cast</strong> (change datatype) the input into a Number we will get the right result:</p>
+<pre>
+var num = prompt("Enter a number");
+num = parseInt(num);
+var sum = num + 12;
+alert(num+" + 12 = "+sum);
+</pre>
+         <button class="btn btn-success"onclick="input3();">Run</button> 
+     </div>
+    </div>
+  </div>
+  
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseEight">
+        <h3>Review</h3>
+      </a>
+    </div>
+    <div id="collapseEight" class="accordion-body collapse">
+      <div class="accordion-inner">
+
+      <p>Lets skim over the important points in this section.</p>
+      <p>Data Types are ways we represent our data:</p>
+         <ul>
+         <li><b>Numbers</b> - ( Integers [5] and decimals [1.205] )</li>
+         <li><b>Strings</b> - ( Text ["Hello World"] )</li>
+         <li><b>Arrays</b> - ( A list of items [1,2,3,4,5] )</li>
+         <li><b>Booleans</b> - ( True or False statements )</li>
+         <li><b>Objects</b> - ( Something that has properties[adjectives] and methods[actions] )</li>
+         <li><em>null, NaN</em> - (Something undefined, something that is not a number)</li>
+         </ul>
+      <p>Functions are blocks of code that can accept values:</p>
+         <ul>
+         <li><b>function myFunction(arg1*,arg2*,...){ ... }</b></li>
+         <li>We can make functions return values with <b>return value;</b></li>
+         <li><b>Local Variables</b>: Variables only defined in functions, and are gone when the function ends.</li>
+         <li><b>Global Variables</b>: Variables defined for the entire program, we can use them in functions and outside functions.</li>
+         </ul>
+      <p>Datatypes in JavaScript are dynamic and can change easily to convert to a data type we use:</p>
+         <ul>
+         <li><b>parseInt(string)</b> - Converts in a whole number</li>
+         <li>&nbsp;parseFloat(string) - Converts to a decimal number</li>
+         <li><b>datatype.toString()</b> - Converts a datatype into a String</li>
+         </ul>
+      <p>To get user input we use: <b>prompt(str_message, ~str_text)</b>, ~ means optional.
+      </div>
+    </div>
+  </div>
+  
+</div>
+      
+  </div>
+ </div>
+</div>
+
+<div class="sig">Spencer Wieczorek</div>
+<script>
+function arrayChallenge(){
+   var array = ["Apple","Banana","Peach","Orange","Cherry"];
+   array.sort();
+   array.pop();
+   array.push("Lemon");
+   var newArray = array.slice(1,5);  // [Banana,Cherry,Orange,Lemon]
+   alert(newArray);
+}
+
+function sayHello(){
+   alert("Hello World");
+}
+
+function addStuff(x,y){
+   var sum = x + y;
+   alert(sum); 
+}
+
+function giveStuff(x,y){
+   var sum = x + y;
+   return sum; 
+}
+
+function returnEx(){
+var theSum = giveStuff(5,10); // addStuff(...) gives a value, 15 in thie case, this would be just like saying: [var theSum = 15;].
+alert(theSum);
+}
+
+var imGone = "Bye!";
+function globalEx(){
+alert("Bye!");
+alert(imGone); //<-- This works!
+}
+
+function input1(){
+var name = prompt("What is your name?","Enter name here");
+alert("Hello "+name);
+}
+
+function input2(){
+var num = prompt("Enter a number");
+var sum = num + 12;
+alert(num+" + 12 = "+sum);
+}
+
+function input3(){
+var num = prompt("Enter a number");
+num = parseInt(num);
+var sum = num + 12;
+alert(num+" + 12 = "+sum);
+}
+
+$(".accordion").on("shown",function(){ // This is to scroll to the top of the accordion group when shown
+        var offset = $(".accordion-body.collapse.in").position().top - 80;
+        $("html, body").animate({ scrollTop: offset+"px" });
+});
+</script>
+</body>
+</html>
