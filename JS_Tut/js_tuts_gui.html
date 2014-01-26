@@ -9,6 +9,9 @@
 <script src="bootstrap/js/bootstrap.min.js"></script>
 <script src="js_tuts.js"></script>
 <title>JS Tutorial</title>
+<style>
+canvas{ border: 1px solid black; display: block; margin: auto }
+</style>
 </head>
 <body>
 <br />
@@ -26,68 +29,105 @@
       <div class="span2 btnNav">
          <br />
          <a href="js_tuts_preface.html"><button class="btn btn-long btn-warning center">Preface</button></a><br />
-         <button class="btn btn-long btn-info center" disabled>The Basics</button><br />
+         <button class="btn btn-long btn-info center">The Basics</button><br />
          <a href="js_tuts2.html"><button class="btn btn-long btn-info center" >Data & Functions</button></a><br />
          <a href="js_tuts_branch.html"><button class="btn btn-long btn-info center">Branching</button></a><br />
          <a href="js_tuts_oop.html"><button class="btn btn-long btn-info center" >OOP</button></a><br />
          <a href="js_tuts_events.html"><button class="btn btn-long btn-info center" >JS Events & Objects</button></a><br />
-         <a href="js_tuts_gui.html"><button class="btn btn-long btn-info center">Canvas GUI</button></a><br />
+         <a href="js_tuts_gui.html"><button class="btn btn-long btn-info center" disabled>Canvas GUI</button></a><br />
       </div>
       <div class="span2 btnPlaceHolder"></div>
       <div class="span9 background-color:#00FF00">
-         <h1>The Basics</h1>
-         <p>Programing is the ability to create complex systems that can do anything, to do this we string together logical operations. It does not matter what programing language we use, all language do essentially the same thing. In our case we will be using JavaScript, a high level object oriented scripting language for web browsers.</p>
+         <h1>Canvas GUI</h1>
+         <p>In this section we will look at how to implement the HTML5 Canvas tag to create a GUI (Graphic User Interface), along with the audio tag to create full fledged applications on the browser. This opens us up to many new interesting opportunities such as making games.</p>
          <br />
+         <div class="alert alert-danger">This page is currently in development.</div>
       <div class="accordion" id="accordion2">
   <div class="accordion-group">
     <div class="accordion-heading">
       <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-        <h3>The Setup</h3>
+        <h3>The Canvas</h3>
       </a>
     </div>
     <div id="collapseOne" class="accordion-body collapse in">
       <div class="accordion-inner">
-         <p>First thing is setting up our JavaScript environment, so we can run javascript. To add JavaScript in HTML we simply use the &lt;script&gt tag, and place JavaScript code inside of it:</p>
-         <pre>
-&lt;script&gt;  
-   My JavaScript Code  
-&lt;/script&gt;</pre>
-         <p>This is known as <strong>internal JavaScript</strong>, which is JavaScript within your HTML file. But it's better practice to separate your HTML from your JavaScript (Just like separating CSS from HTML). Below is an example of <strong>external JavaScript</strong>:</p>
-<pre>
-&lt;script src="myExternalScript.js"&gt;&lt;/script&gt;     
-</pre>
-         <p>And in our "myExternalScript.js" we would have just our JavaScript. It would be the same thing as the first example but without the &lt;script&gt; tags:</p>
-         <div><em>&nbsp;myExternalScript.js</em></div>
-<pre>
-My JavaScript Code    
-</pre>
-         <br/>
-         <div class="alert alert-info">Note: "myExternalScript.js" needs to be in the same directory as your HTML file in this example.</div>
+         <p>The HTML5 Canvas tag is a rectangular element that we can draw on using JavaScript, with it we can make a varaity of things such as : graphs, animations, images, etc. Here is the setup:</p>
+         <pre>&lt;canvas id="myCanvas" width="100" height="100"&gt;</canvas></pre>
+         <p>And our canvas is created:</p>
+         <canvas id="myCanvas" width="100" height="100" style=""></canvas>
+         <p>As you can see the canvas is transparent, the canvas tag can have CSS applied to it like all other elements. It's very common to place a border around the canvas or center it:</p>
+         <p><em>CSS:</em>
+         <pre>canvas{ 
+   border: 1px solid black; // Place border around canvas
+   display: block; // change to block-level so we can margin.
+   margin: auto; // center canvas horizontally 
+}</pre></p>
+         <canvas id="myCanvas2" width="100" height="100" ></canvas>
+         <br />
+         <p>The Canvas uses a cartesian coordinate system such that <b>(0,0)</b> is the top left, <b>(width, 0)</b> is top right, <b>(width, height)</b> is bottom right, and <b>(0, height)</b> is bottom left.</p>
+         <div class="alert alert-warning">Note: That applying CSS to the canvas <em>width</em> and <em>height</em> will make the canvas scale draw items to it's default size: <b>150x300</b>. Mostly we don't want this behavior; be sure to apply <em>width</em> and <em>height</em> directly in the canvas HTML without using <em>CSS</em> or <em>style</em>, like the examples above.</div>         
       </div>
     </div>
   </div>
   <div class="accordion-group">
     <div class="accordion-heading">
       <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
-        <h3>Comments</h3>
+        <h3>Drawing to the Canvas</h3>
       </a>
     </div>
     <div id="collapseTwo" class="accordion-body collapse">
       <div class="accordion-inner">
-         <p>Comments are very useful in programing. They are basically ways to make notes in your code to understand what you are doing. It's a good idea to write comments about how you will do something before you write it out in code. There are two types of comments in JavaScript, single-line comments and multi-line comments:</p>
+<p>In order to draw on the Canvas we need to get it and it's context:</p>
 <pre>
-&lt;script&gt;  
-
-   //This is a single line comment, this single line is ignored.
-
-   /*
-   This is a Multi-line comment.
-   All these lines are between the comment are ignored. 
-   They are between the asterisks. 
-   */
-   
-&lt;/script&gt;
+var canvas = document.getElementById("myCanvas");   // The HTML canvas element
+var ctx = canvas.getContext("2d");   // ctx (context) is the 2d drawing context of the canvas.
 </pre>
+         <p>The context objects has a varaity of methods and properties to use for drawing on the canvas, here are some common ones:</p>
+         <ul>
+            <li>
+            Rectangle:
+             <ul>
+              <li><b>ctx.fillRect(x, y, width, height)</b> - Draws a filled rectangle.</li>
+              <li><b>ctx.strokeRect(x, y, width, height)</b> - Draws a outlined rectangle.</li>
+              <li><b>ctx.clearRect(x, y, width, height)</b> - Clears a rectangle from the canvas.</li>
+             </ul>
+            </li>
+            <li>
+            Paths:
+             <ul>
+              <li><b>ctx.beginPath()</b> - Starts a path.</li>
+              <li><b>ctx.moveTo(x, y)</b> - Line starting point.</li>
+              <li><b>ctx.lineTo(x, y)</b> - Line ending point.</li>
+              <li><b>ctx.arc(x, y, r, start, end)</b> - draws a arc with raduis r, from start to end in radians.</li>
+              <li><b>ctx.closePath()</b> - Ends a path.</li>
+              <li><b>ctx.stroke()</b> - Draws path as an outline.</li>
+              <li><b>ctx.fill()</b> - Fills path as a soild shape.</li>
+             </ul>
+            </li>
+            <li>
+            Text:
+             <ul>
+              <li><b>ctx.font = "20px Arial"</b> - Sets the size and font-faimly of text. </li>
+              <li><b>ctx.fillText(string ,x, y)</b> - Draw soild text</li>
+              <li><b>ctx.strokeText(string ,x, y)</b> - Draw outlined text</li>
+             </ul>
+            </li>
+            <li>
+            Colors and Properties:
+             <ul>
+              <li><b>ctx.fillStyle = "#FF0000"</b> - Sets color of filled items. (red)</li>
+              <li><b>ctx.strokeStyle = "rgb(0,0,255)"</b> - Sets color of stroked items. (blue)</li>
+              <ul><li> ... = "rgba(int, int, int, float)" - [Red 0-255, Green 0-255, Blue 0-255, Aplha 0.0-1.0]</li></ul>
+              <li><b>ctx.lineWidth = int</b> - Sets the width of drawn lines.</li>
+             </ul>
+            </li>
+            <li>
+            Images:
+            <ul><li><b>ctx.drawImage(image, x, y)</b> - Draws an Image on the Canvas.</li></ul>
+            </li>
+         </ul>
+         <hr />
+         <canvas id="myCanvas3" width="600" height="300">
       </div>
     </div>
   </div>
@@ -254,21 +294,54 @@ window.onload=function(){
 
 <div class="sig">Spencer Wieczorek</div>
 <script>
-function helloWorldAlert(){
-   alert("Hello World"); 
+
+function drawGrid(){
+   var canvas = document.getElementById("myCanvas2");
+   var ctx = canvas.getContext("2d");
+   ctx.fillStyle = "#222288";
+   ctx.font = "15px Arial";
+   ctx.fillText("(0,0)",3,15);
+   ctx.fillText("(w,0)",65,15);
+   ctx.fillText("(w,h)",65,90);
+   ctx.fillText("(0,h)",3,90);
+   ctx.fillRect(1,1,2,2);
+   ctx.fillRect(97,1,2,2);
+   ctx.fillRect(97,97,2,2);
+   ctx.fillRect(1,97,2,2);
 }
-function helloWorldWrite(){
-   document.write("<p>Hello World</p>");
-   document.write("<p>Notice everything was overwritten? This is a common mistake for begginers using document.write(). You need to make sure to use document.write() <b>before</b> the page is done loading.</p>");
-   document.write("<p>This code was written after the page loaded. Everything was wiped and replaced.</p>");
-   document.write('<a href="https://cs.iupui.edu/~spdwiecz/JavaScript/Tutorials/js_tuts.html">Go Back</a> ');
+
+function drawExample(){
+   var canvas = document.getElementById("myCanvas3");
+   var ctx = canvas.getContext("2d");
+   ctx.font = "10px Arial";
+   
+   ctx.fillRect(20,20,30,30);
+   ctx.fillText("ctx.fillRect(..)",10,15);
+   ctx.strokeRect(105,20,30,30);
+   ctx.fillText("ctx.strokeRect(..)",80,15);
+   
+   ctx.beginPath();
+   ctx.moveTo(160,20);
+   ctx.lineTo(190,30);
+   ctx.lineTo(180,10);
+   ctx.fillText("ctx.moveTo(..)",150,45);
+   ctx.fillText("ctx.lineTo(..)",150,58);
+   ctx.fillText("ctx.stroke(..)",150,71);
+   ctx.stroke();
+   
+   ctx.beginPath();
+   ctx.moveTo(250,20);
+   ctx.lineTo(280,30);
+   ctx.lineTo(270,10);
+   ctx.closePath();
+   ctx.stroke();
+   ctx.fillText("ctx.beginPath(..)",230,45);
+   ctx.fillText("ctx.closePath(..)",230,58);
 }
-function helloWorldDOM(){
-document.getElementById("myElement").innerHTML = "Hello World";
-}
-function resetHelloDom(){
-document.getElementById("myElement").innerHTML = "Test";
-}
+
+drawGrid();
+drawExample();
+
 $(".accordion").on("shown",function(){ // This is to scroll to the top of the accordion group when shown
         var offset = $(".accordion-body.collapse.in").position().top - 80;
         $("html, body").animate({ scrollTop: offset+"px" });
