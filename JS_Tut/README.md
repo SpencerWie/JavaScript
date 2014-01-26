@@ -14,9 +14,9 @@ Currently the tutorial goes over:
 <li>Cavnas GUI ( in progress )</li>
 </ul>
 
-Notes 
+Notes: 
 <ul>
 <li>You may need to re-load pages if they are in your cache.</li>
 <li>More proper definition of Computer Science added in preface:
-<ul><li>Computer Science is the study and creation of procedural systems that solves a task (informational algorithms): as in we are interested in the process of the task that leads to the solution, not the solution itself. Computer Science is not about computers, but proccess with information, in which exist both in computers and naturally in our physical world.</li></ul>
+<ul><li>Computer Science is the study and creation of procedural systems that solves a task (informational algorithms): as in we are interested in the process of the task that leads to the solution, not the solution itself. Computer Science is not about computers, but proccesses with information, in which exist both in computers and naturally in our physical world.</li></ul>
 </li>
