@@ -321,12 +321,12 @@ function drawExample(){
    ctx.fillText("ctx.strokeRect(..)",80,15);
    
    ctx.beginPath();
-   ctx.moveTo(160,20);
-   ctx.lineTo(190,30);
-   ctx.lineTo(180,10);
-   ctx.fillText("ctx.moveTo(..)",150,45);
-   ctx.fillText("ctx.lineTo(..)",150,58);
-   ctx.fillText("ctx.stroke(..)",150,71);
+   ctx.moveTo(170,20);
+   ctx.lineTo(200,30);
+   ctx.lineTo(190,10);
+   ctx.fillText("ctx.moveTo(..)",160,45);
+   ctx.fillText("ctx.lineTo(..)",160,58);
+   ctx.fillText("ctx.stroke(..)",160,71);
    ctx.stroke();
    
    ctx.beginPath();
@@ -334,9 +334,37 @@ function drawExample(){
    ctx.lineTo(280,30);
    ctx.lineTo(270,10);
    ctx.closePath();
+   ctx.fill();
+   ctx.fillText("ctx.beginPath(..)",240,45);
+   ctx.fillText("ctx.closePath(..)",240,58);
+   ctx.fillText("ctx.fill(..)",240,71);
+   
+   ctx.beginPath();
+   ctx.arc(370,45,20,0,Math.PI*2);
    ctx.stroke();
-   ctx.fillText("ctx.beginPath(..)",230,45);
-   ctx.fillText("ctx.closePath(..)",230,58);
+   ctx.fillText("ctx.arc(x,y,r,0,Math.PI*2)",320,15);
+
+   ctx.font = "28px Arial";
+   ctx.fillText("Hello",10,100)
+   ctx.strokeText("Hello",90,100)
+   ctx.font = "10px Arial";
+   ctx.fillText("ctx.fillText(..)",10,120)
+   ctx.fillText("ctx.strokeText(..)",85,120)
+   
+   ctx.font = "8px Arial";
+   ctx.fillText('A',177,90);
+   ctx.font = "30px Arial";
+   ctx.fillText('A',170,120);
+   
+   ctx.font = "10px Arial";
+   ctx.fillText("(ctx.font = 5)",195,90);
+   ctx.fillText("(ctx.font = 30)",195,120);
+   
+   ctx.fillStyle = "#FF0000";
+   ctx.fillRect(280,80,30,30);
+   ctx.fillStyle = "#111111";
+   ctx.fillText("ctx.fillStyle", 273,125)
+
 }
 
 drawGrid();
