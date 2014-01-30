@@ -35,16 +35,18 @@ function Player(x, y, w, h){
     }
 }
 
-function Computer(x,y,w,h,s){
+function Computer(x,y,w,h,s){ // s=speed, higher it is hard the computer is
     Paddle.call(this,x,y,w,h);
     this.s = s;
-    this.dx=0; this.dy=0;
+    this.dx=0; 
     
     this.move = function(){
         this.x += this.dx;
         hDist = Math.abs(ball.x-(this.x+(this.w/2)))
-        if(ball.x>this.x+(this.w/2)) this.dx=(this.s*hDist)
-        else this.dx = -(this.s*hDist);
+        if(ball.x>this.x+(this.w/2)) this.dx=hDist;
+        else this.dx = -hDist;
+        if(this.dx>this.s) this.dx=this.s;
+        if(this.dx<-this.s) this.dx=-this.s;
         this.draw();
     }
 }
@@ -100,7 +102,7 @@ canvas.addEventListener('mousemove', function(e) {
 });
                         
 player = new Player(canvas.width/2, canvas.height-10 , 80, 10);
-computer = new Computer(canvas.width/2, 10, 80, 10,1);
+computer = new Computer(canvas.width/2, 10, 80, 10,2);
 ball = new Ball(canvas.width/2, canvas.height/2, 5);
 
 //Main loop
