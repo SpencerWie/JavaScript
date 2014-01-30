@@ -1,4 +1,4 @@
-Pong : http://jsfiddle.net/nDtLK/1/
+Pong : http://jsfiddle.net/nDtLK/2/
 
  * In progress: Ball added, Player added. Ball will move according to how fast players paddle is moving on hit.
  * Added AI
