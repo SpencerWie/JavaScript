@@ -91,6 +91,15 @@ function Ball(x,y,r){
     
 }
 
+function Button(x,y,w,h,cpuDifficulty){
+    this.x = x; this.y = y; this.w = w; this.h = h;
+    this.color=color;this.hovColor=hovColor;this.cpuDifficulty=cpuDifficulty;
+    
+    this.draw = function(){
+         // stuff (gotta go to work)   
+    }
+}
+
 function getMouseCoords(e){
     var canvasRect = canvas.getBoundingClientRect();
     return e.clientX - canvasRect.left;
