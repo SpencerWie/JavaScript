@@ -1,4 +1,4 @@
-<h3>Playable versions of GoldMine and Shoot can be found here:</h3>
+<h3>HTML5 Games</h3>
 <ul>
 <li><a href="http://cs.iupui.edu/~spdwiecz/JavaScript/GoldMine/goldMine.html">Gold Mine</a></li>
 
