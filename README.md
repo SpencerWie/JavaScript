@@ -1,12 +1,33 @@
-Playable versions of GoldMine and Shoot can be found here:
+<h3>Playable versions of GoldMine and Shoot can be found here:</h3>
+<ul>
+<li><a href="http://cs.iupui.edu/~spdwiecz/JavaScript/GoldMine/goldMine.html">Gold Mine</a></li>
 
-http://cs.iupui.edu/~spdwiecz/JavaScript/GoldMine/goldMine.html
+<li><a href="http://cs.iupui.edu/~spdwiecz/JavaScript/Shoot/Shoot.html">Shoot</a></li>
+</ul>
+<p>Both games are made purely in JavaScript without any external liberies.</p>
 
-http://cs.iupui.edu/~spdwiecz/JavaScript/Shoot/Shoot.html
+<h3>JavaScript tutorial (in progress): </h3>
 
-Both games are made purely in JavaScript without any external liberies.  
+<ul>
+<li><a href="http://cs.iupui.edu/~spdwiecz/JavaScript/Tutorials/js_tuts_preface.html">JavaScript Tutorial</a></li>
+</ul>
 
-JavaScript tutorial (in progress): 
+<p>Tutorial Examples:</p>
+<ul>
+<li><a href="http://jsfiddle.net/nDtLK/6/">Pong</a></li>
+<li><a href="http://jsfiddle.net/8uVEh/">Snake</a></li>
+</ul>
+<h3>Computer Science Related</h3>
+<ul>
+<li>K-means Algorthim
+  <ul>
+  <li><a href=http://cs.iupui.edu/~spdwiecz/JavaScript/k-means/kMeans.html>Normal k-means</a></li>
+  <li><a href=http://cs.iupui.edu/~spdwiecz/JavaScript/k-means/kMeans_prob.html>Probabilistic k-means</a></li>
+  </ul>
+</li>
+<li><a href=http://cs.iupui.edu/~spdwiecz/JavaScript/sortingGraphs/sortingGraphs.html>Visual Sorting</a></li>
+<li><a href=http://cs.iupui.edu/~spdwiecz/JavaScript/Physics/Ball.html>Physics Ball-line collisions</a></li>
+<li><a href=http://cs.iupui.edu/~spdwiecz/JavaScript/Large_Map_Memory/memOut.html>Distance Based Memory-Map Management</a></li>
+</ul>
 
-http://cs.iupui.edu/~spdwiecz/JavaScript/Tutorials/js_tuts_preface.html
 
