@@ -1,4 +1,4 @@
-<h3>HTML5 Games</h3>
+<h3>HTML5 Games:</h3>
 <ul>
 <li><a href="http://cs.iupui.edu/~spdwiecz/JavaScript/GoldMine/goldMine.html">Gold Mine</a></li>
 
@@ -17,7 +17,7 @@
 <li><a href="http://jsfiddle.net/nDtLK/6/">Pong</a></li>
 <li><a href="http://jsfiddle.net/8uVEh/">Snake</a></li>
 </ul>
-<h3>Computer Science Related</h3>
+<h3>Computer Science Related:</h3>
 <ul>
 <li>K-means Algorthim
   <ul>
