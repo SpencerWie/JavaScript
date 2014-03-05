@@ -34,5 +34,5 @@
 <h6>Bugs/Notes:</h6>
 <ul>
 <li>Note that both of these algorthims can take a long time, for Breath-first it needs to traverse an ever expanding tree. For A* we expand based on cost but we are still looking for the shortest solution, this can take some time to find aswell. There is still some optimiation that can be done although unless we move to a lower level language they can't find the solutions quickly each time.</li>
-</ul>
+<li>For Breath-first we have a limit that when the tree gets too big we stop, for A* there will always be a found solution. It can take minutes to find it if the solution is a complex one. Anything too random for breath-first, such that there are more than 15 or so moves to a solution will likly fail.</li>
 </ul>
