@@ -1,5 +1,9 @@
 <h2>8-Puzzle Solver:</h2>
 
+ <div>
+ Program: <a href="http://cs.iupui.edu/~spdwiecz/JavaScript/csci487_Proj1/projAI.html">8 Puzzle Solver</a>
+ </div>
+
 <p>This solves the 8 Puzzle problem such that it uses a brute force appach VS a better non-blind and better approach The A* path finding approach. So here is the general outline:</p>
 <pre>
  -------------
@@ -17,11 +21,12 @@
  <p>
  For this we simply expand every node we generate, this makes our tree get very big very fast. So as long as our solution isn't too far away state wish we should be ok. Too far away and we run into issues so Iv'e added a "stopper" to stop the search if the fringe gets too big.
  </p>
- <h4>A* Search</h4>
+ <h4>A* Search:</h4>
  <p>
  For this our heristic function will be the number of nodes in the correct position, and our deapth, to determine which move to make. So the cost is 1 for each transition, and we take away 1 for each correct state, then we give it a very small number if it's the solution (-999 in our case). From these condition we only look at the children of the lowest-cost node in our fringe list. We also get the shortest solution with this implementation of A*.
  </p>
  
- <div>
- <a href="http://cs.iupui.edu/~spdwiecz/JavaScript/csci487_Proj1/projAI.html">8 Puzzle Solver</a>
- </div>
+<h6>Updates</h6>
+<ul>
+<li>Visual Solving added (for A*) : Now the computer shows you how it solved the puzzle.</li>
+</ul>
