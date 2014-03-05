@@ -30,3 +30,9 @@
 <ul>
 <li>Visual Solving added (for A*) : Now the computer shows you how it solved the puzzle.</li>
 </ul>
+
+<h6>Bugs/Notes:</h6>
+<ul>
+<li>Note that both of these algorthims can take a long time, for Breath-first it needs to traverse an ever expanding tree. For A* we expand based on cost but we are still looking for the shortest solution, this can take some time to find aswell. There is still some optimiation that can be done although unless we move to a lower level language they can't find the solutions quickly each time.</li>
+</ul>
+</ul>
