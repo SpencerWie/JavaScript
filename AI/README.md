@@ -1,16 +1,3 @@
-<style>
-table{
-    border: 1px solid black;
-    margin: auto;
-}
-td{ 
-    border: 1px solid black; 
-    width: 30px;
-    height: 30px;
-    text-align: center;
-}
-</style>
-
 <h2>8-Puzzle Solver:</h2>
 
  <div>
@@ -39,8 +26,8 @@ td{
 <h6>Updates</h6>
 <ul>
 <li>Visual Solving added (for A*) : Now the computer shows you how it solved the puzzle.</li>
-<li>(<span style="blue">Progress</span>) : Implementing solution path animation for breath-first</li>
-<li>(<span style="blue">Progress</span>) : Improving heristic function for A* (including manhattan distance)</li>
+<li>(<strong>Progress</strong>) : Implementing solution path animation for breath-first</li>
+<li>(<strong>Progress</strong>) : Improving heristic function for A* (including manhattan distance)</li>
 </ul>
 
 <h6>Bugs/Notes:</h6>
