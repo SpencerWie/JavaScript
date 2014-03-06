@@ -1,3 +1,16 @@
+<style>
+table{
+    border: 1px solid black;
+    margin: auto;
+}
+td{ 
+    border: 1px solid black; 
+    width: 30px;
+    height: 30px;
+    text-align: center;
+}
+</style>
+
 <h2>8-Puzzle Solver:</h2>
 
  <div>
@@ -5,15 +18,12 @@
  </div>
 
 <p>This solves the 8 Puzzle problem such that it uses a brute force appach VS a better non-blind and better approach The A* path finding approach. So here is the general outline:</p>
-<pre>
- -------------
- | 1 | 2 | 3 |
- -------------
- | 4 | 5 | 6 |
- -------------
- | 7 | 8 |   |
- -------------
- </pre>
+<table>
+    <tr><td>1</td><td>2</td><td>3</td></tr>
+    <tr><td>4</td><td>5</td><td>6</td></tr>
+    <tr><td>7</td><td>8</td><td></td></tr>
+</table>
+
  <p>
  We will construct this as a 2D array [[1,2,3],[4,5,6],[7,8,0]], where "0" is the empty state. From this we can find the "children" of the current starting root (our start state) by the possible transtions we can make, this is either 2,3 or 4 possible children generated for each state. We will store the states in a fringe (open) list and have it be such that the new children are placed in the start as a queue, we will also check to make sure we don't cycle by removing all duplicate states based on our current open list.
  </p>
@@ -29,6 +39,8 @@
 <h6>Updates</h6>
 <ul>
 <li>Visual Solving added (for A*) : Now the computer shows you how it solved the puzzle.</li>
+<li>(<span style="blue">Progress</span>) : Implementing solution path animation for breath-first</li>
+<li>(<span style="blue">Progress</span>) : Improving heristic function for A* (including manhattan distance)</li>
 </ul>
 
 <h6>Bugs/Notes:</h6>
