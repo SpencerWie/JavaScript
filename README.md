@@ -28,6 +28,9 @@
 <li><a href=http://cs.iupui.edu/~spdwiecz/JavaScript/sortingGraphs/sortingGraphs.html>Visual Sorting</a></li>
 <li><a href=http://cs.iupui.edu/~spdwiecz/JavaScript/Physics/Ball.html>Physics Ball-line collisions</a></li>
 <li><a href=http://cs.iupui.edu/~spdwiecz/JavaScript/Large_Map_Memory/memOut.html>Distance Based Memory-Map Management</a></li>
+<li>Artificial Intelligence
+  <li><a href="http://cs.iupui.edu/~spdwiecz/JavaScript/csci487_Proj1/projAI.html">8 Puzzle Solver</a></li>
+</li>
 </ul>
 
 
