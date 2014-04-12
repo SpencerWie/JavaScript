@@ -4,9 +4,9 @@
 
 <ul>
    <li>Mountain Generator - http://jsfiddle.net/AniHouse/cb6j8/1/
-      <li>Takes a array of numbers and does some tranformations and drawings to make a mountain range.</li>
+      <ul><li>Takes a array of numbers and does some tranformations and drawings to make a mountain range.</li></ul>
    </li>
    <li>Board Generator - http://jsfiddle.net/AniHouse/rkU2B/1/
-      <li>Generates a game board of n x n .</li>
+      <ul><li>Generates a game board of n x n .</li></ul>
    </li> 
 </ul>
