@@ -3,8 +3,13 @@
     Board: 'r' = red checker , 'R' = King red checker , ... 
            'rP' = possible position red checker, 'RP' = possible position king red checker, ...
            
-    Notes : Jumps must be made, advantage because no eval needs to be used. Hence we need to focus on the
-    positioning of the board. From the generated eval function
+    Notes : 
+    
+    *Jumps must be made, advantage because no eval needs to be used. Hence we need to focus on the
+    positioning of the board. From the generated eval function.
+    
+    * minimax search (with aplha pruning for efficency) for the computer to play itself. Aka. Always make the best
+    move depending on the board position.
 */
 
 var SIZE = document.getElementById("canvas").width;
@@ -12,13 +17,14 @@ var RED = "rgb(255,20,20)";
 var GREY = "rgb(80,80,80)";
 var canvas = document.getElementById("canvas").getContext("2d");
 canvas.font="20px Arial";
+var moving = false; // determine if the play is moving a piece.
 
 var Board = [
     ['0','b','0','b','0','b','0','b'],
     ['b','0','b','0','b','0','b','0'],
-    ['0','b','0','b','0','0','0','b'],
-    ['0','0','0','0','0','0','b','0'],
-    ['0','0','0','0','0','r','0','0'],
+    ['0','b','0','0','0','0','0','b'],
+    ['0','0','b','0','b','0','0','0'],
+    ['0','0','0','r','0','0','0','0'],
     ['r','0','r','0','0','0','r','0'],
     ['0','r','0','r','0','r','0','r'],
     ['r','0','r','0','r','0','r','0']
@@ -48,11 +54,10 @@ function generateBoard(n)
 }
 
 function drawPieces(board){
+   
     var size = Math.floor(SIZE/board.length);
-    var c=0;
     for(var i=0; i<board.length; i++){
         for(var j=0; j<board.length; j++){
-        c++;
             canvas.beginPath();
             if(board[i][j] == 'r'){
                 canvas.fillStyle = "#dd0000";
@@ -62,10 +67,8 @@ function drawPieces(board){
                 canvas.fillStyle = "#333333";
                 canvas.arc(j*size+(size/2),i*size+(size/2),(size/2)-5,0,2*Math.PI);
             }
-            if(Board[i][j] == "rP" || Board[i][j] == "bP" || Board[i][j] == "RP" || Board[i][j] == "BP") Board[i][j]="0";
             canvas.fill();
             canvas.stroke();
-            //canvas.fillText(c,j*size+(size/2),i*size+(size/2));
         }
     }    
 }
@@ -102,15 +105,18 @@ function selectPiece(x, y){
 // Takes piece color and returns possible moves.
 function getMoves(c,i,j)
 {
+               moving = true;
                var size = Math.floor(SIZE/Board.length);
                var C = c.toUpperCase();
                // I is for vertical direction, oC means other color.
                if(c == 'r') { var I = -1; var oc = 'b'} else { I = 1; var oc = 'r'}
                var oC = oc.toUpperCase();
                
+               // make info more compact loop. (optional)
+               
                if(Board[i+I][j+1]==oc || Board[i+I][j+1]==oC){
-                  canvas.fillRect((j+2)*size,i+(2*I)*size,size,size);
                   if(Board[i+(2*I)][j+2]=="0"){
+                     canvas.fillRect((j+2)*size,(i+(2*I))*size,size,size);
                      if(Board[i][j]==c) Board[i+(2*I)][j+2] = c+"P";
                      else if(Board[i][j]==C) Board[i+(2*I)][j+2] = C+"P";
                   }
@@ -121,9 +127,8 @@ function getMoves(c,i,j)
                }
                
                if(Board[i+I][j-1]==oc || Board[i+I][j-1]==oC){
-                  canvas.fillRect((j-2)*size,(i+(2*I))*size,size,size);
-                  if(Board[i+(2*I)][j-2]==c) Board[i+(2*I)][j-2] = c+"P";
                   if(Board[i+(2*I)][j-2]=="0"){
+                     canvas.fillRect((j-2)*size,(i+(2*I))*size,size,size);
                      if(Board[i][j]==c) Board[i+(2*I)][j-2] = c+"P";
                      else if(Board[i][j]==C) Board[i+(2*I)][j-2] = C+"P";
                   }
@@ -133,6 +138,32 @@ function getMoves(c,i,j)
                   else Board[i+I][j-1] = C+"P";
                }
                
+               Board[i][j] += "M";
+               
+}
+
+
+function movePiece(x,y){
+   var size = Math.floor(SIZE/Board.length);
+   var pieceMove = false;
+   var X ; var Y ; // old pos piece
+   for(var i=0; i<Board.length; i++){
+      for(var j=0; j<Board.length; j++){
+         // Find possible moves, then check if the user clicked, make the piece move to the square.
+         if(Board[i][j]=='rP'){
+            //alert(x+","+y+"\n"+"x:("+j*size+","+(j+1)*size+") | y:("+i*size+","+(i+1)*size+")");
+            if(x>=j*size && x<(j+1)*size && y>=i*size && y<(i+1)*size) {
+               Board[i][j] = 'r';
+               pieceMove = true;
+               break;
+            }
+         }
+      if(Board[i][j] == "rP" || Board[i][j] == "bP" || Board[i][j] == "RP" || Board[i][j] == "BP") Board[i][j]="0";
+      if(Board[i][j] == "rM"){ X = i ; Y = j; Board[i][j]='r'; }
+      }
+   }
+   if(pieceMove) Board[X][Y]='0';
+   moving = false;
 }
 
 function getMousePos(canvas, evt) {
@@ -158,7 +189,9 @@ document.getElementById("canvas").addEventListener('mouseup', function(evt) {
    var mousePos = getMousePos(document.getElementById("canvas"), evt);
    generateBoard(8);
    drawPieces(Board);
-   selectPiece(mousePos.x, mousePos.y);
+   if(!moving) selectPiece(mousePos.x, mousePos.y);
+   else movePiece(mousePos.x, mousePos.y)
+   drawPieces(Board);
 }, false);
 
 generateBoard(8);
