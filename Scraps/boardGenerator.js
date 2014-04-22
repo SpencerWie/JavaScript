@@ -11,11 +11,17 @@
     * minimax search (with aplha pruning for efficency) for the computer to play itself. Aka. Always make the best
     move depending on the board position.
     
-    * NN - for the nerual network (1st pass), we will use the expert system use algothrim in order to use a weights in      the nerual network as board positions as outputs. This should diverege to the oringal system (or come to the limit).
+    * NN - for the nerual network (1st pass), we will use the expert system use algothrim in order to use a weights in      
+    the nerual network as board positions as outputs. This should diverege to the oringal system (or come to the limit).
     
-    * Expert system eval(), for this we have the board state into the eval function. Then we look at all other next         moves and calculate their value (based on how good the move is [offense, defensize, cenerality]), if this was a         single look-head we would stop and pick the best one as the next move. Or we could diverge futher and look for each     move, the possible next moves. This would take more time but be more accurate , for n moves it would be 2^n next        moves. 2-move-look ahead will be used for the expert sytem AI.
+    * Expert system eval(), for this we have the board state into the eval function. Then we look at all other next         
+    moves and calculate their value (based on how good the move is [offense, defensize, cenerality]), if this was a         
+    single look-head we would stop and pick the best one as the next move. Or we could diverge futher and look for each     
+    move, the possible next moves. This would take more time but be more accurate , for n moves it would be 2^n next       
+    moves. 2-move-look ahead will be used for the expert sytem AI.
     
-    * NextMove Checking - We need to find the next possible move for each position, this is the 1st step before the        eval().
+    * NextMove Checking - We need to find the next possible move for each position, this is the 1st step before the        
+    eval().
 */
 
 var SIZE = document.getElementById("canvas").width;
