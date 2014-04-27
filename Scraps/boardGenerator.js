@@ -29,10 +29,10 @@ var moving = false; // determine if the play is moving a piece.
 var Board = [
     ['0','b','0','b','0','b','0','b'],
     ['b','0','b','0','b','0','b','0'],
-    ['0','b','0','b','0','b','0','0'],
-    ['0','0','0','0','0','0','b','0'],
-    ['0','0','0','0','0','0','0','r'],
-    ['r','0','r','0','r','0','0','0'],
+    ['0','b','0','b','0','b','0','b'],
+    ['0','0','0','0','0','0','0','0'],
+    ['0','0','0','0','0','0','0','0'],
+    ['r','0','r','0','r','0','r','0'],
     ['0','r','0','r','0','r','0','r'],
     ['r','0','r','0','r','0','r','0']
 ];
@@ -198,16 +198,17 @@ function eval()
    var W_dist_piece = 1;       // value for how far up a normal peice is  
    var W_center = 1;           // value for how central a piece is.
    var W_offense = 3;          // value on piece attacking another piece.
-   var W_defense = 2;          // value on how well a piece is protected.
-   var W_danger = 5;           // value on a piece being attacked.
+   var W_defense = 1;          // value on how well a piece is protected.
+   var W_danger = 10;           // value on a piece being attacked.
    
    // Get our pieces and opponents piece
    var points = 0;
    
    var back_i = Board.length-1;
    for(var i=0; i<Board.length; i++){
-      for(var j=0; j<Board.length; j++){
-          // First we do a basic piece coun    
+      for(var j=0; j<Board.length; j++)
+      {
+          // First we do a basic piece count    
          if(Board[i][j] == 'r') points += W_normal_piece;
          else if(Board[i][j] == 'R') points += W_king_piece;
          else if(Board[i][j] == 'b') points -= W_normal_piece;
@@ -216,12 +217,84 @@ function eval()
          // Now we see how far the up each piece is (red wants to be on top while black on bottom) - only for normal pieces
          if(Board[i][j] == 'r') points += back_i*W_dist_piece;
          if(Board[i][j] == 'b') points -= i*W_dist_piece;
-
+         
+         // Check how close to the center a piece is (j = 5,4) = center (j = 0,7) = edge - only for normal pieces
+         if(Board[i][j] == 'r') points += checkMiddle(j, W_center);
+         if(Board[i][j] == 'b') points -= checkMiddle(j, W_center);
+         
+         // Check defense for pieces add for each defended side.
+         if(Board[i][j] == 'r') points += checkDefense('r' ,i, j, W_defense);
+         if(Board[i][j] == 'b') points -= checkDefense('b' ,i, j, W_defense);
+         
       }
       back_i--;
    }
    
    console.log(points);
+}
+
+function getNextMoves(color)
+{
+   var boardArray = [];
+   var newBoard = copyArray(Board);
+   var m = 0; // m is based on which piece we are were to look for defenders, red is behind while back infront.
+   if(color == 'r' ) m = -1;
+   else m = 1;
+   var Kcolor = color.toUpperCase();
+   for(var i=0; i<Board.length; i++)
+   {
+      for(var j=0; j<Board.length; j++)
+      {
+         if(Board[i][j] == color){
+            // Check for open spots for red and black
+            if(Board[i+m][j+1] == '0')
+            { 
+               newBoard[i][j] = '0'; 
+               newBoard[i+m][j+1] = color; 
+               boardArray.push(newBoard); 
+               newBoard = copyArray(Board);
+            }
+            if(Board[i+m][j-1] == '0')
+            { 
+               newBoard[i][j] = '0'; 
+               newBoard[i+m][j-1] = color; 
+               boardArray.push(newBoard); 
+               newBoard = copyArray(Board);
+            }
+         }
+      }
+   }
+   
+   for(var i = 0; i<boardArray.length; i++){
+      printBoard(boardArray[i]);
+   }
+   return boardArray;
+}
+
+function checkMiddle(j, W_center)
+{
+            var points = 0;
+               if( j == 0 || j == 1 || j == 6 || j == 7 ) // edge and 1 away from edge
+                  points += W_center;
+               if( j == 2 || j == 5 )
+                  points += (W_center*1.25);
+               if( j == 3 || j == 4 )
+                  points += (W_center*1.5);
+            return points;
+}
+
+function checkDefense(color, i, j, W_defense)
+{
+   var points = 0; var m = 0; // m is based on which piece we are were to look for defenders, red is behind while back infront.
+   if(color == 'r' || color == 'R') m = 1;
+   else m = -1;
+   if( j == 0 || j == 7 || i == 0 || i == 7) points += W_defense*2; // edge is defended
+   else
+   {
+      if( Board[i+m][j+1] == color) points += W_defense // If on the (right-bottom side).
+      if( Board[i+m][j-1] == color) points += W_defense // If on the (left-bottom side).
+   }
+   return points;
 }
 
 function getMousePos(canvas, evt) {
@@ -232,15 +305,23 @@ function getMousePos(canvas, evt) {
         };
 }
 
-function printBoard(){
+function printBoard(board){
    var str = "";
-   for(var i=0; i<Board.length; i++){
-      for(var j=0; j<Board.length; j++){
-         str+=Board[i][j]+" ";
+   for(var i=0; i<board.length; i++){
+      for(var j=0; j<board.length; j++){
+         str+=board[i][j]+" ";
       }
       str+="\n";
    }
    console.log(str);
+}
+
+function copyArray(array){
+var newArray = [];
+
+for (var i = 0; i < array.length; i++)
+    newArray[i] = array[i].slice();
+return newArray;
 }
 
 document.getElementById("canvas").addEventListener('mouseup', function(evt) {
