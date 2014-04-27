@@ -10,6 +10,13 @@
     
     * minimax search (with aplha pruning for efficency) for the computer to play itself. Aka. Always make the best
     move depending on the board position.
+    
+    |-----|
+    | i,j | ...
+    |-----|
+       .
+       .
+       .
 */
 
 var SIZE = document.getElementById("canvas").width;
@@ -22,10 +29,10 @@ var moving = false; // determine if the play is moving a piece.
 var Board = [
     ['0','b','0','b','0','b','0','b'],
     ['b','0','b','0','b','0','b','0'],
-    ['0','b','0','0','0','0','0','b'],
-    ['0','0','b','0','b','0','0','0'],
-    ['0','0','0','r','0','0','0','0'],
-    ['r','0','r','0','0','0','r','0'],
+    ['0','b','0','b','0','b','0','0'],
+    ['0','0','0','0','0','0','b','0'],
+    ['0','0','0','0','0','0','0','r'],
+    ['r','0','r','0','r','0','0','0'],
     ['0','r','0','r','0','r','0','r'],
     ['r','0','r','0','r','0','r','0']
 ];
@@ -147,23 +154,74 @@ function movePiece(x,y){
    var size = Math.floor(SIZE/Board.length);
    var pieceMove = false;
    var X ; var Y ; // old pos piece
+   // loop compact note.
    for(var i=0; i<Board.length; i++){
       for(var j=0; j<Board.length; j++){
          // Find possible moves, then check if the user clicked, make the piece move to the square.
          if(Board[i][j]=='rP'){
-            //alert(x+","+y+"\n"+"x:("+j*size+","+(j+1)*size+") | y:("+i*size+","+(i+1)*size+")");
             if(x>=j*size && x<(j+1)*size && y>=i*size && y<(i+1)*size) {
                Board[i][j] = 'r';
                pieceMove = true;
                break;
             }
          }
+         if(Board[i][j]=='bP'){
+            if(x>=j*size && x<(j+1)*size && y>=i*size && y<(i+1)*size) {
+               Board[i][j] = 'b';
+               pieceMove = true;
+               break;
+            }
+         }
       if(Board[i][j] == "rP" || Board[i][j] == "bP" || Board[i][j] == "RP" || Board[i][j] == "BP") Board[i][j]="0";
       if(Board[i][j] == "rM"){ X = i ; Y = j; Board[i][j]='r'; }
+      if(Board[i][j] == "bM"){ X = i ; Y = j; Board[i][j]='b'; }
       }
    }
-   if(pieceMove) Board[X][Y]='0';
+   if(pieceMove){ 
+      if(Board[X][Y]=='r'){
+         if(Board[X+1][Y+1]=='b' || Board[X+1][Y+1]=='B') {Board[X+1][Y+1] = '0'; alert("t L");}
+         else if(Board[X-1][Y+1]=='b' || Board[X-1][Y+1]=='B') {Board[X-1][Y+1] = '0'; alert("t R");}
+      }
+      
+      Board[X][Y]='0';
+   }
    moving = false;
+   drawPieces(Board);
+}
+
+// Evaulates how good a board position is based on what color the person is.
+function eval()
+{
+   // Setup weights (these will chage for our AI)
+   var W_normal_piece = 10;       // value for a normal piece
+   var W_king_piece = 30;         // value for a king piece
+   var W_dist_piece = 1;       // value for how far up a normal peice is  
+   var W_center = 1;           // value for how central a piece is.
+   var W_offense = 3;          // value on piece attacking another piece.
+   var W_defense = 2;          // value on how well a piece is protected.
+   var W_danger = 5;           // value on a piece being attacked.
+   
+   // Get our pieces and opponents piece
+   var points = 0;
+   
+   var back_i = Board.length-1;
+   for(var i=0; i<Board.length; i++){
+      for(var j=0; j<Board.length; j++){
+          // First we do a basic piece coun    
+         if(Board[i][j] == 'r') points += W_normal_piece;
+         else if(Board[i][j] == 'R') points += W_king_piece;
+         else if(Board[i][j] == 'b') points -= W_normal_piece;
+         else if(Board[i][j] == 'B') points -= W_king_piece;
+         
+         // Now we see how far the up each piece is (red wants to be on top while black on bottom) - only for normal pieces
+         if(Board[i][j] == 'r') points += back_i*W_dist_piece;
+         if(Board[i][j] == 'b') points -= i*W_dist_piece;
+
+      }
+      back_i--;
+   }
+   
+   console.log(points);
 }
 
 function getMousePos(canvas, evt) {
@@ -188,7 +246,6 @@ function printBoard(){
 document.getElementById("canvas").addEventListener('mouseup', function(evt) {
    var mousePos = getMousePos(document.getElementById("canvas"), evt);
    generateBoard(8);
-   drawPieces(Board);
    if(!moving) selectPiece(mousePos.x, mousePos.y);
    else movePiece(mousePos.x, mousePos.y)
    drawPieces(Board);
