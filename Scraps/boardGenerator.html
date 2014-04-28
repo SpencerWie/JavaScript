@@ -6,10 +6,15 @@ canvas{
     border: 1px solid black;
     display: block; margin: auto;
 }
+button{
+   display: block; margin: auto;
+}
 </style>
 </head>
 <body>
-<canvas width=400 height=400 id="canvas">
+<canvas width=400 height=400 id="canvas"></canvas><br />
+<button onclick="minimax(0,Board,'r');">AI Red</button><br />
+<button onclick="minimax(0,Board,'b');">AI Black</button>
 <script src="boardGenerator.js"></script>
 </body>
 </html>

@@ -25,6 +25,7 @@ var GREY = "rgb(80,80,80)";
 var canvas = document.getElementById("canvas").getContext("2d");
 canvas.font="20px Arial";
 var moving = false; // determine if the play is moving a piece.
+Root = new Node(null, null, null, null);
 
 var Board = [
     ['0','b','0','b','0','b','0','b'],
@@ -66,13 +67,19 @@ function drawPieces(board){
     for(var i=0; i<board.length; i++){
         for(var j=0; j<board.length; j++){
             canvas.beginPath();
-            if(board[i][j] == 'r'){
+            if(board[i][j] == 'r' || board[i][j] == 'R'){
                 canvas.fillStyle = "#dd0000";
                 canvas.arc(j*size+(size/2),i*size+(size/2),(size/2)-5,0,2*Math.PI);
+                if(board[i][j] == 'R'){
+                  canvas.arc(j*size+(size/3),i*size+(size/3),(size/2)-5,0,2*Math.PI);
+                }
             }
-            if(board[i][j] == 'b'){
+            if(board[i][j] == 'b' || board[i][j] == 'B'){
                 canvas.fillStyle = "#333333";
                 canvas.arc(j*size+(size/2),i*size+(size/2),(size/2)-5,0,2*Math.PI);
+                if(board[i][j] == 'B'){
+                  canvas.arc(j*size+(size/3),i*size+(size/3),(size/2)-5,0,2*Math.PI);
+                }
             }
             canvas.fill();
             canvas.stroke();
@@ -189,8 +196,46 @@ function movePiece(x,y){
    drawPieces(Board);
 }
 
+function minimax(d, root, color){
+   // root be current pos, nodes be next move. (do just single move for now, then ply-2 or ply-3)
+   Root = new Node(null, eval(root), root, null);
+   var childBoards = getNextMoves(color,root);
+   var childValues = [];
+   for(var i=0; i<childBoards.length; i++)
+   {
+      printBoard(childBoards[i]); 
+      childValues.push(eval(childBoards[i])); 
+   }
+   Root.children = [];
+   for(var i=0; i<childBoards.length; i++)
+      Root.children[i] = new Node(root, childValues[i], childBoards[i], null);
+   
+   if(color == 'r') Board = getMax(Root.children);
+   if(color == 'b') Board = getMin(Root.children);
+   
+   generateBoard(8);
+   drawPieces(Board);
+}
+
+// gets the max value node and returns the coor board
+function getMax(children){
+   var max = 0;
+   for(var i=0; i<children.length; i++)
+      if(children[i].value > children[max].value) max = i;
+   return children[max].board;
+}
+
+function getMin(children){
+   var min = 0;
+   for(var i=0; i<children.length; i++)
+      if(children[i].value < children[min].value) min = i;
+   return children[min].board;
+}
+
+
+
 // Evaulates how good a board position is based on what color the person is.
-function eval()
+function eval(Board)
 {
    // Setup weights (these will chage for our AI)
    var W_normal_piece = 10;       // value for a normal piece
@@ -198,7 +243,7 @@ function eval()
    var W_dist_piece = 1;       // value for how far up a normal peice is  
    var W_center = 1;           // value for how central a piece is.
    var W_offense = 3;          // value on piece attacking another piece.
-   var W_defense = 1;          // value on how well a piece is protected.
+   var W_defense = 0.5;          // value on how well a piece is protected.
    var W_danger = 10;           // value on a piece being attacked.
    
    // Get our pieces and opponents piece
@@ -219,45 +264,74 @@ function eval()
          if(Board[i][j] == 'b') points -= i*W_dist_piece;
          
          // Check how close to the center a piece is (j = 5,4) = center (j = 0,7) = edge - only for normal pieces
-         if(Board[i][j] == 'r') points += checkMiddle(j, W_center);
-         if(Board[i][j] == 'b') points -= checkMiddle(j, W_center);
+         // if(Board[i][j] == 'r') points += checkMiddle(j, W_center);
+         // if(Board[i][j] == 'b') points -= checkMiddle(j, W_center);
          
          // Check defense for pieces add for each defended side.
-         if(Board[i][j] == 'r') points += checkDefense('r' ,i, j, W_defense);
-         if(Board[i][j] == 'b') points -= checkDefense('b' ,i, j, W_defense);
+         if(Board[i][j] == 'r') points += checkDefense('r' ,i, j, W_defense, Board);
+         if(Board[i][j] == 'b') points -= checkDefense('b' ,i, j, W_defense, Board);
          
       }
       back_i--;
    }
-   
-   console.log(points);
+   return points;
 }
 
-function getNextMoves(color)
+function getNextMoves(color, Board)
 {
    var boardArray = [];
    var newBoard = copyArray(Board);
    var m = 0; // m is based on which piece we are were to look for defenders, red is behind while back infront.
-   if(color == 'r' ) m = -1;
-   else m = 1;
+   if(color == 'r' ) { m = -1; op_color = 'b'; }
+   else { m = 1; op_color = 'r'; }
    var Kcolor = color.toUpperCase();
    for(var i=0; i<Board.length; i++)
    {
       for(var j=0; j<Board.length; j++)
       {
-         if(Board[i][j] == color){
+         if(Board[i][j] == color && (i+m) < 8 && (i+m) > -1 ){
             // Check for open spots for red and black
-            if(Board[i+m][j+1] == '0')
+            if(Board[i+m][j+1] == '0' && (j+1) < 8)
             { 
+               var piece = Board[i][j];
                newBoard[i][j] = '0'; 
-               newBoard[i+m][j+1] = color; 
+               if(piece == 'r' && i == 0) piece = 'R';
+               if(piece == 'b' && i == 7) piece = 'B';
+               newBoard[i+m][j+1] = piece; 
                boardArray.push(newBoard); 
                newBoard = copyArray(Board);
             }
-            if(Board[i+m][j-1] == '0')
+            if(Board[i+m][j-1] == '0' && (j-1) > -1)
             { 
+               var piece = Board[i][j];
                newBoard[i][j] = '0'; 
-               newBoard[i+m][j-1] = color; 
+               if(piece == 'r' && i == 0) piece = 'R';
+               if(piece == 'b' && i == 7) piece = 'B';               
+               newBoard[i+m][j-1] = piece; 
+               boardArray.push(newBoard); 
+               newBoard = copyArray(Board);
+            }
+            
+            // Now check for jumps
+            if(Board[i+m][j+1] == op_color && Board[i+(m*2)][j+2] == '0' && (i+m*2)>0 && (i+m*2)<8 && (j+2)>0) 
+            {
+               newBoard[i+m][j+1] = '0'; 
+               var piece = Board[i][j];
+               if(piece == 'r' && i == 0) piece = 'R';
+               if(piece == 'b' && i == 7) piece = 'B';
+               newBoard[i+(m*2)][j+2] = piece;
+               newBoard[i][j] = '0';
+               boardArray.push(newBoard); 
+               newBoard = copyArray(Board);
+            }
+            if(Board[i+m][j-1] == op_color && Board[i+(m*2)][j-2] == '0' && (i+m*2)>0 && (i+m*2)<8 && (j-2)<8) 
+            {
+               newBoard[i+m][j-1] = '0'; 
+               var piece = Board[i][j];
+               if(piece == 'r' && i == 0) piece = 'R';
+               if(piece == 'b' && i == 7) piece = 'B';
+               newBoard[i+(m*2)][j-2] = piece;
+               newBoard[i][j] = '0';
                boardArray.push(newBoard); 
                newBoard = copyArray(Board);
             }
@@ -265,9 +339,9 @@ function getNextMoves(color)
       }
    }
    
-   for(var i = 0; i<boardArray.length; i++){
+   /*for(var i = 0; i<boardArray.length; i++){
       printBoard(boardArray[i]);
-   }
+   }*/
    return boardArray;
 }
 
@@ -283,7 +357,7 @@ function checkMiddle(j, W_center)
             return points;
 }
 
-function checkDefense(color, i, j, W_defense)
+function checkDefense(color, i, j, W_defense, Board)
 {
    var points = 0; var m = 0; // m is based on which piece we are were to look for defenders, red is behind while back infront.
    if(color == 'r' || color == 'R') m = 1;
@@ -322,6 +396,14 @@ var newArray = [];
 for (var i = 0; i < array.length; i++)
     newArray[i] = array[i].slice();
 return newArray;
+}
+
+function Node(parent, value, board, children) 
+{
+   this.parent = parent; // parent node.
+   this.children = children // array of nodes.
+   this.value = value; // number
+   this.board = board; // coorisponding board
 }
 
 document.getElementById("canvas").addEventListener('mouseup', function(evt) {
