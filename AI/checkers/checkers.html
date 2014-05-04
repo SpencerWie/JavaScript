@@ -12,10 +12,11 @@ button{
 </style>
 </head>
 <body>
+<p>How to play, this is a variation of checkers such that the goal is to get all your pieces to the other side. Only single-jumps are allowed, as a player you move pieces by clicking on them and moving, to remove a piece click the middle mouse button on that piece.</p>
 <canvas width=400 height=400 id="canvas"></canvas><br />
 <button onclick="minimax(0,Board,'r');">AI Red [Up Arrow]</button><br />
 <button onclick="minimax(0,Board,'b');">AI Black [Down Arrow]</button><br />
 <button onclick="Board = oldBoard; generateBoard(8); drawPieces(Board)">Back</button>
-<script src="boardGenerator.js"></script>
+<script src="checkers.js"></script>
 </body>
 </html>
