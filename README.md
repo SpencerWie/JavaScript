@@ -31,6 +31,7 @@
 <li>Artificial Intelligence
   <ul>
   <li><a href="http://cs.iupui.edu/~spdwiecz/JavaScript/csci487_Proj1/projAI.html">8 Puzzle Solver</a></li>
+  <li><a href="http://cs.iupui.edu/~spdwiecz/JavaScript/checkers/checkers.html">Checkers AI</a></li>
   </ul>
 </li>
 </ul>
