@@ -250,13 +250,43 @@ setInterval(function(){main()}, 30); // Call main every 30 milliseconds
   <div class="accordion-group">
     <div class="accordion-heading">
       <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFive">
-        <h3>DOM Manipulation</h3>
+        <h3>Keyboard Input</h3>
       </a>
     </div>
     <div id="collapseFive" class="accordion-body collapse">
       <div class="accordion-inner">
+         <p>For this section we will be looking into how to utilize keyboard input to be used as user input for our games. First let me introduce a few new event handlers:</p>
+         <ul>
+            <li><b>keydown</b>: A key is pressed down</li>
+            <li><b>keyup</b>: A key is released</li>
+            <li><em>keypress</em>: A character key is pressed</li>
+         </ul>
+         <p>We will be adding an <em>event listener</em> to our document, even listeners are basically things that listen to events. Such that if we have a keyboard event a keyboard listener would fire whenever we have some type of keyboard input. Here is an example for <b>keydown</b>:</p>
+<pre>
+document.addEventListener("keydown", function(e) { 
+   // Do stuff
+});
+</pre>
+         <p>The parameter given in the function is an object about the key information, I've given it the name <b>e</b> short for <b>event</b>, while there are a few properties I will only talk about the most commonly used ones: <em>e.keyCode</em> and <em>e.charCode</em>.</p>
+         <ul>
+            <li><b>keyCode</b>: <em>Scan code</em> of keyboard input, given by your keyboard driver itself for the physical keys themselves. For example "a" and "A" are the same.</li>
+            <li><em>charCode</em>: The key input based on it's ASCII value. </li>
+         </ul>
+         <p>Here is a basic example of printing the keyCode text to the canvas, press a key on your keyboard and it will show the keyCode on the canvas below:</p>
+<pre>
+var canvas = document.getElementById("keyCanvas");
+var ctx = canvas.getContext("2d");
+ctx.font = "20px Arial";
+ctx.fillText("keyCode = ",5,40);
+ctx.font = "30px Arial";
 
-      
+document.addEventListener("keydown", function(e) { 
+    ctx.clearRect(100,0,canvas.width,canvas.height);
+    ctx.fillText(e.keyCode,110,40);
+});
+</pre>
+         <canvas id="keyCanvas" height="70" width="180"></canvas>
+         <p><a href="http://jsfiddle.net/e4Spu/">HERE</a> is the fiddle example.</p>
       </div>
     </div>
   </div>
@@ -340,6 +370,16 @@ function Box(x, y, size)
 
 setInterval(function(){main()}, 30);
 
+var k_canvas = document.getElementById("keyCanvas");
+var k_ctx = k_canvas.getContext("2d");
+k_ctx.font = "20px Arial";
+k_ctx.fillText("keyCode = ",5,40);
+k_ctx.font = "30px Arial";
+
+document.addEventListener("keydown", function(e) { 
+    k_ctx.clearRect(100,0,k_canvas.width,k_canvas.height);
+    k_ctx.fillText(e.keyCode,110,40);
+});
 
 function drawGrid(){
    var canvas = document.getElementById("myCanvas2");
