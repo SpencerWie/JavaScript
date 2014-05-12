@@ -178,12 +178,71 @@ var ctx = canvas.getContext("2d");   // ctx (context) is the 2d drawing context 
   <div class="accordion-group">
     <div class="accordion-heading">
       <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFour">
-        <h3>Hello World</h3>
+        <h3>Updating the Canvas</h3>
       </a>
     </div>
     <div id="collapseFour" class="accordion-body collapse">
       <div class="accordion-inner">
+         <p>A static canvas is nice, although often we will want to make it more dynamic. For <em>animation</em> we will want a way to update the canvas, we will look into how to redraw to the canvas and using timers and events to do so. Now lets look exactly what is going on by updating the canvas.</p>
+         <p>Here is a common process on how we do this:</p>
+            <ol>
+               <li>Draw items to canvas</li>
+               <li>Wait a small amount of time (ex: timer)</li>
+               <li>Update items (ex: positions)</li>
+               <li>Clear the canvas</li>
+               <li>Draw our updated items to the canvas</li>
+               <li>Wait a small amount of time</li>
+               <li>Update items</li>
+               <li>And so on ...</li>
+            </ol>
+            <p>Here is a basic example of a moving box. While simple we will be doing the same thing for all our programs, so be sure you understand this example well:</p>
+<pre>
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+ctx.fillStyle = "#FF0000";
 
+var myBox = new Box(10,10,30); // x = 10  y = 50  size = 30
+
+function main()
+{
+    // * Clear the Canvas
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    
+    // * Update Items
+    
+    // If our box hits the sides of the canvas reverse it's direction.
+    if(myBox.x > canvas.width - myBox.size || myBox.x < 0)
+        myBox.vel = -myBox.vel;
+    
+    myBox.moveX();
+    
+    // * Draw Items
+    myBox.draw();
+}
+
+function Box(x, y, size)
+{
+    this.x = x;
+    this.y = y;
+    this.size = size;
+    this.vel = 3; // speed and direction for our box
+    
+    this.moveX = function() {
+         this.x += this.vel; 
+    }
+    this.draw = function() {
+         ctx.fillRect(this.x, this.y, this.size, this.size); 
+    }
+}
+
+
+setInterval(function(){main()}, 30); // Call main every 30 milliseconds
+          
+</pre>
+         <canvas id="ex_canvas" width=300 height=50></canvas>
+         <br />
+         <p>Feel free to experiment and see what you can do with this, perhaps make it move and reflex in with the X and Y directions. <a href="http://jsfiddle.net/a6Xp7/">HERE</a> is the code.</p>
+         <p>In this program we are first creating a Box object. We give it: <b>x</b> and <b>y</b> for it's position, <b>size</b> for how big it is, and <b>vel</b> for how fast it moves. The two methods this Box object has is <b>draw()</b>, which draws the box to the canvas, and <b>moveX()</b>, which changes our <b>x</b> position base on our <b>vel</b>. For the <b>main()</b> function we are performing <b>3</b> steps: <em>clearing</em>, <em>updating</em>, and <em>drawing</em>. For <em>clearing</em> we simply paint the screen while. Next for <em>updating</em> we are first checking if our box is past the canvas side edges, if it is then we change the direction of our box. Then we move our box by <b>vel</b>(3) pixels. Finally for <em>drawing</em> we simple draw the box to the canvas. Note if we had more then one box we would need to go though them and draw each one (we could for example use an aray for that).</p>
       </div>
     </div>
   </div>
@@ -239,6 +298,48 @@ var ctx = canvas.getContext("2d");   // ctx (context) is the 2d drawing context 
 
 <div class="sig">Spencer Wieczorek</div>
 <script>
+
+var canvas = document.getElementById("ex_canvas");
+var ctx = canvas.getContext("2d");
+ctx.fillStyle = "#FF0000";
+
+var myBox = new Box(10,10,30); // x = 10  y = 50  size = 10
+
+function main()
+{
+    // * Clear the Canvas
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    
+    // * Update Items
+    
+    // If our box hits the sides of the canvas reverse it's direction.
+    if(myBox.x > canvas.width - myBox.size || myBox.x < 0)
+        myBox.vel = -myBox.vel;
+    
+    myBox.moveX();
+    
+    // * Draw Items
+    myBox.draw();
+}
+
+function Box(x, y, size)
+{
+    this.x = x;
+    this.y = y;
+    this.size = size;
+    this.vel = 3; // speed and direction for our box
+    
+    this.moveX = function() {
+         this.x += this.vel; 
+    }
+    this.draw = function() {
+         ctx.fillRect(this.x, this.y, this.size, this.size); 
+    }
+}
+
+
+setInterval(function(){main()}, 30);
+
 
 function drawGrid(){
    var canvas = document.getElementById("myCanvas2");
