@@ -80,25 +80,25 @@ myString.length; // returns the length Property of the string. => 11
       <div class="accordion-inner">
          <p>The best way to understand objects, classes, instances, and so on is to create them yourself. We can create our very own Objects, here is an outline:</p>
 <pre>
-function ClassName(...) // Creates a class called "ClassName"
+function ClassName( arg* ) // Creates a class called "ClassName"
    {
    //This is the Constructor
    this.property1 = .. ;
    this.property2 = .. ;
    //End Constructor
    
-   this.method1 = function(...) // Makes a method called "method1"
+   this.method1 = function( arg* ) // Makes a method called "method1"
       {
       // Code for method1
       }
  
-   this.method2 = function(...)
+   this.method2 = function( arg* )
       {
       // Code for method2
       }   
    }
 
-var myObj = new Class(...); // Creates an instance from our Class.
+var myObj = new Class( ... ); // Creates an instance from our Class.
 </pre>
       <p><strong>this</strong> means <em>for this particular instance</em>. So when we say: <em>this.variable</em> , it means the variable belonging to the current instance. Don't get confused that it says: <em>function ClassName(...)</em>, read it as: <em>class ClassName(...)</em>. The <em>class</em> keyword is not yet implemented in JavaScript so the <em>function</em> keyword is used.</p>
       <p> Lets look at some examples, here is a Ball Class:</p>
@@ -123,6 +123,8 @@ var blueBall = new Ball(200,40,35,"Blue"); // Creates a blue ball from Ball clas
       <canvas id="myCanvas" width="300" height="80" style="border:1px solid #555555; display: block; margin: auto"></canvas><br />
       <div class="smallCode">redBall.moveTo(60,45);</div><button class="btn btn-success small" onclick="redBall.moveTo(60,45);">Run</button> <button class="btn btn-info small" onclick="redBall.moveTo(40,40);">Reset</button> <br /> <br />
       <div class="smallCode">blueBall.moveTo(150,40);</div><button class="btn btn-success small" onclick="blueBall.moveTo(150,40);">Run</button> <button class="btn btn-info small" onclick="blueBall.moveTo(200,40);">Reset</button> 
+      <br /><br />
+      <div class="alert alert-info"> <b>arg*</b> means 0 or more arguments. In set thoery the Kleene Star ( <b>*</b> ) means zero or more. This is so we can represent a variety of things from <em>Object()</em> to <em>Object(arg1, arg2, arg3, ...)</em>. </div>
       </div>
     </div>
   </div>
@@ -204,16 +206,16 @@ function Person( name ){
          </ul>
          <p>Here is an example is a Parent and a Child class implemented in JavaScript:</p>
 <pre>
-function Parent( *arg ){
-   this.P_prop = *arg;
+function Parent( arg* ){
+   this.P_prop = arg*;
        
    this.P_func = function(){
         // Code for parent method.
       }
    }
 
-function Child( *arg ){ // The same *arg as the 'Parent' class.
-    <b>Parent.call(this, *arg);</b> // This creates 'Child' to be based on 'Parent'.
+function Child( arg* ){ // The same arguments as the 'Parent' class.
+    <b>Parent.call(this, arg*);</b> // This creates 'Child' to be based on 'Parent'.
     
     this.C_func = function(){
         // Code for child method.
