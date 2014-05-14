@@ -41,7 +41,6 @@ canvas{ border: 1px solid black; display: block; margin: auto }
          <h1>Canvas GUI</h1>
          <p>In this section we will look at how to implement the HTML5 Canvas tag to create a GUI (Graphic User Interface), along with the audio tag to create full fledged applications on the browser. This opens us up to many new interesting opportunities such as making games.</p>
          <br />
-         <div class="alert alert-danger">This page is currently in development.</div>
       <div class="accordion" id="accordion2">
   <div class="accordion-group">
     <div class="accordion-heading">
@@ -242,7 +241,7 @@ setInterval(function(){main()}, 30); // Call main every 30 milliseconds
          <canvas id="ex_canvas" width=300 height=50></canvas>
          <br />
          <p>Feel free to experiment and see what you can do with this, perhaps make it move and reflex in with the X and Y directions. <a href="http://jsfiddle.net/a6Xp7/">HERE</a> is the code.</p>
-         <p>In this program we are first creating a Box object. We give it: <b>x</b> and <b>y</b> for it's position, <b>size</b> for how big it is, and <b>vel</b> for how fast it moves. The two methods this Box object has is <b>draw()</b>, which draws the box to the canvas, and <b>moveX()</b>, which changes our <b>x</b> position base on our <b>vel</b>. For the <b>main()</b> function we are performing <b>3</b> steps: <em>clearing</em>, <em>updating</em>, and <em>drawing</em>. For <em>clearing</em> we simply paint the screen while. Next for <em>updating</em> we are first checking if our box is past the canvas side edges, if it is then we change the direction of our box. Then we move our box by <b>vel</b>(3) pixels. Finally for <em>drawing</em> we simple draw the box to the canvas. Note if we had more then one box we would need to go though them and draw each one (we could for example use an aray for that).</p>
+         <p>In this program we are first creating a Box object. We give it: <b>x</b> and <b>y</b> for it's position, <b>size</b> for how big it is, and <b>vel</b> for how fast it moves. The two methods this Box object has is <b>draw()</b>, which draws the box to the canvas, and <b>moveX()</b>, which changes our <b>x</b> position base on our <b>vel</b>. For the <b>main()</b> function we are performing <b>3</b> steps: <em>clearing</em>, <em>updating</em>, and <em>drawing</em>. For <em>clearing</em> we simply paint the screen white. Next for <em>updating</em> we are first checking if our box is past the canvas side edges, if it is then we change the direction of our box. Then we move our box by <b>vel</b>(3) pixels. Finally for <em>drawing</em> we simple draw the box to the canvas. Note if we had more then one box we would need to go though them and draw each one (we could for example use an aray for that).</p>
       </div>
     </div>
   </div>
@@ -250,12 +249,13 @@ setInterval(function(){main()}, 30); // Call main every 30 milliseconds
   <div class="accordion-group">
     <div class="accordion-heading">
       <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFive">
-        <h3>Keyboard Input</h3>
+        <h3>Keyboard & Mouse Input</h3>
       </a>
     </div>
     <div id="collapseFive" class="accordion-body collapse">
       <div class="accordion-inner">
-         <p>For this section we will be looking into how to utilize keyboard input to be used as user input for our games. First let me introduce a few new event handlers:</p>
+         <p>For this section we will be looking into how to utilize keyboard and mouse input to be used as user input for the canvas. First let me introduce a few new event handlers:</p>
+         <h4>Keyboard Input</h4>
          <ul>
             <li><b>keydown</b>: A key is pressed down</li>
             <li><b>keyup</b>: A key is released</li>
@@ -287,6 +287,29 @@ document.addEventListener("keydown", function(e) {
 </pre>
          <canvas id="keyCanvas" height="70" width="180"></canvas>
          <p><a href="http://jsfiddle.net/e4Spu/">HERE</a> is the fiddle example.</p>
+         <br />
+         <hr />
+         <h4>Mouse Input</h4>
+         <p>When we have mouse event listeners the <b>e</b> argument (<em>event</em>), from it we can get our X and Y mouse coordinates of the window by using <b>e.clientX</b> and <b>e.clientY</b>. The only problem to this is these are repect to the window and not the canvas, we want (0,0) to be the top left corner of the canvas. To solve this we first get the coordinates (in the form of a rectangle object) of the canvas with respect to the client window by using <b>canvas.getBoundingClientRect()</b>, then we subract the window positions(clientX, clientY) from the canvas positions(left, top):</p>
+<pre>
+var canvas = document.getElementById("mouseCanvas");
+var ctx = canvas.getContext("2d");
+ctx.font = "20px Arial";
+
+canvas.addEventListener("mousemove", function(e) 
+{ 
+    var cRect = canvas.getBoundingClientRect();
+    var canvasX = e.clientX - cRect.left;
+    var canvasY = e.clientY - cRect.top;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillText("X: "+canvasX+", Y: "+canvasY, 10, 30);
+});
+</pre>
+      <p>Move your mouse over the canvas and it will show your mouse positions:</p>
+      <canvas id="mouseCanvas" width="400" height="200"></canvas>
+      <br />
+       <div class="alert alert-info">Note: Sometimes you may need to slightly manipulate the calculated X and Y positions. If we have a complex webpage sometimes the margins may not be whole numbers, this can cause decimals on the numbers. We can fix this be either using <b>Math.round()</b>, <b>Math.floor()</b>, and <b>Math.ceil()</b> as we see fit. In my case <b>canvasX</b> has round() applied to it.</div>         
+
       </div>
     </div>
   </div>
@@ -294,12 +317,35 @@ document.addEventListener("keydown", function(e) {
   <div class="accordion-group">
     <div class="accordion-heading">
       <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseSix">
-        <h3>JavaScript Placement</h3>
+        <h3>Audio</h3>
       </a>
     </div>
     <div id="collapseSix" class="accordion-body collapse">
       <div class="accordion-inner">
-      
+         <p>Along with a GUI, we would also like sound in our applications. I will give you a short introduction to the <b>HTML5 Audio</b> tag, we will be using this for our music and sound:</p>
+<pre>
+&lt;audio controls&gt;
+  &lt;source src="fileName.mp3" type="audio/mp3"&gt;
+  Your browser does not support the audio tag.
+&lt/audio&gt;
+</pre>
+<audio controls>
+  <source src="drip.mp3" type="audio/mp3">
+  Your browser does not support the audio tag.
+</audio>
+      <p>The audio tag supports 3 formats: <b>mp3</b>, <b>wav</b>, and <b>ogg</b>. To have it not show an interface simply remove the <b>control</b> attribute. To play it's sound we call the <b>play()</b> method:</p>
+<pre>
+var canvas = document.getElementById("soundCanvas");
+var ctx = canvas.getContext("2d");
+ctx.font = "20px Arial";
+ctx.fillText("Click to play",20,30);
+
+canvas.addEventListener("click", function(e) { 
+    document.getElementById("audioPlayer").play();
+});
+</pre>      
+      <canvas id="soundCanvas" width=150 height=50></canvas>
+      <audio id="audioPlayer"><source src="drip.mp3" type="audio/mp3"></audio>
       </div>
     </div>
   </div>
@@ -313,8 +359,63 @@ document.addEventListener("keydown", function(e) {
     <div id="collapseSeven" class="accordion-body collapse">
       <div class="accordion-inner">
 
-      
-      
+         <ul>
+         <li><b><em>The Canvas</em></b>
+            <ul>
+            <li>The HTML5 Canvas tag is a rectangular element that we can draw on using JavaScript.</li>
+            <li>Canvas uses a cartesian coordinate system such that (0,0) is the top left.</li>
+            </ul>
+         </li>
+         <li><b><em>Drawing to the Canvas</em></b>
+            <ul>
+            <li>We need to get the context area of the canvas by doing: <b>canvas.getContext("2d")</b></li>
+            <li>We can draw: Rectangles, Paths, Text, Images, and adjust properties.</li>
+            </ul>
+         </li>
+         <li><b><em>Updating the Canvas</em></b>
+            <ul>
+            <li>Steps to updating the Canvas are as followed, normally we use a timer if we want to always keep updating:
+               <ul>
+               <li>Draw items to canvas</li>
+               <li>Wait a small amount of time (ex: timer)</li>
+               <li>Update items (ex: positions)</li>
+               <li>Clear the canvas</li>
+               <li>repeat...</li>
+               </ul>
+            </li>
+            <li>For timers we perform three steps: <b>Clearing</b>, <b>Updating</b>, then <b>Drawing</b>.</li>
+            </ul>
+         </li>
+         <li><b><em>Keyboard & Mouse Input</em></b>
+            <ul>
+            <li>For events we use <b>Event Listeners</b>, that check for and fire for only certain events:</li>
+            <li><em>document.addEventListener("keydown", function(e) { ... });</em></li>
+            <ul>
+            <li>For the keyboard:
+               <ul>
+               <li><b>keydown</b>: A key is pressed down</li>
+               <li><b>keyup</b>: A key is released</li>
+               <li><b>keyCode</b>: Scan code of keyboard input, given by your keyboard driver itself for the physical keys themselves</li>
+               </ul>
+            </li>
+            <li>For the Mouse:
+               <ul>
+               <li><b>canvas.getBoundingClientRect()</b>: Gets the Canvas as a window rectangle object.</li>
+               <li><b>e.clientX</b>: Gets the X position of the mouse with respect to the window</li>
+               <li><b>e.clientY</b>: Gets the Y position of the mouse with respect to the window</li>
+               </ul>
+            </li>
+            </ul>
+            </ul>
+         </li>
+         <li><b><em>Audio</em></b>
+            <ul>
+            <li>The audio tag is used for sound and music for an HTML5 webpage.</li>
+            <li>It support the following formats: <em>mp3</em>, <em>wav</em>, and <em>ogg</em></li>
+            <li>We can use the <b>play()</b> method to play the sound file.</li>
+            </ul>
+         </li>
+         </ul>
       
       </div>
     </div>
@@ -379,6 +480,27 @@ k_ctx.font = "30px Arial";
 document.addEventListener("keydown", function(e) { 
     k_ctx.clearRect(100,0,k_canvas.width,k_canvas.height);
     k_ctx.fillText(e.keyCode,110,40);
+});
+
+var m_canvas = document.getElementById("mouseCanvas");
+var m_ctx = m_canvas.getContext("2d");
+m_ctx.font = "20px Arial";
+
+m_canvas.addEventListener("mousemove", function(e) { 
+    var cRect = m_canvas.getBoundingClientRect();
+    var canvasX = e.clientX - cRect.left;
+    var canvasY = e.clientY - cRect.top;
+    m_ctx.clearRect(0,0,m_canvas.width,m_canvas.height);
+    m_ctx.fillText("X: "+Math.round(canvasX)+", Y: "+canvasY,10,30);
+});
+
+var a_canvas = document.getElementById("soundCanvas");
+var a_ctx = a_canvas.getContext("2d");
+a_ctx.font = "20px Arial";
+a_ctx.fillText("Click to play",20,30);
+
+a_canvas.addEventListener("click", function(e) { 
+    document.getElementById("audioPlayer").play();
 });
 
 function drawGrid(){
