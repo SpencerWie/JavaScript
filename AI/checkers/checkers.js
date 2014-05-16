@@ -354,8 +354,8 @@ function eval(Board)
          // if(Board[i][j] == 'b') points -= checkMiddle(j, W_center);
          
          // Check defense for pieces add for each defended side.
-         if(Board[i][j] == 'r') points += checkDefense('r' ,i, j, W_defense, Board);
-         if(Board[i][j] == 'b') points -= checkDefense('b' ,i, j, W_defense, Board);
+         //if(Board[i][j] == 'r') points += checkDefense('r' ,i, j, W_defense, Board);
+         //if(Board[i][j] == 'b') points -= checkDefense('b' ,i, j, W_defense, Board);
          
       }
       back_i--;
@@ -400,7 +400,7 @@ function getNextMoves(color, Board)
             }
             
             // Now check for jumps
-            if( (i+(m*2))>-1 && (i+(m*2))<8 && (j+2)>-1 && (Board[i+m][j+1] == op_color || Board[i+m][j+1] == op_color.toUpperCase()) && Board[i+(m*2)][j+2] == '0') 
+            if( ((i+(m*2))>-1 && (i+(m*2))<8 && (j+2)>-1) && (Board[i+m][j+1] == op_color || Board[i+m][j+1] == op_color.toUpperCase()) && Board[i+(m*2)][j+2] == '0') 
             {
                newBoard[i+m][j+1] = '0'; 
                var piece = Board[i][j];
@@ -411,7 +411,7 @@ function getNextMoves(color, Board)
                jumpArray.push(newBoard);
                newBoard = copyArray(Board);
             }
-            if((i+(m*2))>-1 && (i+(m*2))<8 && (j-2)<8 && (Board[i+m][j-1] == op_color || Board[i+m][j-1] == op_color.toUpperCase()) && Board[i+(m*2)][j-2] == '0' ) 
+            if(((i+(m*2))>-1 && (i+(m*2))<8 && (j-2)<8) && (Board[i+m][j-1] == op_color || Board[i+m][j-1] == op_color.toUpperCase()) && Board[i+(m*2)][j-2] == '0' ) 
             {
                newBoard[i+m][j-1] = '0'; 
                var piece = Board[i][j];
@@ -424,7 +424,7 @@ function getNextMoves(color, Board)
             }
          }
             // King moves
-            /*if( (j+1) < 8 && (i+1) < 8 && (Board[i][j] == kColor) &&  Board[i+1][j+1] == '0')
+            if( (j+1) < 8 && (i+1) < 8 && (Board[i][j] == kColor) &&  Board[i+1][j+1] == '0')
             { 
                var piece = Board[i][j];
                newBoard[i][j] = '0'; 
@@ -474,7 +474,7 @@ function getNextMoves(color, Board)
                newBoard[i][j] = '0';
                jumpArray.push(newBoard);
                newBoard = copyArray(Board);
-            }*/
+            }
       }
    }
    

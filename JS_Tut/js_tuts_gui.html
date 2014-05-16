@@ -308,7 +308,7 @@ canvas.addEventListener("mousemove", function(e)
       <p>Move your mouse over the canvas and it will show your mouse positions:</p>
       <canvas id="mouseCanvas" width="400" height="200"></canvas>
       <br />
-       <div class="alert alert-info">Note: Sometimes you may need to slightly manipulate the calculated X and Y positions. If we have a complex webpage sometimes the margins may not be whole numbers, this can cause decimals on the numbers. We can fix this be either using <b>Math.round()</b>, <b>Math.floor()</b>, and <b>Math.ceil()</b> as we see fit. In my case <b>canvasX</b> has round() applied to it.</div>         
+       <div class="alert alert-info">Note: Sometimes you may need to slightly manipulate the calculated X and Y positions. If we have a complex webpage sometimes the margins may not be whole numbers, this can cause decimals on the numbers. We can fix this be either using <b>Math.round()</b>, <b>Math.floor()</b>, and <b>Math.ceil()</b> as we see fit. In my case <b>canvasX</b> and <b>canvasY</b> have round() applied to it.</div>         
 
       </div>
     </div>
@@ -488,10 +488,10 @@ m_ctx.font = "20px Arial";
 
 m_canvas.addEventListener("mousemove", function(e) { 
     var cRect = m_canvas.getBoundingClientRect();
-    var canvasX = e.clientX - cRect.left;
-    var canvasY = e.clientY - cRect.top;
+    var canvasX = Math.round(e.clientX - cRect.left);
+    var canvasY = Math.round(e.clientY - cRect.top);
     m_ctx.clearRect(0,0,m_canvas.width,m_canvas.height);
-    m_ctx.fillText("X: "+Math.round(canvasX)+", Y: "+canvasY,10,30);
+    m_ctx.fillText("X: "+canvasX+", Y: "+canvasY,10,30);
 });
 
 var a_canvas = document.getElementById("soundCanvas");
