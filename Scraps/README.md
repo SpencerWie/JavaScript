@@ -9,7 +9,7 @@
    <li>Board Generator - http://jsfiddle.net/AniHouse/rkU2B/1/
       <ul><li>Generates a game board of n x n .</li></ul>
    </li> 
-   <li>Planets - http://jsfiddle.net/jz9pK/2/
+   <li>Planets - http://jsfiddle.net/jz9pK/3/
       <ul><li>A basic plantary motion simulator.</li></ul>
    </li> 
 </ul>
