@@ -7,3 +7,7 @@ A basic pong game with two paddles, the lower paddle is the player which is cont
 Snake: http://jsfiddle.net/8uVEh/
 
 A basic snake game. The Game uses Nodes as basic rectangles on the screen, and a Snake object. The mechanices are quite simple: the snake is an array of Nodes ,every frame depending on what key was last pressed: create a new node in the direction based on the key. Then remove the node at the end. If the snake eat the food then don't remove the node at the end (this makes it so there is a new node to the snake array). And place the food at new random position. The collisions only need to be directly X and Y comparisin between nodes, since based on the movement of the game the node will end up in exactly the same place the node if they interest. That's basically the entire game, I thought it was quite clever since Iv'e never made a snake game before.
+
+Bouncing Ball: http://jsfiddle.net/t42S2/
+
+Basic ball bouncing along walls.
