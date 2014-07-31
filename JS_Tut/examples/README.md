@@ -12,6 +12,6 @@ Bouncing Ball: http://jsfiddle.net/t42S2/
 
 Basic ball bouncing along walls.
 
-Moving Box: http://jsfiddle.net/QY338/
+Moving Box: http://jsfiddle.net/QY338/1/
 
 A basic moving box using the arrow keys. Using boolean buffers for correct movement to overwrite normal key functionality. 
