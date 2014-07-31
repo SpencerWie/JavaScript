@@ -11,3 +11,7 @@ A basic snake game. The Game uses Nodes as basic rectangles on the screen, and a
 Bouncing Ball: http://jsfiddle.net/t42S2/
 
 Basic ball bouncing along walls.
+
+Moving Box: http://jsfiddle.net/QY338/
+
+A basic moving box using the arrow keys. Using boolean buffers for correct movement to overwrite normal key functionality. 
