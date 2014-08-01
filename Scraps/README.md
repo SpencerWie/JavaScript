@@ -12,6 +12,7 @@
    <li>Planets - http://jsfiddle.net/jz9pK/3/
       <ul><li>A basic plantary motion simulator.</li></ul>
    </li> 
-   <li>Fireworks - http://jsfiddle.net/9rkyz/
+   <li>Fireworks - http://jsfiddle.net/9rkyz/1/
+      <ul><li>Updated fireworks to be more realistic, added motion blur.</li></lu>
    </li>
 </ul>
