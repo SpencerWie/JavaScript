@@ -14,5 +14,8 @@
    </li> 
    <li>Fireworks - http://jsfiddle.net/9rkyz/1/ ( http://jsfiddle.net/9rkyz/2/ - bounce and timer removal)
       <ul><li>Updated fireworks to be more realistic, added motion blur.</li></lu>
+   </li>Image Difference Checker - http://jsfiddle.net/r3ma4/1/
+      <ul><li>Checks two images, then on a third image draws in the the difference.</li></ul>
+   <li>
    </li>
 </ul>
