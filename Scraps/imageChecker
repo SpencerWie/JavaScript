@@ -1,0 +1,30 @@
+var canvas1 = document.getElementById("img1");
+var ctx1 = canvas1.getContext("2d");
+
+var canvas2 = document.getElementById("img2");
+var ctx2 = canvas2.getContext("2d");
+
+var canvas_diff = document.getElementById("diff");
+var ctx_diff = canvas_diff.getContext("2d");
+ctx_diff.fillStyle = "red";
+
+ctx1.fillRect(50,50,80,80);
+ctx2.fillRect(100,100,80,80);
+
+var img1Data = ctx1.getImageData(0,0,canvas1.width,canvas1.height);
+var img2Data = ctx2.getImageData(0,0,canvas2.width,canvas2.height);
+
+var X = 0, Y = 0;
+
+for(var i = 0; i < img1Data.data.length; i += 4) {  
+    if(img1Data.data[i] != img2Data.data[i] || 
+    img1Data.data[i+1] != img2Data.data[i+1] || 
+    img1Data.data[i+2] != img2Data.data[i+2] || 
+    img1Data.data[i+3] != img2Data.data[i+3]) {
+        ctx_diff.fillRect( X, Y, 1, 1 );
+    }
+    X += 1;
+    if(X >= canvas1.width) { Y+=1; X = 0 }
+}
+
+
