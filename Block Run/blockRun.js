@@ -3,11 +3,11 @@ var map = [
    '                                    ',
    '                                    ',
    '                                    ',
-   '                                    ',
-   '                                    ',
-   '       ##               ######      ',
-   '   #                    #    #      ',
-   '  ###     ##            #    #      ',
+   '#             #                      ',
+   '#             #                      ',
+   '       #                ######      ',
+   '   #     ##             #    #      ',
+   '  ###      #            #    #      ',
    '####################################'   
 ];
 
@@ -17,20 +17,26 @@ var player;
 
 LEFT = RIGHT = UP = DOWN = false;
 
-GRAVITY = 0.8;
+GRAVITY = 0.5;
+
+var groundPoint = { x: 0, y: 0 , color: 'red', height: 4, width: 30};
 
 function Player() {
+   this.width = 28;
+   this.height = 28;
    this.size = 32;
    // Center Player on screen
    this.x = (canvas.width/2) - (this.size/2);   
    this.y = (canvas.height/2) - (this.size/2);
    this.dx = 0; this.dy = 0;
+   this.ddx = 0; this.ddy = 0;
    this.ay = 0;
    this.speed = 7;
    this.frameX = 0;
    this.frameY = 0;
    this.image = images['player_blink'];
    this.collision = false;
+   this.jump = false;
    
    this.draw = function() {
       ctx.drawImage(this.image, this.frameX*this.size, this.frameY*this.size, this.size, this.size, this.x, this.y, this.size, this.size);
@@ -38,9 +44,36 @@ function Player() {
    
    this.update = function() 
    {
-      var wasUp = player.dy < 0;
-      var wasDown = player.dy > 0;
       this.collision = false;
+      
+      if(UP && this.jump){ 
+         this.dy = -this.speed*3; 
+         this.ddy = -1;
+         this.jump = false;
+      }
+      if(DOWN){ 
+         this.dy = this.speed; 
+      } 
+      if(this.dy < 10 && !this.jump) this.ddy += GRAVITY; // Apply Gravity
+      this.dy += this.ddy;
+      this.y += this.dy;
+      for(item in items) {
+         if(this.dy < 0 && collide(this,items[item]) && !this.collision) {
+            this.y = items[item].y + this.size + 1;
+         }
+         if(this.dy > 0 && collide(this,items[item]) && !this.collision) {
+            this.dy = 0;
+            this.ddy = 0;
+            this.y = items[item].y - this.size;
+            this.jump = true;
+            this.collision = true;
+         }
+      }
+      
+      if(this.dy > 15) this.dy = 15;          //Speed limits
+      if(this.dy < -15) this.dy = -15;
+      
+      
       if(LEFT){ 
          this.dx = this.speed; // Move Left
          this.frameY = 1; // Face Left
@@ -50,19 +83,27 @@ function Player() {
          this.frameY = 0; // Face Right
       }
       if(!LEFT && !RIGHT) this.dx = 0; // If no arrow keys no move hor.
-      if(this.dy < 10) this.dy += GRAVITY; // Apply Gravity
       
-      if(UP && this.collision){ this.dy = -10; UP = false; }
-      
-      if ((wasUp  && (player.dy > 0)) || (wasDown && (player.dy < 0))) {
-         player.dy = 0; // clamp at zero to prevent friction from making us jiggle side to side
-      }
-      
-      if(this.dy > 15) this.dy = 15;          //Speed limits
-      if(this.dy < -15) this.dy = -15;
-       
       player.x -= this.dx;
-      //player.y += this.dy;
+      for(item in items) {
+         if(RIGHT && collide(this,items[item])) {
+            //RIGHT = false;
+            this.x = items[item].x - this.size - 1;
+         }
+         else if(LEFT && collide(this,items[item])) {
+            //LEFT = false;
+            this.x = items[item].x + this.size + 1;
+         }
+      }     
+      
+      groundPoint.x = this.x;
+      groundPoint.y = this.y + this.size + 1;
+   
+      for(item in items) 
+         if(collide(groundPoint, items[item])) { 
+            this.jump = true; break;
+         } else { this.jump = false; }
+      
    }
 }
 
@@ -70,7 +111,7 @@ function Block(x, y) {
    this.x = x; 
    this.y = y;
    this.image = images['block'];
-   this.size = 32;
+   this.width = 30; this.height = 30;
    
    this.draw = function() {
       ctx.drawImage(this.image, this.x, this.y);
@@ -106,10 +147,10 @@ function createMap() {
 
 function collide(a, b) {
     return !(
-        ((a.y + a.size) < (b.y)) ||
-        (a.y > (b.y + b.size)) ||
-        ((a.x + a.size) < b.x) ||
-        (a.x > (b.x + b.size))
+        ((a.y + a.height) < (b.y)) ||
+        (a.y > (b.y + b.height)) ||
+        ((a.x + a.width) < b.x) ||
+        (a.x > (b.x + b.width))
     );
 }
 
@@ -135,6 +176,7 @@ createMap();
 timer = setInterval(function()
 {
    ctx.clearRect(0, 0, canvas.width, canvas.height);
+   ctx.fillStyle = player.color;
    player.update();
    player.draw();
    for(item in items)
