@@ -1,13 +1,13 @@
 var map = [
    '####################################',
-   '                                    ',
-   '                                    ',
-   '                                    ',
+   '#             #                       ',
+   '#             #                       ',
    '#             #                      ',
    '#             #                      ',
-   '       #                ######      ',
-   '   #     ##             #    #      ',
-   '  ###      #            #    #      ',
+   '#         #   #                      ',
+   '#      #  # # #           ######      ',
+   '#  #     ## # #           #    #      ',
+   '# ###       # #           #    #      ',
    '####################################'   
 ];
 
@@ -59,7 +59,9 @@ function Player() {
       this.y += this.dy;
       for(item in items) {
          if(this.dy < 0 && collide(this,items[item]) && !this.collision) {
-            this.y = items[item].y + this.size + 1;
+            this.dy = 0;
+            this.ddy = 0;
+            this.y = items[item].y + this.size;
          }
          if(this.dy > 0 && collide(this,items[item]) && !this.collision) {
             this.dy = 0;
@@ -88,11 +90,11 @@ function Player() {
       for(item in items) {
          if(RIGHT && collide(this,items[item])) {
             //RIGHT = false;
-            this.x = items[item].x - this.size - 1;
+            this.x = items[item].x - this.size ;
          }
          else if(LEFT && collide(this,items[item])) {
             //LEFT = false;
-            this.x = items[item].x + this.size + 1;
+            this.x = items[item].x + this.size ;
          }
       }     
       
