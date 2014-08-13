@@ -22,6 +22,16 @@ GRAVITY = 0.5;
 var groundPoint = { x: 0, y: 0 , color: 'red', height: 4, width: 30};
 
 var scroll = 0;
+/*
+How timeframes work: For animations via frame-by-frame
+
+[ <frame1>, <frame2> , <frame3>, ... ]
+
+[ [time when to start animation, frameX, frameY] , [time when to move to next frame, frameX, frameY] , ... ]
+
+timer resets when animation is done.
+*/
+var blink_timeframe = [[220 ,1 ,0] , [223 ,2 ,0] , [226, 1, 0] , [229 ,0 ,0]];
 
 function Player() {
    this.width = 28;
@@ -39,6 +49,8 @@ function Player() {
    this.image = images['player_blink'];
    this.collision = false;
    this.jump = false;
+   this.timer = 0; // For animation
+   this.step = 0; // For frame movement (animation)
    
    this.draw = function() {
       ctx.drawImage(this.image, this.frameX*this.size, this.frameY*this.size, this.size, this.size, this.x, this.y, this.size, this.size);
@@ -47,6 +59,19 @@ function Player() {
    this.update = function() 
    {
       this.collision = false;
+      this.timer++;
+      
+
+      for(var i = 0; i <blink_timeframe.length; i++ ) {
+         if(this.step == i && this.timer > blink_timeframe[i][0]) {
+            this.frameX = blink_timeframe[i][1];
+            this.step = i + 1;
+         }
+         if( this.step == blink_timeframe.length ){
+            this.step = 0;
+            this.timer = 0;
+         }
+      }
       
       if(UP && this.jump){ 
          this.dy = -this.speed*3; 
@@ -80,14 +105,10 @@ function Player() {
       
       if(LEFT){ 
          this.dx = this.speed; // Move Left
-         //scroll += this.speed
-         //ctx.translate(this.speed, 0);
          this.frameY = 1; // Face Left
       }
       if(RIGHT){ 
          this.dx = -this.speed; // Move Right
-         //scroll -= this.speed
-         //ctx.translate(-this.speed, 0);
          this.frameY = 0; // Face Right
       }
       if(!LEFT && !RIGHT) this.dx = 0; // If no arrow keys no move hor.
@@ -96,6 +117,7 @@ function Player() {
       ctx.translate(this.dx, 0);
       for(item in items) {
          if(RIGHT && collide(this,items[item])) {
+            // Reposition player to be place right next to block, then get the difference and apply that to scrolling of canvas.
             var oldX = this.x;
             this.x = items[item].x - this.size ;
             var diff = oldX - this.x
