@@ -1,14 +1,14 @@
 var map = [
-   '####################################',
-   '#             #                       ',
-   '#             #                       ',
-   '#             #                      ',
-   '#             #                      ',
-   '#         #   #                      ',
-   '#      #  # # #           ######      ',
-   '#  #     ## # #           #    #      ',
-   '# ###       # #           #    #      ',
-   '####################################'   
+   '######################################################',
+   '#             #                   #               #  #',
+   '#             #                   #####       #####  #',
+   '#             #                                      #',
+   '#             #####   ##                  #          #',
+   '#         #                              ###         #',
+   '#      #  # #             ######        #####        #',
+   '#  #     ## #            ##    #       #######       #',
+   '# ###       #           ###           #########      #',
+   '######################################################'   
 ];
 
 var delay = 25;
@@ -20,6 +20,8 @@ LEFT = RIGHT = UP = DOWN = false;
 GRAVITY = 0.5;
 
 var groundPoint = { x: 0, y: 0 , color: 'red', height: 4, width: 30};
+
+var scroll = 0;
 
 function Player() {
    this.width = 28;
@@ -78,25 +80,37 @@ function Player() {
       
       if(LEFT){ 
          this.dx = this.speed; // Move Left
+         //scroll += this.speed
+         //ctx.translate(this.speed, 0);
          this.frameY = 1; // Face Left
       }
       if(RIGHT){ 
          this.dx = -this.speed; // Move Right
+         //scroll -= this.speed
+         //ctx.translate(-this.speed, 0);
          this.frameY = 0; // Face Right
       }
       if(!LEFT && !RIGHT) this.dx = 0; // If no arrow keys no move hor.
-      
       player.x -= this.dx;
+      scroll += this.dx;
+      ctx.translate(this.dx, 0);
       for(item in items) {
          if(RIGHT && collide(this,items[item])) {
-            //RIGHT = false;
+            var oldX = this.x;
             this.x = items[item].x - this.size ;
+            var diff = oldX - this.x
+            ctx.translate(diff, 0);
+            scroll += diff;
          }
          else if(LEFT && collide(this,items[item])) {
-            //LEFT = false;
+            var oldX = this.x;
             this.x = items[item].x + this.size ;
+            var diff = oldX - this.x
+            ctx.translate(diff, 0);
+            scroll += diff;
          }
       }     
+      
       
       groundPoint.x = this.x;
       groundPoint.y = this.y + this.size + 1;
@@ -177,10 +191,13 @@ createMap();
 
 timer = setInterval(function()
 {
-   ctx.clearRect(0, 0, canvas.width, canvas.height);
+   ctx.clearRect(-scroll, 0, canvas.width, canvas.height);
+   //ctx.translate(-(canvas.width/2)-player.x, 0);
    ctx.fillStyle = player.color;
    player.update();
    player.draw();
    for(item in items)
       items[item].draw();
+      ctx.fillStyle = "red";
+      ctx.fillText("Beta: Scrolling and Collision Test", 10-scroll, 10);
 }, delay);
