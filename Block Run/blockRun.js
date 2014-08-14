@@ -1,23 +1,26 @@
 var map = [
-   '######################################################',
-   '#             #                   #               #  #',
-   '#             #                   #####       #####  #',
-   '#             #                                      #',
-   '#             #####   ##                  #          #',
-   '#         #                              ###         #',
-   '#      #  # #             ######        #####        #',
-   '#  #     ## #            ##    #       #######       #',
-   '# ###       #           ###           #########      #',
-   '######################################################'   
+   '#################################################################################',
+   '#             #                   # o           o #                             #',
+   '#             # o                 #####       #####        ####                 #',
+   '#         o   #                                                                 #',
+   '#             #####   ##                  #             ##########              #',
+   '#  o      #                              ###                                    #',
+   '#      #  # #             ######        #####               o            o o    #',
+   '#  #     ## #            ## o  #       #######         ############      o o    #',
+   '# ###       #     #     ### o         #########                                 #',
+   '#################################################################################'   
 ];
 
 var delay = 25;
 var items = [];
 var player;
 
+var lastLoop = new Date;
+
 LEFT = RIGHT = UP = DOWN = false;
 
 GRAVITY = 0.5;
+COINS = 0;
 
 var groundPoint = { x: 0, y: 0 , color: 'red', height: 4, width: 30};
 
@@ -32,22 +35,20 @@ How timeframes work: For animations via frame-by-frame
 timer resets when animation is done.
 */
 var blink_timeframe = [[220 ,1 ,0] , [223 ,2 ,0] , [226, 1, 0] , [229 ,0 ,0]];
+var coin_timeframe = [[5, 1, 0], [10, 2, 0], [15, 1, 0], [20, 0, 0]];
 
 function Player() {
    this.width = 28;
    this.height = 28;
    this.size = 32;
-   // Center Player on screen
    this.x = (canvas.width/2) - (this.size/2);   
    this.y = (canvas.height/2) - (this.size/2);
    this.dx = 0; this.dy = 0;
    this.ddx = 0; this.ddy = 0;
-   this.ay = 0;
    this.speed = 7;
-   this.frameX = 0;
-   this.frameY = 0;
+   this.frameX = 0; // X frame on tilemap sprite
+   this.frameY = 0; // Y frame on tilemap sprite
    this.image = images['player_blink'];
-   this.collision = false;
    this.jump = false;
    this.timer = 0; // For animation
    this.step = 0; // For frame movement (animation)
@@ -58,9 +59,7 @@ function Player() {
    
    this.update = function() 
    {
-      this.collision = false;
       this.timer++;
-      
 
       for(var i = 0; i <blink_timeframe.length; i++ ) {
          if(this.step == i && this.timer > blink_timeframe[i][0]) {
@@ -81,28 +80,28 @@ function Player() {
       if(DOWN){ 
          this.dy = this.speed; 
       } 
+      
       if(this.dy < 10 && !this.jump) this.ddy += GRAVITY; // Apply Gravity
       this.dy += this.ddy;
       this.y += this.dy;
+      
       for(item in items) {
-         if(this.dy < 0 && collide(this,items[item]) && !this.collision) {
+         if(this.dy < 0 && collide(this,items[item]) && isItem(items[item],'block')) {
             this.dy = 0;
             this.ddy = 0;
             this.y = items[item].y + this.size;
          }
-         if(this.dy > 0 && collide(this,items[item]) && !this.collision) {
+         if(this.dy > 0 && collide(this,items[item]) && isItem(items[item],'block')) {
             this.dy = 0;
             this.ddy = 0;
             this.y = items[item].y - this.size;
             this.jump = true;
-            this.collision = true;
          }
       }
       
       if(this.dy > 15) this.dy = 15;          //Speed limits
       if(this.dy < -15) this.dy = -15;
-      
-      
+ 
       if(LEFT){ 
          this.dx = this.speed; // Move Left
          this.frameY = 1; // Face Left
@@ -112,36 +111,40 @@ function Player() {
          this.frameY = 0; // Face Right
       }
       if(!LEFT && !RIGHT) this.dx = 0; // If no arrow keys no move hor.
+      
       player.x -= this.dx;
       scroll += this.dx;
       ctx.translate(this.dx, 0);
+      
       for(item in items) {
-         if(RIGHT && collide(this,items[item])) {
+         if(RIGHT && collide(this,items[item]) && isItem(items[item],'block')) {
             // Reposition player to be place right next to block, then get the difference and apply that to scrolling of canvas.
             var oldX = this.x;
-            this.x = items[item].x - this.size ;
+            this.x = items[item].x - this.size;
             var diff = oldX - this.x
             ctx.translate(diff, 0);
             scroll += diff;
          }
-         else if(LEFT && collide(this,items[item])) {
+         else if(LEFT && collide(this,items[item]) && isItem(items[item],'block')) {
             var oldX = this.x;
-            this.x = items[item].x + this.size ;
+            this.x = items[item].x + this.size;
             var diff = oldX - this.x
             ctx.translate(diff, 0);
             scroll += diff;
+         }
+         if(collide(this,items[item]) && isItem(items[item],'coin')) {
+            items.splice(item, 1);
+            COINS++;
          }
       }     
-      
       
       groundPoint.x = this.x;
       groundPoint.y = this.y + this.size + 1;
    
       for(item in items) 
-         if(collide(groundPoint, items[item])) { 
+         if(collide(groundPoint, items[item]) && isItem(items[item],'block')) { 
             this.jump = true; break;
          } else { this.jump = false; }
-      
    }
 }
 
@@ -156,14 +159,41 @@ function Block(x, y) {
    }
 }
 
+function Coin(x, y) {
+   this.timer = 0;
+   this.x = x ;
+   this.y = y ;
+   this.image = images["coin"];
+   this.frameX = 0;
+   this.step = 0;
+   this.width = 10; this.height = 10;
+   
+   this.draw = function() {
+      this.timer++;
+      for(var i = 0; i <coin_timeframe.length; i++ ) {
+         if(this.step == i && this.timer > coin_timeframe[i][0]) {
+            this.frameX = coin_timeframe[i][1];
+            this.step = i + 1;
+         }
+         if( this.step == coin_timeframe.length ){
+            this.step = 0;
+            this.timer = 0;
+         }
+      }
+      ctx.drawImage(this.image, this.frameX*32, 0, 32, 32, this.x, this.y, 32, 32);
+   }
+}
+
 function loadImages() 
 {
    var playerBlink = new Image(); playerBlink.src = "player_blink.png";
    var Block = new Image(); Block.src = "block.png";
+   var Coin = new Image(); Coin.src = "coin.png"
    
    images = {
       player_blink: playerBlink,
-      block: Block
+      block: Block,
+      coin: Coin
    }
    
    return images;
@@ -177,18 +207,22 @@ function createMap() {
    player = new Player();
    test = new Block(0,0)
    
-   for( Y = 0; Y < map.length; Y++ ) 
-      for( X = 0; X < map[0].length; X++ ) 
+   for( Y = 0; Y < map.length; Y++ ) {
+      for( X = 0; X < map[0].length; X++ ) {
          if(map[Y].charAt(X) == '#') 
             items.push(new Block(X*SIZE, Y*SIZE));
+         if(map[Y].charAt(X) == 'o') 
+            items.push(new Coin(X*SIZE, Y*SIZE));
+      }
+   }
 }
 
 function collide(a, b) {
-    return !(
-        ((a.y + a.height) < (b.y)) ||
-        (a.y > (b.y + b.height)) ||
-        ((a.x + a.width) < b.x) ||
-        (a.x > (b.x + b.width))
+    return (
+        ((a.y + a.height) >= (b.y)) &&
+        (a.y <= (b.y + b.height)) &&
+        ((a.x + a.width) >= b.x) &&
+        (a.x <= (b.x + b.width)) 
     );
 }
 
@@ -206,20 +240,30 @@ document.addEventListener("keyup", function(e) {
     if( e.keyCode == 40 ) DOWN = false;    
 });
 
+// Check on what an item is based on it's image.
+function isItem(check, item) {
+   return check.image == images[item];
+}
+
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 images = loadImages();
 createMap();
 
+// main
 timer = setInterval(function()
 {
+   var thisLoop = new Date;
+   var fps = Math.round(1000 / (thisLoop - lastLoop));
+   lastLoop = thisLoop;
    ctx.clearRect(-scroll, 0, canvas.width, canvas.height);
-   //ctx.translate(-(canvas.width/2)-player.x, 0);
    ctx.fillStyle = player.color;
    player.update();
    player.draw();
    for(item in items)
       items[item].draw();
       ctx.fillStyle = "red";
-      ctx.fillText("Beta: Scrolling and Collision Test", 10-scroll, 10);
+      ctx.fillText("Beta: Scrolling and Collision Test - FPS: "+fps, 10-scroll, 10);
+      ctx.drawImage(images['coin'], 0, 0, 32, 32, 400-scroll, 0, 32, 32);
+      ctx.fillText(" x "+COINS, 430-scroll,20);
 }, delay);
