@@ -1,30 +1,45 @@
 var map = [
    '#################################################################################',
    '#             #                   # o           o #                             #',
-   '#             # o                 #####       #####        ####                 #',
-   '#         o   #                                                                 #',
-   '#             #####   ##                  #             ##########              #',
-   '#  o      #                              ###                                    #',
-   '#      #  # #             ######        #####               o            o o    #',
-   '#  #     ## #            ## o  #       #######         ############      o o    #',
-   '# ###       #     #     ### o         #########                                 #',
-   '#################################################################################'   
+   '#             # o                 #####   o   #####        ####                 #',
+   '#         o   #                           #                                     #',
+   '#             #####   ##                 ###            ##########              #',
+   '#  o      #                             #####                                   #',
+   '#      #  # #             ######       ## o ##              o            o o    #',
+   '#  #     ## #            ## o  #      ###   ###        ############      o o    #',
+   '# ###       #     #     ### o        ####   ####                                #',
+   '#######  ################################# ##################################   #',
+   '#                                                                               #',
+   '#      #                    o             o##o                              #####',
+   '#      ##                                ######                            #    #',
+   '#    #####       oo                     #      #       o       o          #     #',
+   '#o     ####o             o     o       #        #                        #      #',
+   '###    #####     ##     ##     ##     #   o   o  #     ##     ####      #       #',
+   '#   o  ####      ##     ##     ##                                 #    #        #',
+   '#      ####o  o  ##  o  ##     ##                               o  #  #         #',   
+   '#################################################################################',
 ];
 
-var delay = 25;
+var delay = 28;
 var items = [];
 var player;
+var yLevel = 0;
+var yLevelMax = 288;
 
 var lastLoop = new Date;
 
-LEFT = RIGHT = UP = DOWN = false;
+LEFT = RIGHT = UP = DOWN = SHIFT = false;
 
-GRAVITY = 0.5;
+GRAVITY = 0.25;
 COINS = 0;
+HEARTS = 1
 
-var groundPoint = { x: 0, y: 0 , color: 'red', height: 4, width: 30};
+var groundPoint = { x: 0, y: 0 , color: 'red', height: 4, width: 28};
 
-var scroll = 0;
+var scrollX = 0;
+var scrollY = 0;
+
+var camY = 0;
 /*
 How timeframes work: For animations via frame-by-frame
 
@@ -45,7 +60,9 @@ function Player() {
    this.y = (canvas.height/2) - (this.size/2);
    this.dx = 0; this.dy = 0;
    this.ddx = 0; this.ddy = 0;
+   this.walk = 7; this.run = 10;
    this.speed = 7;
+   this.jumpPower = 10;
    this.frameX = 0; // X frame on tilemap sprite
    this.frameY = 0; // Y frame on tilemap sprite
    this.image = images['player_blink'];
@@ -73,7 +90,7 @@ function Player() {
       }
       
       if(UP && this.jump){ 
-         this.dy = -this.speed*3; 
+         this.dy = -this.jumpPower; 
          this.ddy = -1;
          this.jump = false;
       }
@@ -89,19 +106,24 @@ function Player() {
          if(this.dy < 0 && collide(this,items[item]) && isItem(items[item],'block')) {
             this.dy = 0;
             this.ddy = 0;
+            var oldY = this.y;
             this.y = items[item].y + this.size;
+            var diff = oldY - this.y
          }
-         if(this.dy > 0 && collide(this,items[item]) && isItem(items[item],'block')) {
+         else if(this.dy > 0 && collide(this,items[item]) && isItem(items[item],'block')) {
             this.dy = 0;
             this.ddy = 0;
+            var oldY = this.y;
             this.y = items[item].y - this.size;
+            var diff = oldY - this.y
             this.jump = true;
          }
       }
-      
-      if(this.dy > 15) this.dy = 15;          //Speed limits
+
+      if(this.dy > 12) this.dy = 12;          //Speed limits
       if(this.dy < -15) this.dy = -15;
- 
+      if(SHIFT) this.speed = this.run;
+      else this.speed = this.walk;
       if(LEFT){ 
          this.dx = this.speed; // Move Left
          this.frameY = 1; // Face Left
@@ -113,7 +135,7 @@ function Player() {
       if(!LEFT && !RIGHT) this.dx = 0; // If no arrow keys no move hor.
       
       player.x -= this.dx;
-      scroll += this.dx;
+      scrollX += this.dx;
       ctx.translate(this.dx, 0);
       
       for(item in items) {
@@ -123,14 +145,14 @@ function Player() {
             this.x = items[item].x - this.size;
             var diff = oldX - this.x
             ctx.translate(diff, 0);
-            scroll += diff;
+            scrollX += diff;
          }
          else if(LEFT && collide(this,items[item]) && isItem(items[item],'block')) {
             var oldX = this.x;
             this.x = items[item].x + this.size;
             var diff = oldX - this.x
             ctx.translate(diff, 0);
-            scroll += diff;
+            scrollX += diff;
          }
          if(collide(this,items[item]) && isItem(items[item],'coin')) {
             items.splice(item, 1);
@@ -142,7 +164,7 @@ function Player() {
       groundPoint.y = this.y + this.size + 1;
    
       for(item in items) 
-         if(collide(groundPoint, items[item]) && isItem(items[item],'block')) { 
+         if(collide(groundPoint, items[item]) && isItem(items[item],'block') && this.dy >= 0) { 
             this.jump = true; break;
          } else { this.jump = false; }
    }
@@ -161,12 +183,12 @@ function Block(x, y) {
 
 function Coin(x, y) {
    this.timer = 0;
-   this.x = x ;
-   this.y = y ;
+   this.x = x + 9;
+   this.y = y + 9;
    this.image = images["coin"];
    this.frameX = 0;
    this.step = 0;
-   this.width = 10; this.height = 10;
+   this.width = 14; this.height = 14;
    
    this.draw = function() {
       this.timer++;
@@ -180,7 +202,7 @@ function Coin(x, y) {
             this.timer = 0;
          }
       }
-      ctx.drawImage(this.image, this.frameX*32, 0, 32, 32, this.x, this.y, 32, 32);
+      ctx.drawImage(this.image, this.frameX*32, 0, 32, 32, this.x - 9, this.y - 9, 32, 32);
    }
 }
 
@@ -189,11 +211,13 @@ function loadImages()
    var playerBlink = new Image(); playerBlink.src = "player_blink.png";
    var Block = new Image(); Block.src = "block.png";
    var Coin = new Image(); Coin.src = "coin.png"
+   var Background = new Image(); Background.src = "clouds.jpg";
    
    images = {
       player_blink: playerBlink,
       block: Block,
-      coin: Coin
+      coin: Coin,
+      background: Background
    }
    
    return images;
@@ -231,18 +255,35 @@ document.addEventListener("keydown", function(e) {
     if( e.keyCode == 38 ) UP = true;
     if( e.keyCode == 39 ) RIGHT = true;
     if( e.keyCode == 40 ) DOWN = true;
+    if( e.keyCode == 16 ) SHIFT = true;
 });
                           
 document.addEventListener("keyup", function(e) { 
     if( e.keyCode == 37 ) LEFT = false;
     if( e.keyCode == 38 ) UP = false;
     if( e.keyCode == 39 ) RIGHT = false;
-    if( e.keyCode == 40 ) DOWN = false;    
+    if( e.keyCode == 40 ) DOWN = false;  
+    if( e.keyCode == 16 ) SHIFT = false;    
 });
 
 // Check on what an item is based on it's image.
 function isItem(check, item) {
    return check.image == images[item];
+}
+
+function handleYscroll() {
+   if(player.y > 288 && yLevel == 0){
+      scrollY+= yLevelMax;
+      ctx.translate(0, -yLevelMax);
+      yLevel = 1;
+      images["background"].src = "ground.jpg";
+   }
+   if(player.y <= 288 && yLevel == 1){
+      scrollY-= yLevelMax;
+      ctx.translate(0, yLevelMax);
+      yLevel = 0;
+      images["background"].src = "clouds.jpg";
+   }   
 }
 
 var canvas = document.getElementById("canvas");
@@ -256,14 +297,15 @@ timer = setInterval(function()
    var thisLoop = new Date;
    var fps = Math.round(1000 / (thisLoop - lastLoop));
    lastLoop = thisLoop;
-   ctx.clearRect(-scroll, 0, canvas.width, canvas.height);
+   ctx.drawImage(images["background"],-scrollX, scrollY);
    ctx.fillStyle = player.color;
    player.update();
    player.draw();
+   handleYscroll();
    for(item in items)
       items[item].draw();
-      ctx.fillStyle = "red";
-      ctx.fillText("Beta: Scrolling and Collision Test - FPS: "+fps, 10-scroll, 10);
-      ctx.drawImage(images['coin'], 0, 0, 32, 32, 400-scroll, 0, 32, 32);
-      ctx.fillText(" x "+COINS, 430-scroll,20);
+   ctx.fillStyle = "red";
+   ctx.fillText("Beta: Scrolling and Collision Test - FPS: "+fps, 10-scrollX, 10+scrollY);
+   ctx.drawImage(images['coin'], 0, 0, 32, 32, 400-scrollX, 0+scrollY, 32, 32);
+   ctx.fillText(" x "+COINS, 430-scrollX,20+scrollY);
 }, delay);
