@@ -24,7 +24,7 @@ The original game <em>Block Run</em>, was created as a simple platform game in P
   <li>Platform collision added/fixed</li>
   <li>Added/fixed Scrolling</li>
   <li>Improved Graphics</li>
-  <li>Added Aniamtion</li>
+  <li>Added Animation</li>
 </ul>
 
 <h5>Notice</h5>
