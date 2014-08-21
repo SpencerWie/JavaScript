@@ -197,15 +197,19 @@ function Player() {
                else items.splice(item, 1);
             }
          }
-         // Handle Jump (only jump when player is on the ground)
+      }     
+      groundPoint.x = this.x;
+      groundPoint.y = this.y + this.size + 1;  
+      
+      // Handle Jump (only jump when player is on the ground)      
+      for(item in items) {
          if(collide(groundPoint, items[item]) && isItem(items[item],'block') && this.dy >= 0) { 
-            this.jump = true; break;
+            this.jump = true; 
+            break;
          } else {
             this.jump = false;    
          }
-      }     
-      groundPoint.x = this.x;
-      groundPoint.y = this.y + this.size + 1;   
+      }
    }
 }
 
