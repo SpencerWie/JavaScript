@@ -15,7 +15,7 @@ The original game <em>Block Run</em>, was created as a simple platform game in P
   <li>Added Sky and Ground Backgrounds</li>
   <li>Height Level system implemented</li>
   <li>Added Sprinting</li>
-  <li>Updated Chicken Nuggets</li>
+  <li>Fixed bugs</li>
 </ul>
 
 <h3><em>v0.20</em></h3>
