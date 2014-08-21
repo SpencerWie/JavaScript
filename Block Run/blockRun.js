@@ -4,11 +4,11 @@ var map = [
    '#             # o                 #####   o   #####        ####                 #',
    '#         o   #                           #                                     #',
    '#             #####   ##                 ###            ##########              #',
-   '#  o      #                             #####                                   #',
-   '#      #  # #             ######       ## o ##              o            o o    #',
+   '#  o      #               E             #####                                   #',
+   '#      #  # #             ######       ## o ##            E              o o    #',
    '#  #     ## #            ## o  #      ###   ###        ############      o o    #',
-   '# ###       #     #     ### o        ####   ####                                #',
-   '#######  ################################# ##################################   #',
+   '# ###       #E     #    ### o        ####   ####            o                   #',
+   '#######  ################################  ##################################   #',
    '#                                                                               #',
    '#      #                    o             o##o                              #####',
    '#      ##                                ######                            #    #',
@@ -16,7 +16,7 @@ var map = [
    '#o     ####o             o     o       #        #                        #      #',
    '###    #####     ##     ##     ##     #   o   o  #     ##     ####      #       #',
    '#   o  ####      ##     ##     ##                                 #    #        #',
-   '#      ####o  o  ##  o  ##     ##                               o  #  #         #',   
+   '#      ####o  o  ##  o  ##     ##      E               E        o  #  #         #',   
    '#################################################################################',
 ];
 
@@ -76,6 +76,14 @@ function Player() {
    
    this.update = function() 
    {
+      this.BlinkAnimation();
+      this.verticalMovement();
+      this.horizontalMovement();
+      this.handleCollisions();
+   }
+   
+   this.BlinkAnimation = function() 
+   {
       this.timer++;
 
       for(var i = 0; i <blink_timeframe.length; i++ ) {
@@ -87,21 +95,23 @@ function Player() {
             this.step = 0;
             this.timer = 0;
          }
-      }
-      
+      }   
+   }
+   this.verticalMovement = function()
+   {
+      // Arrow Key detection.
       if(UP && this.jump){ 
          this.dy = -this.jumpPower; 
          this.ddy = -1;
          this.jump = false;
-      }
-      if(DOWN){ 
-         this.dy = this.speed; 
-      } 
+      }       
       
       if(this.dy < 10 && !this.jump) this.ddy += GRAVITY; // Apply Gravity
-      this.dy += this.ddy;
+      
+      this.dy += this.ddy; // Update variables
       this.y += this.dy;
       
+      // Vertical Block collisions. (needs to be seperate from horizonal for proper collisions)
       for(item in items) {
          if(this.dy < 0 && collide(this,items[item]) && isItem(items[item],'block')) {
             this.dy = 0;
@@ -119,11 +129,18 @@ function Player() {
             this.jump = true;
          }
       }
-
-      if(this.dy > 12) this.dy = 12;          //Speed limits
-      if(this.dy < -15) this.dy = -15;
+      
+      //Speed limits
+      if(this.dy > 12) this.dy = 12;          
+      if(this.dy < -15) this.dy = -15;   
+   }
+   
+   this.horizontalMovement = function()
+   {
+      // Handle Running (Shift)
       if(SHIFT) this.speed = this.run;
       else this.speed = this.walk;
+      
       if(LEFT){ 
          this.dx = this.speed; // Move Left
          this.frameY = 1; // Face Left
@@ -134,11 +151,16 @@ function Player() {
       }
       if(!LEFT && !RIGHT) this.dx = 0; // If no arrow keys no move hor.
       
+      // Update position and move camra.
       player.x -= this.dx;
       scrollX += this.dx;
-      ctx.translate(this.dx, 0);
-      
+      ctx.translate(this.dx, 0);   
+   }
+   
+   this.handleCollisions = function() 
+   {
       for(item in items) {
+         // Blocks
          if(RIGHT && collide(this,items[item]) && isItem(items[item],'block')) {
             // Reposition player to be place right next to block, then get the difference and apply that to scrolling of canvas.
             var oldX = this.x;
@@ -154,19 +176,74 @@ function Player() {
             ctx.translate(diff, 0);
             scrollX += diff;
          }
-         if(collide(this,items[item]) && isItem(items[item],'coin')) {
+         // Coins
+         if( isItem(items[item],'coin') && collide(this,items[item]) ) {
             items.splice(item, 1);
             COINS++;
          }
-      }     
-      
-      groundPoint.x = this.x;
-      groundPoint.y = this.y + this.size + 1;
-   
-      for(item in items) 
+         // Monsters
+         if( isItem(items[item],'enemies') && collide(items[item], player) ){
+            //Player land on head, enemey is damaged (shift XFrame or die if out of hp)
+            if( player.y + player.height < items[item].y + player.dy + 5  && player.dy > 0 ) {
+               player.dy = -5;
+               player.ddy = -1;
+               player.y = items[item].y - 20;
+               items[item].hp--;
+               if(items[item].type == "RedBlock" && items[item].hp == 1){ 
+                  items[item].y += 20;
+                  items[item].height -= 20; 
+               }
+               if( items[item].hp > 0 ) items[item].frameX++;
+               else items.splice(item, 1);
+            }
+         }
+         // Handle Jump (only jump when player is on the ground)
          if(collide(groundPoint, items[item]) && isItem(items[item],'block') && this.dy >= 0) { 
             this.jump = true; break;
-         } else { this.jump = false; }
+         } else {
+            this.jump = false;    
+         }
+      }     
+      groundPoint.x = this.x;
+      groundPoint.y = this.y + this.size + 1;   
+   }
+}
+
+function Enemy(x, y, width, height, image, speed ,walkSteps, hp, type) 
+{
+   this.x = x;
+   this.y = y - 20;
+   this.frameX = 0; // X frame on tilemap sprite
+   this.frameY = 0; // Y frame on tilemap sprite
+   this.width = width;
+   this.height = height;
+   this.sWidth = width; this.sHeight = height;
+   this.image = image;
+   this.speed = speed;
+   this.startWalk = this.x;
+   this.endWalk = this.x + (walkSteps * 32) - (this.width - 32);
+   this.hp = hp;
+   this.type = type
+   
+   this.draw = function(){
+      this.update();
+      ctx.drawImage(this.image, this.frameX*this.sWidth, this.frameY*this.sHeight, this.sWidth, this.sHeight, this.x, this.y, this.sWidth, this.sHeight);
+   }
+   
+   this.update = function() 
+   {
+      // Walking
+      if(this.x >= this.endWalk && this.speed > 0){
+         this.x = this.endWalk;
+         this.speed *= -1;
+         this.frameY = 1;
+      }
+      else if(this.x <= this.startWalk && this.speed < 0){
+         this.x = this.startWalk;
+         this.speed *= -1;
+         this.frameY = 0;
+      }
+      this.x += this.speed
    }
 }
 
@@ -212,12 +289,14 @@ function loadImages()
    var Block = new Image(); Block.src = "block.png";
    var Coin = new Image(); Coin.src = "coin.png"
    var Background = new Image(); Background.src = "clouds.jpg";
+   var Enemies = new Image(); Enemies.src = "enemies.png";
    
    images = {
       player_blink: playerBlink,
       block: Block,
       coin: Coin,
-      background: Background
+      background: Background,
+      enemies: Enemies
    }
    
    return images;
@@ -237,6 +316,8 @@ function createMap() {
             items.push(new Block(X*SIZE, Y*SIZE));
          if(map[Y].charAt(X) == 'o') 
             items.push(new Coin(X*SIZE, Y*SIZE));
+         if(map[Y].charAt(X) == 'E') 
+            items.push(new Enemy(X*SIZE, Y*SIZE, 40, 52, images["enemies"], 4, 5, 2, "RedBlock"));
       }
    }
 }
