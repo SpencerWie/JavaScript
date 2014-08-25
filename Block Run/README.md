@@ -15,7 +15,7 @@ The original game <em>Block Run</em>, was created as a simple platform game in P
   <li>Added Sky and Ground Backgrounds</li>
   <li>Height Level system implemented</li>
   <li>Added Sprinting</li>
-  <li>Added level map system.</li>
+  <li>Added level map system (<em>Portal Sprites</em>)</li>
 </ul>
 
 <h3><em>v0.20</em></h3>
