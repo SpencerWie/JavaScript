@@ -1,23 +1,23 @@
-var map = [
-   '#################################################################################',
-   '#             #                   # o           o #                             #',
-   '#             # o                 #####   o   #####        ####                 #',
-   '#         o   #                           #                                     #',
-   '#             #####   ##                 ###            ##########              #',
-   '#  o      #               E             #####                                   #',
-   '#      #  # #             ######       ## o ##            E              o o    #',
-   '#  #     ## #            ## o  #      ###   ###        ############      o o    #',
-   '# ###       #E     #    ### o        ####   ####            o                   #',
-   '#######  ################################  ##################################   #',
-   '#                                                                               #',
-   '#      #                    o             o##o                              #####',
-   '#      ##                                ######                            #    #',
-   '#    #####       oo                     #      #       o       o          #     #',
-   '#o     ####o             o     o       #        #                        #      #',
-   '###    #####     ##     ##     ##     #   o   o  #     ##     ####      #       #',
-   '#   o  ####      ##     ##     ##                                 #    #        #',
-   '#      ####o  o  ##  o  ##     ##      E               E        o  #  #         #',   
-   '#################################################################################',
+var level_1 = [
+   '#################################################################################                ',
+   '#             #                   # o           o #                             #                ',
+   '#             # o                 #####   o   #####      o      o               #                ',
+   '#         o    #                                                                #                ',
+   '#               ######                   ###            ##      ##              #                ',
+   '#  o                      E             #####               o                   #                ',
+   '#           #             ######       ## o ##            E              o o    #                ',
+   '#  #       ##            ## o  #      ###   ###        ############      o o    #                ',
+   '# ###     ###E          ### o        ####   ####       #          #             #                ',
+   '#########################################  #############         ############   #                ',
+   '#                                       #  o              #######               #                ',
+   '#      o                    o            #  ##############                  #####                ',
+   '#                                                      o                   #    #                ',
+   '#    #####       oo                      E                      o         #     #  #########     ',
+   '#o     ####o             o     o       ##########                        #      ###         ###  ',
+   '###    #####     ##     ##     ##                    E         ###      #                     #  ',
+   '#   o  ######    ##     ##     ##          o         ######                                   #  ',
+   '#      ######    ##     ##     ##     ############                           o         P      #  ',   
+   '###############################################################################################  ',
 ];
 
 var delay = 28;
@@ -182,12 +182,13 @@ function Player() {
             COINS++;
          }
          // Monsters
-         if( isItem(items[item],'enemies') && collide(items[item], player) ){
+         if( isItem(items[item],'enemies') && collide(items[item], this) ){
             //Player land on head, enemey is damaged (shift XFrame or die if out of hp)
-            if( player.y + player.height < items[item].y + player.dy + 5  && player.dy > 0 ) {
-               player.dy = -5;
-               player.ddy = -1;
-               player.y = items[item].y - 20;
+            if( this.y + this.height < items[item].y + this.dy + 5  && this.dy > 0 ) {
+               this.dy = -6;
+               this.ddy = -1;
+               this.jump = true; 
+               this.y = items[item].y - 25;
                items[item].hp--;
                if(items[item].type == "RedBlock" && items[item].hp == 1){ 
                   items[item].y += 20;
@@ -287,6 +288,19 @@ function Coin(x, y) {
    }
 }
 
+function Portal(x, y, map, text) 
+{
+   this.x = x - 32; // Reposition (since bigger than 32x32)
+   this.y = y - 64;
+   this.map = map;
+   this.text = text;
+   this.image = images["portal"];
+   
+   this.draw = function() {
+      ctx.drawImage(this.image, this.x, this.y);
+   }
+}
+
 function loadImages() 
 {
    var playerBlink = new Image(); playerBlink.src = "player_blink.png";
@@ -294,19 +308,21 @@ function loadImages()
    var Coin = new Image(); Coin.src = "coin.png"
    var Background = new Image(); Background.src = "clouds.jpg";
    var Enemies = new Image(); Enemies.src = "enemies.png";
+   var Portal = new Image(); Portal.src = "portal.png";
    
    images = {
       player_blink: playerBlink,
       block: Block,
       coin: Coin,
       background: Background,
-      enemies: Enemies
+      enemies: Enemies,
+      portal: Portal
    }
    
    return images;
 }
 
-function createMap() {
+function createMap(map) {
    var X = 0;
    var Y = 0;
    var SIZE = 32;
@@ -322,6 +338,8 @@ function createMap() {
             items.push(new Coin(X*SIZE, Y*SIZE));
          if(map[Y].charAt(X) == 'E') 
             items.push(new Enemy(X*SIZE, Y*SIZE, 40, 52, images["enemies"], 4, 5, 2, "RedBlock"));
+         if(map[Y].charAt(X) == 'P')   
+             items.push(new Portal(X*SIZE, Y*SIZE, "", ""));   
       }
    }
 }
@@ -374,23 +392,22 @@ function handleYscroll() {
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 images = loadImages();
-createMap();
+createMap(level_1);
 
 // main
 timer = setInterval(function()
 {
-   var thisLoop = new Date;
+   /*var thisLoop = new Date;
    var fps = Math.round(1000 / (thisLoop - lastLoop));
-   lastLoop = thisLoop;
+   lastLoop = thisLoop; */
    ctx.drawImage(images["background"],-scrollX, scrollY);
    ctx.fillStyle = player.color;
    player.update();
-   player.draw();
    handleYscroll();
    for(item in items)
       items[item].draw();
+   player.draw();   
    ctx.fillStyle = "red";
-   ctx.fillText("Beta: Scrolling and Collision Test - FPS: "+fps, 10-scrollX, 10+scrollY);
-   ctx.drawImage(images['coin'], 0, 0, 32, 32, 400-scrollX, 0+scrollY, 32, 32);
+   ctx.fillText("Beta: V 0.27", 10-scrollX, 10+scrollY);
    ctx.fillText(" x "+COINS, 430-scrollX,20+scrollY);
 }, delay);
