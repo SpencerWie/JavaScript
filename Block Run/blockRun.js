@@ -409,5 +409,6 @@ timer = setInterval(function()
    player.draw();   
    ctx.fillStyle = "red";
    ctx.fillText("Beta: V 0.27", 10-scrollX, 10+scrollY);
+   ctx.drawImage(images["coin"], 0,0, 32, 32, 400-scrollX, scrollY, 32, 32);
    ctx.fillText(" x "+COINS, 430-scrollX,20+scrollY);
 }, delay);
