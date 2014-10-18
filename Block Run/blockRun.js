@@ -1,17 +1,17 @@
 var level_1 = [
    '#################################################################################                ',
    '#             #                   # o           o #                             #                ',
-   '#             # o                 #####   o   #####      o      o               #                ',
+   '#             # o                 #####   H   #####      o      o               #                ',
    '#         o    #                                                                #                ',
    '#               ######                   ###            ##      ##              #                ',
    '#  o                      E             #####               o                   #                ',
    '#           #             ######       ## o ##            E              o o    #                ',
    '#  #       ##            ## o  #      ###   ###        ############      o o    #                ',
-   '# ###     ###E          ### o        ####   ####       #          #             #                ',
+   '# ###     ###E          ### o        ####   ####       #         H#             #                ',
    '#########################################  #############         ############   #                ',
    '#                                       #  o              #######               #                ',
    '#      o                    o            #  ##############                  #####                ',
-   '#                                                      o                   #    #                ',
+   '#                           o                          o                   #    #                ',
    '#    #####       oo                      E                      o         #     #  #########     ',
    '#o     ####o             o     o       ##########                        #      ###         ###  ',
    '###    #####     ##     ##     ##                    E         ###      #                     #  ',
@@ -26,13 +26,11 @@ var player;
 var yLevel = 0;
 var yLevelMax = 288;
 
-var lastLoop = new Date;
-
 LEFT = RIGHT = UP = DOWN = SHIFT = false;
 
 GRAVITY = 0.25;
 COINS = 0;
-HEARTS = 1
+HEARTS = 3;
 
 var groundPoint = { x: 0, y: 0 , color: 'red', height: 4, width: 28};
 
@@ -58,6 +56,8 @@ function Player() {
    this.size = 32;
    this.x = (canvas.width/2) - (this.size/2);   
    this.y = (canvas.height/2) - (this.size/2);
+   this.startX = this.x;
+   this.startY = this.y;
    this.dx = 0; this.dy = 0;
    this.ddx = 0; this.ddy = 0;
    this.walk = 7; this.run = 10;
@@ -181,6 +181,11 @@ function Player() {
             items.splice(item, 1);
             COINS++;
          }
+         // Hearts
+         if( isItem(items[item],'heart') && collide(this,items[item]) ) {
+            items.splice(item, 1);
+            HEARTS++;
+         }         
          // Monsters
          if( isItem(items[item],'enemies') && collide(items[item], this) ){
             //Player land on head, enemey is damaged (shift XFrame or die if out of hp)
@@ -196,7 +201,7 @@ function Player() {
                }
                if( items[item].hp > 0 ) items[item].frameX++;
                else items.splice(item, 1);
-            }
+            } else { this.die(); } 
          }
       }     
       groundPoint.x = this.x;
@@ -211,6 +216,22 @@ function Player() {
             this.jump = false;    
          }
       }
+   }
+   // When the player dies, subtract a life and place back to start point. Translate camera back as well.
+   this.die = function() {
+      // Reset Camera
+      ctx.translate( this.x - this.startX, 0  );
+      scrollX = 0; 
+      
+      // Reset Player position.
+      this.x = this.startX;   
+      this.y = this.startY;
+      
+      handleYscroll(); // Handle yScroll based on new position.
+      
+      // If the player has hearts subtract, if the player is out of lives restart.
+      if( HEARTS > 1 ) HEARTS--;
+      else location.reload();
    }
 }
 
@@ -263,6 +284,17 @@ function Block(x, y) {
    }
 }
 
+function Heart(x, y) {
+   this.x = x + 10; 
+   this.y = y + 10;
+   this.image = images['heart'];
+   this.width = 15; this.height = 15;
+   
+   this.draw = function() {
+      ctx.drawImage(this.image, this.x - 10, this.y - 10);
+   }
+}
+
 function Coin(x, y) {
    this.timer = 0;
    this.x = x + 9;
@@ -306,6 +338,7 @@ function loadImages()
    var playerBlink = new Image(); playerBlink.src = "player_blink.png";
    var Block = new Image(); Block.src = "block.png";
    var Coin = new Image(); Coin.src = "coin.png"
+   var Heart = new Image(); Heart.src = "heart.png"
    var Background = new Image(); Background.src = "clouds.jpg";
    var Enemies = new Image(); Enemies.src = "enemies.png";
    var Portal = new Image(); Portal.src = "portal.png";
@@ -314,6 +347,7 @@ function loadImages()
       player_blink: playerBlink,
       block: Block,
       coin: Coin,
+      heart: Heart,
       background: Background,
       enemies: Enemies,
       portal: Portal
@@ -336,6 +370,8 @@ function createMap(map) {
             items.push(new Block(X*SIZE, Y*SIZE));
          if(map[Y].charAt(X) == 'o') 
             items.push(new Coin(X*SIZE, Y*SIZE));
+         if(map[Y].charAt(X) == 'H') 
+            items.push(new Heart(X*SIZE, Y*SIZE));            
          if(map[Y].charAt(X) == 'E') 
             items.push(new Enemy(X*SIZE, Y*SIZE, 40, 52, images["enemies"], 4, 5, 2, "RedBlock"));
          if(map[Y].charAt(X) == 'P')   
@@ -397,9 +433,6 @@ createMap(level_1);
 // main
 timer = setInterval(function()
 {
-   /*var thisLoop = new Date;
-   var fps = Math.round(1000 / (thisLoop - lastLoop));
-   lastLoop = thisLoop; */
    ctx.drawImage(images["background"],-scrollX, scrollY);
    ctx.fillStyle = player.color;
    player.update();
@@ -408,7 +441,9 @@ timer = setInterval(function()
       items[item].draw();
    player.draw();   
    ctx.fillStyle = "red";
-   ctx.fillText("Beta: V 0.27", 10-scrollX, 10+scrollY);
+   ctx.fillText("Beta: V 0.30", 10-scrollX, 10+scrollY);
    ctx.drawImage(images["coin"], 0,0, 32, 32, 400-scrollX, scrollY, 32, 32);
    ctx.fillText(" x "+COINS, 430-scrollX,20+scrollY);
+   ctx.drawImage(images["heart"], 0,0, 32, 32, 300-scrollX, scrollY, 32, 32);
+   ctx.fillText(" x "+HEARTS, 330-scrollX,20+scrollY);   
 }, delay);
