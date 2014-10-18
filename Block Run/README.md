@@ -8,7 +8,7 @@
 The original game <em>Block Run</em>, was created as a simple platform game in Python (using pyGame). It was the first "real" game that I've created, because of this things were not done in the most effiecent way. Now I'm doing a new and improved <em>Block Run</em> written in JavaScript using the HTML5 Canvas. 
 </p>
 
-<h3>Current Version: <strong>v0.27</strong></h3>
+<h3>Current Version: <strong><em>v0.30</em></strong></h3>
 <ul>
   <li>Improved Performance</li>
   <li>Added coins</li>
@@ -16,6 +16,8 @@ The original game <em>Block Run</em>, was created as a simple platform game in P
   <li>Height Level system implemented</li>
   <li>Added Sprinting</li>
   <li>Added level map system (<em>Portal Sprites</em>)</li>
+  <li>Added Hearts</li>
+  <li>Player now dies when hit by an enemy (basic death system).</li>
 </ul>
 
 <h3><em>v0.20</em></h3>
