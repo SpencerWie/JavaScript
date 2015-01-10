@@ -1,0 +1,18 @@
+/*
+This functions adds on to jQuery that other than using find for DOM items this will find text in a element such as a <div> and select certain text in this element to modify. How this is done is by adding a `<span>` around that element with a unquie class.
+*/
+
+function fixQuotes( str ) {
+    return str.replace(/'/g, "&apos;").replace(/"/g, "&quot;");
+}
+
+(function( $ ){
+   $.fn.findText = function( text ) { 
+    text = fixQuotes(text);
+    var fullText = fixQuotes($(this).html());
+    var className = new Date().getTime();
+    var addClass = fullText.replace(text,"<span class='"+className+"'>"+text+"</span>");
+    $(this).html(addClass);
+    return $(this).find("[class='"+className+"']");
+   }; 
+})( jQuery );
