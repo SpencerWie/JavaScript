@@ -48,7 +48,7 @@ var svg = d3.select("body").append("svg")
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-d3.csv("Most Profitable Hollywood Stories - US 2007.csv", function(error, data) {
+d3.csv("moives2007.csv", function(error, data) {
 
 	// Remove elements that have no information for Worldwide Gross, and remove the  innconsitent starting "$".
 	for(var i = 0; i < data.length; i++) {
