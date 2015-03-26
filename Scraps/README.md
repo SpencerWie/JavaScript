@@ -18,4 +18,7 @@
    <li>Image Difference Checker - http://jsfiddle.net/r3ma4/1/
       <ul><li>Checks two images, then on a third image draws in the the difference.</li></ul>
    </li>
+   <li>Correlation Calculator - http://jsfiddle.net/71e8xL60/6/
+      <ul><li>A calculator for correlation</li></ul>
+   </li>
 </ul>
