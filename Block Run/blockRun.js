@@ -8,16 +8,26 @@ var level_1 = [
    '#           #             ######       ## o ##            E              o o    #                ',
    '#  #       ##            ## o  #      ###   ###        ############      o o    #                ',
    '# ###     ###E          ### o        ####   ####       #         H#             #                ',
-   '#########################################  #############         ############   #                ',
+   '########  ###############################  #############         ############   #                ',
    '#                                       #  o              #######               #                ',
    '#      o                    o            #  ##############                  #####                ',
    '#                           o                          o                   #    #                ',
    '#    #####       oo                      E                      o         #     #  #########     ',
-   '#o     ####o             o     o       ##########                        #      ###         ###  ',
-   '###    #####     ##     ##     ##                    E         ###      #                     #  ',
-   '#   o  ######    ##     ##     ##          o         ######                                   #  ',
-   '#      ######    ##     ##     ##     ############                           o         P      #  ',   
-   '###############################################################################################  ',
+   '#o     ####o             o     o      ###########                        #      ###         ###  ',
+   '###    #####     ##     ###   ###                    E         ###    ###       ###           #  ',
+   '#   o  ######    ##     ##     ##          o         ######                      #            #  ',
+   '#      ######    ##     ##     ##     ############                           o   L     P      #  ',   
+   '###   #########################################################################################  ',
+   '#     #########################################################################################  ',
+   '#     #########################################################################################  ',
+   '#   ###########################################################################################  ', 
+   '#                                                o                                       ######  ',   
+   '#             o                                E            oo                    o o    ######  ',   
+   '###                                            ######      ####          o o             ######  ',   
+   '####        #####          ####        ####              ########                 o o    ######  ',   
+   '####        #####   ooo    #####E     ######            ##########E     ######           ######  ',   
+   '###############################################################################################  ', 
+   '###############################################################################################  ',    
 ];
 
 var level_2 = [
@@ -29,27 +39,30 @@ var level_2 = [
    '#                                                                               #                ',
    '#                                                                               #                ',
    '#                                                                               #                ',
-   '#                                                                               #                ',
+   '#   P                                                                           #                ',
    '#################################################################################                ',
 ];
+
 var delay = 28;
 var items = [];
 var player;
 var yLevel = 0;
 var yLevelMax = 288;
+var levels = [level_1, level_2];
 
 LEFT = RIGHT = UP = DOWN = SHIFT = false;
 
 GRAVITY = 0.25;
 COINS = 0;
 HEARTS = 3;
+LEVEL = 1;
 
 var groundPoint = { x: 0, y: 0 , color: 'red', height: 4, width: 28};
+var portalIndex = 0; // index of the portal in the items
 
 var scrollX = 0;
 var scrollY = 0;
 
-var camY = 0;
 /*
 How timeframes work: For animations via frame-by-frame
 
@@ -98,7 +111,7 @@ function Player() {
    {
       this.timer++;
 
-      for(var i = 0; i <blink_timeframe.length; i++ ) {
+      for(var i = 0; i < blink_timeframe.length; i++ ) {
          if(this.step == i && this.timer > blink_timeframe[i][0]) {
             this.frameX = blink_timeframe[i][1];
             this.step = i + 1;
@@ -109,6 +122,7 @@ function Player() {
          }
       }   
    }
+   
    this.verticalMovement = function()
    {
       // Arrow Key detection.
@@ -222,10 +236,10 @@ function Player() {
       // Handle Jump (only jump when player is on the ground)      
       for(item in items) {
          if(collide(groundPoint, items[item]) && isItem(items[item],'block') && this.dy >= 0) { 
-            this.jump = true; 
+            this.jump = true; // When we found a collision we stop looking
             break;
          } else {
-            this.jump = false;    
+            this.jump = false; // Otherwise we keep looking   
          }
       }
    }
@@ -336,6 +350,8 @@ function Portal(x, y, map, text)
 {
    this.x = x - 32; // Reposition (since bigger than 32x32)
    this.y = y - 64;
+   this.width = 100;
+   this.height = 100;
    this.map = map;
    this.text = text;
    this.image = images["portal"];
@@ -354,6 +370,7 @@ function loadImages()
    var Background = new Image(); Background.src = "clouds.jpg";
    var Enemies = new Image(); Enemies.src = "enemies.png";
    var Portal = new Image(); Portal.src = "portal.png";
+   var Lock = new Image(); Lock.src = "lock.png";
    
    images = {
       player_blink: playerBlink,
@@ -362,7 +379,8 @@ function loadImages()
       heart: Heart,
       background: Background,
       enemies: Enemies,
-      portal: Portal
+      portal: Portal,
+      lock: Lock
    }
    
    return images;
@@ -373,8 +391,14 @@ function createMap(map) {
    var Y = 0;
    var SIZE = 32;
    
+   ctx.setTransform(1, 0, 0, 1, 0, 0);
+   
    player = new Player();
-   test = new Block(0,0)
+   items = [];
+   
+   scrollX = 0;
+   scrollY = 0;
+   yLevel = 0;
    
    for( Y = 0; Y < map.length; Y++ ) {
       for( X = 0; X < map[0].length; X++ ) {
@@ -387,7 +411,12 @@ function createMap(map) {
          if(map[Y].charAt(X) == 'E') 
             items.push(new Enemy(X*SIZE, Y*SIZE, 40, 52, images["enemies"], 4, 5, 2, "RedBlock"));
          if(map[Y].charAt(X) == 'P')   
-             items.push(new Portal(X*SIZE, Y*SIZE, "", ""));   
+              items.push(new Portal(X*SIZE, Y*SIZE, "", ""));
+         if(map[Y].charAt(X) == 'L') {  
+              var lock = new Block(X*SIZE, Y*SIZE);
+              lock.image = images["lock"];
+              items.push(lock);  
+         }              
       }
    }
 }
@@ -415,7 +444,19 @@ document.addEventListener("keyup", function(e) {
     if( e.keyCode == 39 ) RIGHT = false;
     if( e.keyCode == 40 ) DOWN = false;  
     if( e.keyCode == 16 ) SHIFT = false;    
+    if( e.keyCode == 32 ) nextLevel(); // SPACE
 });
+
+function nextLevel() {
+    if(LEVEL < levels.length) {
+        for(item in items) {
+           if(isItem(items[item],'portal') && collide(player,items[item])) {      
+              LEVEL++;
+              createMap(levels[LEVEL-1]);
+            }
+        }
+    }
+}
 
 // Check on what an item is based on it's image.
 function isItem(check, item) {
@@ -423,18 +464,30 @@ function isItem(check, item) {
 }
 
 function handleYscroll() {
-   if(player.y > 288 && yLevel == 0){
+   if(player.y > 288*2 && yLevel == 1){
+      scrollY+= yLevelMax;
+      ctx.translate(0, -yLevelMax);
+      yLevel = 2;
+      images["background"].src = "ground_deep.jpg";
+   }
+   else if(player.y > 288 && yLevel == 0){
       scrollY+= yLevelMax;
       ctx.translate(0, -yLevelMax);
       yLevel = 1;
       images["background"].src = "ground.jpg";
    }
-   if(player.y <= 288 && yLevel == 1){
+   else if(player.y <= 288 && yLevel == 1){
       scrollY-= yLevelMax;
       ctx.translate(0, yLevelMax);
       yLevel = 0;
       images["background"].src = "clouds.jpg";
    }   
+   else if(player.y <= 288*2 && yLevel == 2){
+      scrollY-= yLevelMax;
+      ctx.translate(0, yLevelMax);
+      yLevel = 1;
+      images["background"].src = "ground.jpg";
+   }      
 }
 
 var canvas = document.getElementById("canvas");
@@ -454,8 +507,8 @@ timer = setInterval(function()
    player.draw();   
    ctx.fillStyle = "red";
    ctx.fillText("Beta: V 0.30", 10-scrollX, 10+scrollY);
-   ctx.drawImage(images["coin"], 0,0, 32, 32, 400-scrollX, scrollY, 32, 32);
-   ctx.fillText(" x "+COINS, 430-scrollX,20+scrollY);
-   ctx.drawImage(images["heart"], 0,0, 32, 32, 300-scrollX, scrollY, 32, 32);
-   ctx.fillText(" x "+HEARTS, 330-scrollX,20+scrollY);   
+   ctx.drawImage(images["coin"], 0,0, 32, 32, 415-scrollX, scrollY, 32, 32);
+   ctx.fillText(" x "+COINS, 440-scrollX,20+scrollY);
+   ctx.drawImage(images["heart"], 0,0, 32, 32, 370-scrollX, scrollY, 32, 32);
+   ctx.fillText(" x "+HEARTS, 395-scrollX,20+scrollY);   
 }, delay);
