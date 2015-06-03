@@ -8,12 +8,19 @@
 The original game <em>Block Run</em>, was created as a simple platform game in Python (using pyGame). It was the first "real" game that I've created, because of this things were not done in the most effiecent way. Now I'm doing a new and improved <em>Block Run</em> written in JavaScript using the HTML5 Canvas. 
 </p>
 
-<h3>Current Version: <strong><em>v0.30</em></strong></h3>
+<h3>Current Version: <strong><em>v0.33</em></strong></h3>
+<ul>
+  <li>Added doors with locks.</li>
+  <li>Protal functionality implemented</li>
+  <li>Added 3rd level to level system.</li>
+</ul>
+
+<h3><em>v0.30</em></h3>
 <ul>
   <li>Improved Performance</li>
   <li>Added coins</li>
   <li>Added Sky and Ground Backgrounds</li>
-  <li>Height Level system implemented</li>
+  <li>Height 2 Level system implemented</li>
   <li>Added Sprinting</li>
   <li>Added level map system (<em>Portal Sprites</em>)</li>
   <li>Added Hearts</li>
