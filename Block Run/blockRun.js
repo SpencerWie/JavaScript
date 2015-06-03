@@ -506,7 +506,7 @@ timer = setInterval(function()
       items[item].draw();
    player.draw();   
    ctx.fillStyle = "red";
-   ctx.fillText("Beta: V 0.30", 10-scrollX, 10+scrollY);
+   ctx.fillText("Beta: V 0.33", 10-scrollX, 10+scrollY);
    ctx.drawImage(images["coin"], 0,0, 32, 32, 415-scrollX, scrollY, 32, 32);
    ctx.fillText(" x "+COINS, 440-scrollX,20+scrollY);
    ctx.drawImage(images["heart"], 0,0, 32, 32, 370-scrollX, scrollY, 32, 32);
