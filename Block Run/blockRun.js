@@ -8,11 +8,11 @@ var level_1 = [
    '#           #             ######       ## o ##            E              o o    #                ',
    '#  #       ##            ## o  #      ###   ###        ############      o o    #                ',
    '# ###     ###E          ### o        ####   ####       #         H#             #                ',
-   '########  ###############################  #############         ############   #                ',
+   '#########################################  #############         ############   #                ',
    '#                                       #  o              #######               #                ',
    '#      o                    o            #  ##############                  #####                ',
-   '#                           o                          o                   #    #                ',
-   '#    #####       oo                      E                      o         #     #  #########     ',
+   '#                           o                          o                   #    #   #######      ',
+   '#    #####       oo                      E                      o         #     #  #       #     ',
    '#o     ####o             o     o      ###########                        #      ###         ###  ',
    '###    #####     ##     ###   ###                    E         ###    ###       ###           #  ',
    '#   o  ######    ##     ##     ##          o         ######                      #            #  ',
@@ -23,7 +23,7 @@ var level_1 = [
    '#   ###########################################################################################  ', 
    '#                                                o                                       ######  ',   
    '#             o                                E            oo                    o o    ######  ',   
-   '###                                            ######      ####          o o             ######  ',   
+   '###                                            ######      ####          o o       K     ######  ',   
    '####        #####          ####        ####              ########                 o o    ######  ',   
    '####        #####   ooo    #####E     ######            ##########E     ######           ######  ',   
    '###############################################################################################  ', 
@@ -56,6 +56,7 @@ GRAVITY = 0.25;
 COINS = 0;
 HEARTS = 3;
 LEVEL = 1;
+KEYS = 0;
 
 var groundPoint = { x: 0, y: 0 , color: 'red', height: 4, width: 28};
 var portalIndex = 0; // index of the portal in the items
@@ -186,8 +187,19 @@ function Player() {
    this.handleCollisions = function() 
    {
       for(item in items) {
+        var isSolidBlock = (isItem(items[item],'block') || isItem(items[item],'lock'));  
+        
+         if( isItem(items[item],'key') && collide(this,items[item]) ) {
+            items.splice(item, 1);
+            KEYS++;
+         }                         
+         // Locks [ breaks lock if you have a key, otherwise it's treated as a normal block ]
+         if( isItem(items[item],'lock') && collide(this,items[item]) && KEYS > 0 ) {
+            items.splice(item, 1);
+            KEYS--;
+         }                 
          // Blocks
-         if(RIGHT && collide(this,items[item]) && isItem(items[item],'block')) {
+         if(RIGHT && collide(this,items[item]) && isSolidBlock ) {
             // Reposition player to be place right next to block, then get the difference and apply that to scrolling of canvas.
             var oldX = this.x;
             this.x = items[item].x - this.size;
@@ -195,7 +207,7 @@ function Player() {
             ctx.translate(diff, 0);
             scrollX += diff;
          }
-         else if(LEFT && collide(this,items[item]) && isItem(items[item],'block')) {
+         else if(LEFT && collide(this,items[item]) && isSolidBlock ) {
             var oldX = this.x;
             this.x = items[item].x + this.size;
             var diff = oldX - this.x
@@ -235,7 +247,7 @@ function Player() {
       
       // Handle Jump (only jump when player is on the ground)      
       for(item in items) {
-         if(collide(groundPoint, items[item]) && isItem(items[item],'block') && this.dy >= 0) { 
+         if(collide(groundPoint, items[item]) && isSolidBlock && this.dy >= 0) { 
             this.jump = true; // When we found a collision we stop looking
             break;
          } else {
@@ -350,7 +362,7 @@ function Portal(x, y, map, text)
 {
    this.x = x - 32; // Reposition (since bigger than 32x32)
    this.y = y - 64;
-   this.width = 100;
+   this.width = 64;
    this.height = 100;
    this.map = map;
    this.text = text;
@@ -371,6 +383,7 @@ function loadImages()
    var Enemies = new Image(); Enemies.src = "enemies.png";
    var Portal = new Image(); Portal.src = "portal.png";
    var Lock = new Image(); Lock.src = "lock.png";
+   var Key = new Image(); Key.src = "key.png";
    
    images = {
       player_blink: playerBlink,
@@ -380,7 +393,8 @@ function loadImages()
       background: Background,
       enemies: Enemies,
       portal: Portal,
-      lock: Lock
+      lock: Lock,
+      key: Key
    }
    
    return images;
@@ -416,7 +430,12 @@ function createMap(map) {
               var lock = new Block(X*SIZE, Y*SIZE);
               lock.image = images["lock"];
               items.push(lock);  
-         }              
+         }  
+         if(map[Y].charAt(X) == 'K') {  
+              var key = new Block(X*SIZE, Y*SIZE);
+              key.image = images["key"];
+              items.push(key);  
+         }           
       }
    }
 }
