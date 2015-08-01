@@ -1,7 +1,7 @@
 var level_1 = [
    '#################################################################################                ',
    '#             #                   # o           o #                             #                ',
-   '#             # o                 #####   H   #####      o      o               #                ',
+   '#             # o                 #####   o   #####      o      o               #                ',
    '#         o    #                                                                #                ',
    '#               ######                   ###            ##      ##              #                ',
    '#  o                      E             #####               o                   #                ',
@@ -16,31 +16,40 @@ var level_1 = [
    '#o     ####o             o     o      ###########                        #      ###         ###  ',
    '###    #####     ##     ###   ###                    E         ###    ###       ###           #  ',
    '#   o  ######    ##     ##     ##          o         ######                      #            #  ',
-   '#      ######    ##     ##     ##     ############                           o   L     P      #  ',   
+   '#      ######xxxx##xxxxx##xxxxx##     ############                           o   L     P      #  ',   
    '###   #########################################################################################  ',
    '#     #########################################################################################  ',
    '#     #########################################################################################  ',
    '#   ###########################################################################################  ', 
    '#                                                o                                       ######  ',   
-   '#             o                                E            oo                    o o    ######  ',   
+   '#                                              E            oo                    o o    ######  ',   
    '###                                            ######      ####          o o       K     ######  ',   
-   '####        #####          ####        ####              ########                 o o    ######  ',   
-   '####        #####   ooo    #####E     ######            ##########E     ######           ######  ',   
+   '####                        ####        ####              ########                 o o    ######  ',   
+   '####                       #####E     ######            ##########E     ######           ######  ',   
    '###############################################################################################  ', 
    '###############################################################################################  ',    
 ];
 
 var level_2 = [
-   '#################################################################################                ',
-   '#                                                                               #                ',
-   '#                                                                               #                ',
-   '#                                                                               #                ',
-   '#                                                                               #                ',
-   '#                                                                               #                ',
-   '#                                                                               #                ',
-   '#                                                                               #                ',
-   '#   P                                                                           #                ',
-   '#################################################################################                ',
+   '####################################################################################               ',
+   '#           o                                       ooo                            #                ',
+   '#                            0                   #########                         #                ',
+   '#####     #####             ###        o        #        #            #            #                ',
+   '#   #       #     #####   ## # ##      o      ##         #        #########        #                ',
+   '#    #    oo#                #        ###     #    o     #            #            #                ',
+   '#         ###                #xxxxxxxxxxxxxxxx#   ooo    #            #        #####                ',
+   '#           #####            ##################    o     ######       #    ####    #                ',
+   '#   P       #xxxxxxxxxxxxxxxx#                                        #            #                ',
+   '############################## ##################################################  #                ',
+   '# H    o      o       o    o   ##################################################  #                ',   
+   '################################                                                   #                ', 
+   '#                                                                                  #                ', 
+   '#                                                                                  #                ', 
+   '#                                                                                  #                ', 
+   '#                                                                                  #                ', 
+   '#                                                                                  #                ', 
+   '#                                                                                  #                ',    
+   '####################################################################################                ',   
 ];
 
 var delay = 28;
@@ -224,6 +233,10 @@ function Player() {
             items.splice(item, 1);
             HEARTS++;
          }         
+         // Spikes
+         if( isItem(items[item],'spikes') && collide(this,items[item]) ) {
+            this.die();
+         }         
          // Monsters
          if( isItem(items[item],'enemies') && collide(items[item], this) ){
             //Player land on head, enemey is damaged (shift XFrame or die if out of hp)
@@ -322,6 +335,26 @@ function Block(x, y) {
    }
 }
 
+function MovingBlock(x, y) {
+    Block.call(this, x, y);
+    this.speed = 5;
+    
+    this.move = function() {
+      for(item in items) {
+          if( isItem(items[item],'block') && collide(this,items[item])) {   
+            speed *= -1;
+            if(speed > 0)
+              this.x = items[item].x - this.width;
+            else
+              this.x = items[item].x + this.width;
+              
+            break;
+          }
+      }
+      this.x += speed;      
+    }
+}
+
 function Heart(x, y) {
    this.x = x + 10; 
    this.y = y + 10;
@@ -330,6 +363,17 @@ function Heart(x, y) {
    
    this.draw = function() {
       ctx.drawImage(this.image, this.x - 10, this.y - 10);
+   }
+}
+
+function Spikes(x, y) {
+   this.x = x; 
+   this.y = y;
+   this.image = images['spikes'];
+   this.width = 30; this.height = 30;
+   
+   this.draw = function() {
+      ctx.drawImage(this.image, this.x, this.y);
    }
 }
 
@@ -384,6 +428,7 @@ function loadImages()
    var Portal = new Image(); Portal.src = "portal.png";
    var Lock = new Image(); Lock.src = "lock.png";
    var Key = new Image(); Key.src = "key.png";
+   var Spikes = new Image(); Spikes.src = "spikes.png";
    
    images = {
       player_blink: playerBlink,
@@ -394,7 +439,8 @@ function loadImages()
       enemies: Enemies,
       portal: Portal,
       lock: Lock,
-      key: Key
+      key: Key,
+      spikes: Spikes
    }
    
    return images;
@@ -426,6 +472,8 @@ function createMap(map) {
             items.push(new Enemy(X*SIZE, Y*SIZE, 40, 52, images["enemies"], 4, 5, 2, "RedBlock"));
          if(map[Y].charAt(X) == 'P')   
               items.push(new Portal(X*SIZE, Y*SIZE, "", ""));
+         if(map[Y].charAt(X) == 'M')
+            items.push(new MovingBlock(X*SIZE, Y*SIZE));
          if(map[Y].charAt(X) == 'L') {  
               var lock = new Block(X*SIZE, Y*SIZE);
               lock.image = images["lock"];
@@ -435,7 +483,9 @@ function createMap(map) {
               var key = new Block(X*SIZE, Y*SIZE);
               key.image = images["key"];
               items.push(key);  
-         }           
+         }    
+         if(map[Y].charAt(X) == 'x') 
+            items.push(new Spikes(X*SIZE, Y*SIZE));          
       }
    }
 }
@@ -525,7 +575,7 @@ timer = setInterval(function()
       items[item].draw();
    player.draw();   
    ctx.fillStyle = "red";
-   ctx.fillText("Beta: V 0.33", 10-scrollX, 10+scrollY);
+   ctx.fillText("Beta: V 0.34", 10-scrollX, 10+scrollY);
    ctx.drawImage(images["coin"], 0,0, 32, 32, 415-scrollX, scrollY, 32, 32);
    ctx.fillText(" x "+COINS, 440-scrollX,20+scrollY);
    ctx.drawImage(images["heart"], 0,0, 32, 32, 370-scrollX, scrollY, 32, 32);
