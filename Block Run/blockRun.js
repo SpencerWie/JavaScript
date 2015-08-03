@@ -66,6 +66,7 @@ COINS = 0;
 HEARTS = 3;
 LEVEL = 1;
 KEYS = 0;
+DEAD = false;
 
 var groundPoint = { x: 0, y: 0 , color: 'red', height: 4, width: 28};
 var portalIndex = 0; // index of the portal in the items
@@ -115,6 +116,7 @@ function Player() {
       this.verticalMovement();
       this.horizontalMovement();
       this.handleCollisions();
+      if(DEAD) { this.frameX = 0; this.frameY = 2; }
    }
    
    this.BlinkAnimation = function() 
@@ -135,6 +137,7 @@ function Player() {
    
    this.verticalMovement = function()
    {
+      if(DEAD) return;
       // Arrow Key detection.
       if(UP && this.jump){ 
          this.dy = -this.jumpPower; 
@@ -173,6 +176,7 @@ function Player() {
    
    this.horizontalMovement = function()
    {
+      if(DEAD) return;
       // Handle Running (Shift)
       if(SHIFT) this.speed = this.run;
       else this.speed = this.walk;
@@ -270,19 +274,30 @@ function Player() {
    }
    // When the player dies, subtract a life and place back to start point. Translate camera back as well.
    this.die = function() {
-      // Reset Camera
-      ctx.translate( this.x - this.startX, 0  );
-      scrollX = 0; 
-      
-      // Reset Player position.
-      this.x = this.startX;   
-      this.y = this.startY;
-      
-      handleYscroll(); // Handle yScroll based on new position.
-      
-      // If the player has hearts subtract, if the player is out of lives restart.
-      if( HEARTS > 1 ) HEARTS--;
-      else location.reload();
+      var self = this
+      if(!DEAD)
+      {
+        setTimeout(function(){
+          // Change Sprite to normal 
+          DEAD = false;
+          self.frameX = self.frameY = 0;
+          // Reset Camera
+          ctx.translate( self.x - self.startX, 0  );
+          console.log(  self.x - self.startX  )
+          scrollX = 0; 
+          
+          // Reset Player position.
+          self.x = self.startX;   
+          self.y = self.startY;
+          
+          handleYscroll(); // Handle yScroll based on new position.
+          
+          // If the player has hearts subtract, if the player is out of lives restart.
+          if( HEARTS > 1 ) HEARTS--;
+          else location.reload();
+        }, 3000);
+      }
+      DEAD = true;
    }
 }
 
@@ -309,6 +324,7 @@ function Enemy(x, y, width, height, image, speed ,walkSteps, hp, type)
    
    this.update = function() 
    {
+      if(DEAD) return;
       // Walking
       if(this.x >= this.endWalk && this.speed > 0){
          this.x = this.endWalk;
