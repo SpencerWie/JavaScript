@@ -44,12 +44,25 @@ var level_2 = [
    '# H    o      o       o    o   ##################################################  #                 #',   
    '################################K                                           #     ####    ##         #', 
    '#                              ##                     #     o     o     o   #   ##        ###        #', 
-   '#                              #     E               ##   E      E          #    #    #########    ###       ', 
-   '#                              #     ######         ### ######################   #      L            # ', 
-   '#                              #                   ####        #####        #    ###    ##           # ', 
-   '#                              ###               ########                   #           #   KK       # ', 
-   '#                              L         #E     #######o   E                L  E     ####xxx##xxxxxxx#    ',    
-   '######################################################################################################                ',   
+   '#                              #     E               ##   E      E          #    #    #########    ###', 
+   '#    P                         #     ######         ### ######################   #      L            #', 
+   '###########                    #                   ####        #####        #    ###    ##           #', 
+   '############                   ###               ########                   #           #   KK       #', 
+   '#############                  L         #E     #######o   E                L  E     ####xxx##xxxxxxx#',    
+   '######################################################################################################',   
+];
+
+var level_3 = [
+   '######################################################################################################',
+   '#                                                                                                    #',
+   '#   ########### #                                                                                    #',
+   '##       #      #                          #   #                                                     #',
+   '#        #      #                 #        #  #     ####       HH HH                                 #',
+   '#        #      #####    ###      #####    # #     #          HHHHHHH                                #',
+   '##       #      #   #   #   #     #   #    ##      #####       HHHHH                                 #',
+   '#        #      #   #   #   ##    #   #    # #         #        HHH                                  #',
+   '#        #      #   #    ### ##   #   #    #  #    ####          H                                   #',
+   '######################################################################################################', 
 ];
 
 var delay = 28;
@@ -57,7 +70,7 @@ var items = [];
 var player;
 var yLevel = 0;
 var yLevelMax = 288;
-var levels = [level_1, level_2];
+var levels = [level_1, level_2, level_3];
 
 LEFT = RIGHT = UP = DOWN = SHIFT = false;
 
@@ -103,6 +116,7 @@ function Player() {
    this.frameY = 0; // Y frame on tilemap sprite
    this.image = images['player_blink'];
    this.jump = false;
+   this.ducked = false;
    this.timer = 0; // For animation
    this.step = 0; // For frame movement (animation)
    
@@ -121,6 +135,7 @@ function Player() {
    
    this.BlinkAnimation = function() 
    {
+      if(this.ducked) return;
       this.timer++;
 
       for(var i = 0; i < blink_timeframe.length; i++ ) {
@@ -139,7 +154,7 @@ function Player() {
    {
       if(DEAD) return;
       // Arrow Key detection.
-      if(UP && this.jump){ 
+      if(UP && this.jump && !DOWN){  
          this.dy = -this.jumpPower; 
          this.ddy = -1;
          this.jump = false;
@@ -190,11 +205,39 @@ function Player() {
          this.frameY = 0; // Face Right
       }
       if(!LEFT && !RIGHT) this.dx = 0; // If no arrow keys no move hor.
-      
+      this.handleDucking();
       // Update position and move camra.
       player.x -= this.dx;
       scrollX += this.dx;
       ctx.translate(this.dx, 0);   
+   }
+   
+   this.handleDucking = function()
+   {  // Duck only when holding the down arrow and player isn't jumping
+      var duckLeft =  { x: 2, y: 2 };
+      var duckRight = { x: 1, y: 2 };
+      if(!DOWN && this.ducked) 
+      {
+          this.ducked = false;
+          if( this.frameX == duckLeft.x && this.frameY == duckLeft.y ) {
+            this.frameX = 0; this.frameY = 1;
+          }
+          else if( this.frameX == duckRight.x && this.frameY == duckRight.y ) {
+            this.frameX = 0; this.frameY = 0;
+          }
+      }      
+      if(DOWN && this.jump)
+      {
+          if(this.frameY == 1) { 
+            this.frameX = duckLeft.x; 
+            this.frameY = duckLeft.y; 
+          }
+          if(this.frameY == 0) { 
+            this.frameX = duckRight.x; 
+            this.frameY = duckRight.y; 
+          }          
+          this.ducked = true;
+      }
    }
    
    this.handleCollisions = function() 
@@ -264,6 +307,7 @@ function Player() {
       
       // Handle Jump (only jump when player is on the ground)      
       for(item in items) {
+         var isSolidBlock = (isItem(items[item],'block') || isItem(items[item],'lock'));  
          if(collide(groundPoint, items[item]) && isSolidBlock && this.dy >= 0) { 
             this.jump = true; // When we found a collision we stop looking
             break;
@@ -283,7 +327,6 @@ function Player() {
           self.frameX = self.frameY = 0;
           // Reset Camera
           ctx.translate( self.x - self.startX, 0  );
-          console.log(  self.x - self.startX  )
           scrollX = 0; 
           
           // Reset Player position.
