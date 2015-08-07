@@ -1,6 +1,6 @@
 <h1>Block Run Beta</h1>
 
-<p><a href="http://cs.iupui.edu/~spdwiecz/JavaScript/Block%20Run/blockRun.html"> Click here to play the lastest version of the game</p>
+<p><a href="http://cs.iupui.edu/~spdwiecz/JavaScript/Block%20Run/blockRun.html"> Click here to play the lastest version of the game</a></p>
 
 <img src="screenshot.PNG" style="display:block; margin: auto" alt="Game Play Example" />
 
@@ -14,7 +14,7 @@ The original game <em>Block Run</em>, was created as a simple platform game in P
   <li>Portal functionality implemented</li>
   <li>3rd level added to height level system</li>
   <li>Added Spikes</li>
-  <li>Player death system improved/li>
+  <li>Player death system improved</li>
   <li>Added player ducking ability</li>
 </ul>
 
