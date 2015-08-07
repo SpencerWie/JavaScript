@@ -7,7 +7,7 @@ var level_1 = [
    '#  o                      E             #####               o                   #                ',
    '#           #             ######       ## o ##            E              o o    #                ',
    '#  #       ##            ## o  #      ###   ###        ############      o o    #                ',
-   '#x###     ###E          ### o        ####   ####       #         H#             #                ',
+   '#v###     ###E          ### o        ####   ####       #         H#             #                ',
    '#########################################  #############         ############   #                ',
    '#                                       #  o              #######               #                ',
    '#      o                    o            #  ##############                  #####                ',
@@ -16,7 +16,7 @@ var level_1 = [
    '#o     ####o             o     o      ###########                        #      ###         ###  ',
    '###    #####     ##     ###   ###                    E         ###    ###       ###           #  ',
    '#   o  ######    ##     ##     ##          o         ######                      #            #  ',
-   '#      ######xxxx##xxxxx##xxxxx##     ############                           o   L     P      #  ',   
+   '#      ######vvvv##vvvvv##vvvvv##     ############                           o   L     P      #  ',   
    '###   #########################################################################################  ',
    '#     #########################################################################################  ',
    '#     #########################################################################################  ',
@@ -37,32 +37,34 @@ var level_2 = [
    '#####     #####             ###        o        #        #            #            #          o      #',
    '#   #       #     #####   ## # ##      o      ##         #        #########        #         ###     #',
    '#    #    oo#                #        ###     #    o     #            #            ###               #',
-   '#         ###                #xxxxxxxxxxxxxxxx#   ooo    #            #        #####     ##          #',
+   '#         ###                #vvvvvvvvvvvvvvvv#   ooo    #            #        #####     ##          #',
    '#           #####            ##################    o     ######       #    ####    #          o      #',
-   '#   P       #xxxxxxxxxxxxxxxx#                                L       #            ###       ###     #',
+   '#   P       #vvvvvvvvvvvvvvvv#                                L       #            ###       ###     #',
    '############################## #################################################   #                 #',
-   '# H    o      o       o    o   ##################################################  #                 #',   
+   '# H    o      o       o    o   #################################################   #                 #',   
    '################################K                                           #     ####    ##         #', 
-   '#                              ##                     #     o     o     o   #   ##        ###        #', 
-   '#                              #     E               ##   E      E          #    #    #########    ###', 
-   '#    P                         #     ######         ### ######################   #      L            #', 
-   '###########                    #                   ####        #####        #    ###    ##           #', 
-   '############                   ###               ########                   #           #   KK       #', 
-   '#############                  L         #E     #######o   E                L  E     ####xxx##xxxxxxx#',    
+   '#                              ##                           o     o     o   #    #        ###        #', 
+   '#                              #     E                #   E      E          #   ##    #########    ###', 
+   '#    P                         #     ######          ## #####################    #      L            #', 
+   '###########                    #                    ###        #####        ##   ###    ##           #', 
+   '############                   ###                 ######                   #           #   KK       #', 
+   '#############                  L         #E       #####o   E                L  E     ####vvv##vvvvvvv#',    
    '######################################################################################################',   
 ];
 
 var level_3 = [
    '######################################################################################################',
    '#                                                                                                    #',
-   '#   ########### #                                                                                    #',
-   '##       #      #                          #   #                                                     #',
-   '#        #      #                 #        #  #     ####       HH HH                                 #',
-   '#        #      #####    ###      #####    # #     #          HHHHHHH                                #',
-   '##       #      #   #   #   #     #   #    ##      #####       HHHHH                                 #',
-   '#        #      #   #   #   ##    #   #    # #         #        HHH                                  #',
-   '#        #      #   #    ### ##   #   #    #  #    ####          H                                   #',
-   '######################################################################################################', 
+   '#                                                                            oooo                    #',
+   '#            o                                   E               E           ####                    #',
+   '#            o      o       o       o           #######   o    ########                              #',
+   '#          ###      #       #       #      o   o   #      #       #    o      vv            o        #',
+   '#         ####                             #   #   #vvvvvvvvvvvvvv#   ## vv   ##           ooo       #',
+   '#        #####                                     ##################    ##   ##     K      o        #',
+   '#       ######vvvvvvvvvvvvvvvvvvvvv vvvvvvvvvvvvvvv#              # L    ##         ###              #',
+   '################################### ############################### ##################################', 
+   '###################################  K o o o o o o o o o o o o o     o o o############################',
+   '#####################################################################################################',   
 ];
 
 var delay = 28;
@@ -425,14 +427,27 @@ function Heart(x, y) {
    }
 }
 
-function Spikes(x, y) {
+function Spikes(x, y, type) {
    this.x = x; 
-   this.y = y + 20;
+   this.y = y;
    this.image = images['spikes'];
-   this.width = 30; this.height = 10;
+   this.size = 32;   
+   this.type = type;
+
+   this.init = function(fx, fy, w, h, offX, offY) {
+      this.frameX = fx; this.frameY = fy; 
+      this.width = w; this.height = h;
+      this.offsetX = offX; this.offsetY = offY;
+      this.x -= offX; this.y -= offY;
+   }   
+   
+   if( this.type == "bottom" ) this.init(0, 0, 30, 10, 0, -20);
+   else if( this.type == "top" ) this.init(0, 1, 30, 10, 0, 0);
+   else if( this.type == "left" ) this.init(1, 0, 10, 30, 0, 0);
+   else if( this.type == "right" ) this.init(1, 1, 10, 30, -20, 0);
    
    this.draw = function() {
-      ctx.drawImage(this.image, this.x, this.y - 20);
+        ctx.drawImage(this.image, this.frameX*this.size, this.frameY*this.size, this.size, this.size, this.x + this.offsetX, this.y + this.offsetY, this.size, this.size);
    }
 }
 
@@ -543,8 +558,14 @@ function createMap(map) {
               key.image = images["key"];
               items.push(key);  
          }    
-         if(map[Y].charAt(X) == 'x') 
-            items.push(new Spikes(X*SIZE, Y*SIZE));          
+         if(map[Y].charAt(X) == 'v') 
+            items.push(new Spikes(X*SIZE, Y*SIZE, "bottom"));     
+         if(map[Y].charAt(X) == '^') 
+            items.push(new Spikes(X*SIZE, Y*SIZE, "top"));  
+         if(map[Y].charAt(X) == '>') 
+            items.push(new Spikes(X*SIZE, Y*SIZE, "right"));  
+         if(map[Y].charAt(X) == '<') 
+            items.push(new Spikes(X*SIZE, Y*SIZE, "left"));              
       }
    }
 }
@@ -634,7 +655,7 @@ timer = setInterval(function()
       items[item].draw();
    player.draw();   
    ctx.fillStyle = "red";
-   ctx.fillText("Beta: V 0.34", 10-scrollX, 10+scrollY);
+   ctx.fillText("Beta: V 0.38", 10-scrollX, 10+scrollY);
    ctx.drawImage(images["coin"], 0,0, 32, 32, 415-scrollX, scrollY, 32, 32);
    ctx.fillText(" x "+COINS, 440-scrollX,20+scrollY);
    ctx.drawImage(images["heart"], 0,0, 32, 32, 370-scrollX, scrollY, 32, 32);
