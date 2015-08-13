@@ -57,19 +57,19 @@ var level_3 = [
    '#                                                                                                    #                                                       #     #',
    '#                                                                            oooo                    #                                                       #     #',
    '#            o                                   E               E           ####                    #                                                       #     #',
-   '#            o      o       o       o           #######   o    ########                              #                                                       #     #',
-   '#          ###      #       #       #      o   o   #      #       #    o      vv            o        #           o     o     o                               #     #',
-   '#         ####                             #   #   #vvvvvvvvvvvvvv#   ## vv   ##           ooo       #    ##<   >#<    o    >#<   ##         o               #     #',
+   '#            o      o       o       o           #######   o    #######                               #                                                       #     #',
+   '#          ###      #       #       #      o   o   #      #       #           vv            o        #           o     o     o                               #     #',
+   '#         ####                             #   #   #vvvvvvvvvvvvvv#oo##  vv   ##           ooo       #    ##<   >#<    o    >#<   ##         o               #     #',
    '#        #####                                     ##################    ##   ##     K      o        #   ###<   >#<   >#<   >#<   ###        v               #     #',
-   '#       ######vvvvvvvvvvvvvvvvvvvvv vvvvvvvvvvvvvvv#              # L    ##         ###              L  ####vvvvv#vvvvv#vvvvv#vvvv####E     >#<E             L  P  #',
-   '################################### ############################### ###################################################################################o  ##########', 
-   '###################################  K o o o o o o o o o o o o o     o o o#############################                                               ##  #        #',
-   '######################################################################################################                                                #   #        #',   
-   '#                                                                                                                                                     #  o#        #',   
-   '#                                                                                                                                                     #  ##        #',   
-   '#                                                                                                                                                                  #',
-   '#                                                                                                                                                 K     o          #', 
-   '#                                                                                                                                                    #######       #',  
+   '#       ######vvvvvvvvvvvvvvvvvvvvv vvvvvvvvvvvvvvv#             #   L   ##         ###              L  ####vvvvv#vvvvv#vvvvv#vvvv####E     >#<E             L  P  #',
+   '################################### ##############################  ###################################################################################o  ##########', 
+   '###################################  K o o o o o o o o o o o o o    ###################################                                               ##  #        #',
+   '######################################################################################################               o           o                    #   #        #',   
+   '#                                                                                                                   ##     vv    ##                   #  o#        #',   
+   '#                                                                                                                         >##<                        #  ##        #',   
+   '#                                                                                                             oo          >##<         oo                          #',
+   '#                                                                                                            ####          ^^         ####        K     o          #', 
+   '#                                                                                                                vvvvvvvvvvvvvvvvvvvvv               #######       #',  
    '####################################################################################################################################################################',    
 ];
 
@@ -251,7 +251,7 @@ function Player() {
    this.handleCollisions = function() 
    {
       for(item in items) {
-        var isSolidBlock = (isItem(items[item],'block') || isItem(items[item],'lock'));  
+        var isSolidBlock = (isItem(items[item],'block') || isItem(items[item],'lock')  || isItem(items[item],'platform'));  
         
          if( isItem(items[item],'key') && collide(this,items[item]) ) {
             items.splice(item, 1);
@@ -315,7 +315,7 @@ function Player() {
       
       // Handle Jump (only jump when player is on the ground)      
       for(item in items) {
-         var isSolidBlock = (isItem(items[item],'block') || isItem(items[item],'lock'));  
+         var isSolidBlock = (isItem(items[item],'block') || isItem(items[item],'lock') || isItem(items[item],'platform'));  
          if(collide(groundPoint, items[item]) && isSolidBlock && this.dy >= 0) { 
             this.jump = true; // When we found a collision we stop looking
             break;
@@ -400,6 +400,12 @@ function Block(x, y) {
    this.draw = function() {
       ctx.drawImage(this.image, this.x, this.y);
    }
+}
+
+function Platform(x, y) {
+   Block.call(this, x, y);
+   this.image = images['platform'];
+   this.height = 5
 }
 
 function MovingBlock(x, y) {
@@ -509,6 +515,7 @@ function loadImages()
    var Lock = new Image(); Lock.src = "lock.png";
    var Key = new Image(); Key.src = "key.png";
    var Spikes = new Image(); Spikes.src = "spikes.png";
+   var Platform = new Image(); Platform.src = "platform.png";
    
    images = {
       player_blink: playerBlink,
@@ -520,7 +527,8 @@ function loadImages()
       portal: Portal,
       lock: Lock,
       key: Key,
-      spikes: Spikes
+      spikes: Spikes,
+      platform: Platform
    }
    
    return images;
@@ -544,33 +552,35 @@ function createMap(map) {
       for( X = 0; X < map[0].length; X++ ) {
          if(map[Y].charAt(X) == '#') 
             items.push(new Block(X*SIZE, Y*SIZE));
-         if(map[Y].charAt(X) == 'o') 
+         else if(map[Y].charAt(X) == '_') 
+            items.push(new Platform(X*SIZE, Y*SIZE)); 
+         else if(map[Y].charAt(X) == 'o') 
             items.push(new Coin(X*SIZE, Y*SIZE));
-         if(map[Y].charAt(X) == 'H') 
+         else if(map[Y].charAt(X) == 'H') 
             items.push(new Heart(X*SIZE, Y*SIZE));            
-         if(map[Y].charAt(X) == 'E') 
+         else if(map[Y].charAt(X) == 'E') 
             items.push(new Enemy(X*SIZE, Y*SIZE, 40, 52, images["enemies"], 4, 5, 2, "RedBlock"));
-         if(map[Y].charAt(X) == 'P')   
+         else if(map[Y].charAt(X) == 'P')   
               items.push(new Portal(X*SIZE, Y*SIZE, "", ""));
-         if(map[Y].charAt(X) == 'M')
+         else if(map[Y].charAt(X) == 'M')
             items.push(new MovingBlock(X*SIZE, Y*SIZE));
-         if(map[Y].charAt(X) == 'L') {  
+         else if(map[Y].charAt(X) == 'L') {  
               var lock = new Block(X*SIZE, Y*SIZE);
               lock.image = images["lock"];
               items.push(lock);  
          }  
-         if(map[Y].charAt(X) == 'K') {  
+         else if(map[Y].charAt(X) == 'K') {  
               var key = new Block(X*SIZE, Y*SIZE);
               key.image = images["key"];
               items.push(key);  
          }    
-         if(map[Y].charAt(X) == 'v') 
+         else if(map[Y].charAt(X) == 'v') 
             items.push(new Spikes(X*SIZE, Y*SIZE, "bottom"));     
-         if(map[Y].charAt(X) == '^') 
+         else if(map[Y].charAt(X) == '^') 
             items.push(new Spikes(X*SIZE, Y*SIZE, "top"));  
-         if(map[Y].charAt(X) == '>') 
+         else if(map[Y].charAt(X) == '>') 
             items.push(new Spikes(X*SIZE, Y*SIZE, "right"));  
-         if(map[Y].charAt(X) == '<') 
+         else if(map[Y].charAt(X) == '<') 
             items.push(new Spikes(X*SIZE, Y*SIZE, "left"));              
       }
    }
