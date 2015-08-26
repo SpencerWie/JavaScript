@@ -1,0 +1,46 @@
+#menu
+{
+    background-color: #003366;
+    padding: 3px;
+    width: 550px;
+}
+
+canvas
+{
+    border: 1px solid #003366;
+    padding: 2px;
+}
+
+#menu > div
+{
+    float: left;
+}
+
+#menu > button:hover
+{
+    background-color: #7094B8
+}
+
+#node, #link
+{
+    padding: 5px;
+    margin: 2px;
+    background-color: #336699;
+    color: #CCFFFF;
+    outline: 0; 
+    border: 1px solid #336699;
+}
+
+.selected 
+{
+    background-color: #114477 !important;
+    border: 1px solid white !important;
+    color: #BBDDDD !important;
+}
+
+button
+{
+    background: none;
+    outline: 0; 
+    border: 0;
+}
