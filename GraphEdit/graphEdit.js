@@ -39,12 +39,14 @@ $("#canvas").mouseup(function(e){
     {
       for( node in items["nodeList"])
       {
+        var selected = false;
         var node = items["nodeList"][node];
-        if( dist(canvasX,canvasY,node.x, node.y) < node.size )
+        node.outlineColor = "black";
+        if( dist(canvasX,canvasY,node.x, node.y) < node.size && !selected)
         {
           node.outlineColor = "yellow";
+          selected = true;
           console.log("selected node: " + node.id);
-          break;
         }
       }
       redraw();
