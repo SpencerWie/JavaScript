@@ -1,6 +1,7 @@
 var STATE = "";
 var items = {};
 var nodeIndex = 0;
+var nodeSize = 5;
 
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
@@ -9,6 +10,18 @@ $("#menu > button").click(function(){
     $("#menu > button").removeClass("selected");
     $(this).addClass("selected");
     STATE = $(this).attr("id");
+});
+
+$("#canvas").click(function(e){
+    if(STATE === "node")
+    {
+        var cRect = canvas.getBoundingClientRect();
+        var nodeOffset = Math.floor(nodeSize/2);
+        var canvasX = e.clientX - cRect.left - nodeOffset;
+        var canvasY = e.clientY - cRect.top - nodeOffset;
+        var newNode = new Node(canvasX,canvasY,nodeSize,10);
+        redraw();
+    }
 });
 
 function Node(x, y, size, value)
@@ -28,17 +41,9 @@ Node.prototype.draw = function()
     ctx.stroke();
 }
 
-var node1 = new Node(10,10,5,10);
-var node1 = new Node(30,30,5,10);
-var node1 = new Node(50,50,5,10);
-var node1 = new Node(100,100,5,10);
-
-console.log(items);
-
-function main()
+function redraw()
 {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
 	for(item in items)
     	items[item].draw();
 }
-
-requestAnimationFrame(main);
