@@ -1,17 +1,20 @@
-var STATE = "";
-var items = {
+var STATE = "node";                  // `STATE` is what is selected in the menu, for example if the user selects "Create/Edit Nodes"
+var items = {                        // `items` is the JSON data of the nodes an links on the board, to be used for saving/loading
   "nodeList": {},
-  "linkList": {}
+  "linkList": {} 
 };
-var nodeIndex = 0;
-var nodeSize = 5;
-var LEFT_MOUSE = 1;
+var nodeIndex = 0;                   // `nodeIndex` is used for assigning unquie values to nodes from by an integer starting at 0 to n.
+var nodeSize = 5;                    // The default radius of created nodes
+var LEFT_MOUSE = 1;             
 var RIGHT_MOUSE = 3;
 
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
+
+// Disable right-click context menu
 canvas.oncontextmenu = function (){ return false; }
 
+// Resize the canvas to fit the screen when the window is loaded or resized
 $( window ).resize(function(){ adjustCanvasSize(); redraw(); } );
 $( window ).load(adjustCanvasSize);
 
@@ -20,48 +23,50 @@ function adjustCanvasSize() {
   ctx.canvas.height = window.innerHeight;
 }
 
+// When a button is clicked in the top menu, change the STATE and highlight the selection.
 $("#menu > button").click(function(){
-  STATE = "";
-  var wasNotSelected = !$(this).hasClass("selected");
   $("#menu > button").removeClass("selected");
-  if( wasNotSelected ) {
-    STATE = $(this).attr("id");
-    $(this).addClass("selected");
-  }
+  $(this).addClass("selected");
+  STATE = $(this).attr("id");
 });
 
-$("#canvas").mouseup(function(e){
+$("#canvas").mouseup(function(e) {
+  // When the "Create/Edit Nodes" button is selected
   if( STATE === "node" )
   {
+    // Get the position of the mouse, and make that the position the center of a new node.
     var cRect = canvas.getBoundingClientRect();
     var nodeOffset = Math.floor(nodeSize/2);
     var canvasX = e.clientX - cRect.left - nodeOffset;
     var canvasY = e.clientY - cRect.top - nodeOffset;  
     
-    if( e.which == LEFT_MOUSE )    
-    {      
+    if( e.which == LEFT_MOUSE ) {      
       var newNode = new Node(canvasX,canvasY,nodeSize,10);
       redraw();
     }
-    else if( e.which == RIGHT_MOUSE  )
-    {
-      for( node in items["nodeList"])
-      {
-        var selected = false;
-        var node = items["nodeList"][node];
-        node.outlineColor = "black";
-        if( dist(canvasX,canvasY,node.x, node.y) < node.size && !selected)
-        {
-          node.outlineColor = "yellow";
-          selected = true;
-          console.log("selected node: " + node.id);
-        }
-      }
-      redraw();
-    }    
-    
+    else if( e.which == RIGHT_MOUSE  ) 
+      selectNode(canvasX, canvasY);
   }
 });
+
+// Go through each node, see if the (x,y) given at are at a node.
+function selectNode(canvasX, canvasY) {
+  var selected = false;    
+  for( node in items["nodeList"])
+  {
+    var node = items["nodeList"][node];
+    node.outlineColor = "black";
+    if( dist(canvasX,canvasY,node.x, node.y) < node.size && !selected)
+    {
+      node.outlineColor = "yellow";
+      selected = true;
+      $("#NodeID").val(node.id);
+    }
+  }
+  // If nothing was selected, undo any existing selections
+  if( !selected ) $("#NodeID").val(""); 
+  redraw();
+}
 
 function Node(x, y, size, value)
 {
@@ -90,5 +95,3 @@ function redraw()
 }
 
 function dist(x1,y1,x2,y2){ return Math.sqrt( (x1-x2)*(x1-x2) + (y1-y2)*(y1-y2) ); }
-
-
