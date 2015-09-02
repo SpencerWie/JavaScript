@@ -12,6 +12,14 @@ var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 canvas.oncontextmenu = function (){ return false; }
 
+$( window ).resize(function(){ adjustCanvasSize(); redraw(); } );
+$( window ).load(adjustCanvasSize);
+
+function adjustCanvasSize() {
+  ctx.canvas.width  = window.innerWidth;
+  ctx.canvas.height = window.innerHeight;
+}
+
 $("#menu > button").click(function(){
   STATE = "";
   var wasNotSelected = !$(this).hasClass("selected");
