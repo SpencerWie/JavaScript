@@ -4,7 +4,7 @@ var items = {                        // `items` is the JSON data of the nodes an
   "linkList": {} 
 };
 var nodeIndex = 0;                   // `nodeIndex` is used for assigning unquie values to nodes from by an integer starting at 0 to n.
-var nodeSize = 5;                    // The default radius of created nodes
+var nodeSize = 8;                    // The default radius of created nodes
 var LEFT_MOUSE = 1;             
 var RIGHT_MOUSE = 3;
 
@@ -41,11 +41,23 @@ $("#canvas").mouseup(function(e) {
     var canvasY = e.clientY - cRect.top - nodeOffset;  
     
     if( e.which == LEFT_MOUSE ) {      
-      var newNode = new Node(canvasX,canvasY,nodeSize,10);
+      var newNode = new Node(canvasX,canvasY,nodeSize,0);
       redraw();
     }
     else if( e.which == RIGHT_MOUSE  ) 
       selectNode(canvasX, canvasY);
+  }
+});
+
+//Change the value of a node when there is a change in the "Value" field:
+$("#NodeValue").keyup(function(){
+  if( $("#NodeID").val() )
+  {
+    affectedNode = items["nodeList"]["node_"+$("#NodeID").val()];
+    affectedNode.value = $(this).val();
+    affectedNode.size = +(ctx.measureText(affectedNode.value).width/2) + 5;
+    console.log(affectedNode.size);
+    redraw();
   }
 });
 
@@ -61,10 +73,12 @@ function selectNode(canvasX, canvasY) {
       node.outlineColor = "yellow";
       selected = true;
       $("#NodeID").val(node.id);
+      $("#NodeValue").val(node.value);
     }
   }
   // If nothing was selected, undo any existing selections
-  if( !selected ) $("#NodeID").val(""); 
+  if( selected ) $("#selection").show();
+  else { $("#NodeID").val(""); $("#selection").hide(); }
   redraw();
 }
 
@@ -85,6 +99,8 @@ Node.prototype.draw = function()
   ctx.beginPath();
   ctx.arc(this.x,this.y,this.size,0,2*Math.PI);
   ctx.stroke();
+  textSize = ctx.measureText(this.value).width;
+  ctx.fillText(this.value, this.x - (textSize/2), this.y + 3 );
 }
 
 function redraw()

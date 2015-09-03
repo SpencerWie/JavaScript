@@ -15,8 +15,11 @@
   <div id="menu">
       <button id="node" class="selected">Create/Edit Nodes</button>
       <button id="link">Create/Edit Links</button>
-      <span> | </span>
-      <input id="NodeID" value="" />
+      <span hidden id="selection">
+        <span> | </span>
+        <input hidden id="NodeID" value="" />
+        <label>Value: </label><input id="NodeValue" value="" />
+      </span>
   </div>
   <canvas id="canvas"></canvas>
   <script src="graphEdit.js"></script>
