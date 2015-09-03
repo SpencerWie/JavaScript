@@ -5,6 +5,17 @@ html, body {
   overflow: hidden;
 }
 
+input {
+  background-color: #7094B8;
+  color: #CCFFFF;
+  border-radius: 5px;
+  outline: none;
+  border: 1px solid #001144;
+  padding: 3px;
+}
+
+input:focus { border: 1px solid #CCFFFF; }
+
 #menu
 {
     background-color: #003366;
