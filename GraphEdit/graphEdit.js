@@ -4,6 +4,7 @@ var items = {                        // `items` is the JSON data of the nodes an
   "linkList": {} 
 };
 var nodeIndex = 0;                   // `nodeIndex` is used for assigning unquie values to nodes from by an integer starting at 0 to n.
+var linkIndex = 0;                   // `linkIndex` is used for assigning unquie values to links from by an integer starting at 0 to n. 
 var nodeSize = 8;                    // The default radius of created nodes
 var LEFT_MOUSE = 1;             
 var RIGHT_MOUSE = 3;
@@ -91,6 +92,15 @@ function Node(x, y, size, value)
   this.outlineColor = "black";
   this.id = nodeIndex++;
   items["nodeList"]["node_"+this.id] = this;
+}
+
+function Link(node1, node2, cost)
+{
+  this.node1 = node1;
+  this.node2 = node2;
+  this.cost = cost;
+  this.id = linkIndex++;  
+  items["linkList"]["link_"+this.id] = this;
 }
 
 Node.prototype.draw = function()
