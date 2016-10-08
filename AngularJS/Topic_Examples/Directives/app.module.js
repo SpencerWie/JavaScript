@@ -1,5 +1,5 @@
 /*
-A Directive is a custume made element created with angular
+A Directive is a custome made element created with angular
 */
 
 // Create module "app" with no dependancies
