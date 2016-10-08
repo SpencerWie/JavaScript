@@ -5,7 +5,7 @@ Directive Information:
 
 ---Restrictions ---
 	'E' => Element
-	'A' => Attribute
+	'A' => Attribute (Default)
 	'C' => Class
 	'M' => HTML Comment
 */
@@ -21,11 +21,35 @@ module.directive('helloE',  function(){
 	return helloworld;
 });
 
+// An attribute directive
 module.directive('helloA',  function(){
-	console.log('ran helloA')
 	return {
 		restrict: "A",
-		link: function(){ alert("Hello World!"); }
+		link: function(){ console.log("Hello World!"); }
 	}
 });
 
+// Attribute directive with more functionality
+module.directive('helloHover',  function(){
+	return {
+		link: function(scope, element, attrs) {        // link function(*scope, *element, *attributes [of elemenet])
+			element.bind("mouseenter", function(){
+				element.addClass(attrs.hovering);      // Add class based on the variable of the elements attribute "hovering" => "hoverGreen"
+			});
+			element.bind("mouseleave", function(){
+				element.removeClass(attrs.hovering);
+			});
+		}
+	}
+});
+
+// Directive Working with controller
+module.directive('dirCtrl', function(){
+	return {
+		link: function(scope, element, attrs){
+			element.bind("click", function(){
+				scope.$apply("helloworld()");          // Call the helloworld() function, which exist in scope from our controller
+			});
+		}
+	}
+});

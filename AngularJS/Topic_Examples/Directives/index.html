@@ -4,13 +4,21 @@
     <title>AngularJS Controllers</title>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0-beta.5/angular.min.js"></script>
     <script type="text/javascript" src="app.module.js"></script>
+	<script type="text/javascript" src="app.controller.js"></script>
 	<script type="text/javascript" src="app.directive.js"></script>
+	<style>
+		.hoverGreen { color: green; }
+	</style>
   </head>
   <body>
     <div ng-app="app">
       <h1>Directives</h1>
 	  <hello-e></hello-e>
 	  <div hello-a >Foo</div>
+	  <div><span hovering="hoverGreen" hello-hover>Hover over me</span></div>
+	  <div ng-controller="MyController">
+		<button dir-ctrl>Click Me</button>
+	  </div>
     </div>
   </body>
 </html>
