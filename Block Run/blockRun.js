@@ -7,13 +7,13 @@ var level_1 = [
    '#  o                      E             #####               o                   #                ',
    '#           #             ######       ## o ##            E              o o    #                ',
    '#  #       ##            ## o  #      ###   ###        ############      o o    #                ',
-   '#v###     ###E          ### o        ####   ####       #         H#             #                ',
+   '# ###     ###E          ### o        ####   ####       #         H#             #                ',
    '#########################################  #############         ############   #                ',
    '#                                       #  o              #######               #                ',
    '#      o                    o            #  ##############                  #####                ',
    '#                           o                          o                   #    #   #######      ',
    '#    #####       oo                      E                      o         #     #  #       #     ',
-   '#o     ####o             o     o      ###########                        #      ###         ###  ',
+   '#o     ####o             o     o       ##########                        #      ###         ###  ',
    '###    #####     ##     ###   ###                    E         ###    ###       ###           #  ',
    '#   o  ######    ##     ##     ##          o         ######                      #            #  ',
    '#      ######vvvv##vvvvv##vvvvv##     ############                           o   L     P      #  ',   
@@ -36,12 +36,12 @@ var level_2 = [
    '#                            0                   #########                         #     ###       ###',
    '#####     #####             ###        o        #        #            #            #          o      #',
    '#   #       #     #####   ## # ##      o      ##         #        #########        #o        ###     #',
-   '#    #    oo#                #        ###     #    o     #            #            ###               #',
-   '#         ###                #vvvvvvvvvvvvvvvv#   ooo    #            #        #####     ##          #',
-   '#           #####            ##################    o     ######       #    ####    #          o      #',
-   '#           #vvvvvvvvvvvvvvvv#                                L       #            ###       ###     #',
-   '############################## #################################################   #                 #',
-   '# H    o      o       o    o   #################################################   ######       ######',   
+   '#    #    oo#                #        ###     #    o     #            #            ##                #',
+   '#         ###                #vvvvvvvvvvvvvvvv#   ooo    #            #        #####     ##vvvvvvvvvv#',
+   '#           #####            ##################    o     ######       #    ####    #    ##############',
+   '#           #vvvvvvvvvvvvvvvv#                                L       #            ###               #',
+   '############################## ################################################    #                 #',
+   '# H    o      o       o    o   #                                            ###    ######       ######',   
    '################################K                                           #     #        o         #', 
    '#                              ##                           o     o     o   #    #        ###        #', 
    '#                              #     E                #   E      E          #   ##    ########       #', 
@@ -128,6 +128,9 @@ function Player() {
    this.ducked = false;
    this.timer = 0; // For animation
    this.step = 0; // For frame movement (animation)
+   this.lastPositions = [];    // Keeps track of the last `lastPositionsMax` player positions, used for movement animation
+   this.lastPositionsMax = 10; // Maximum number of positions being kept track of
+   this.runColors = {r: 0, g: 0, b: 0}; // Color of running animation
    
    this.draw = function() {
       ctx.drawImage(this.image, this.frameX*this.size, this.frameY*this.size, this.size, this.size, this.x, this.y, this.size, this.size);
@@ -139,7 +142,30 @@ function Player() {
       this.verticalMovement();
       this.horizontalMovement();
       this.handleCollisions();
+	  this.recordPosition(this.x, this.y);
       if(DEAD) { this.frameX = 0; this.frameY = 2; }
+   }
+   
+   this.recordPosition = function(x, y) 
+   {   // Push to positions array, new items are the first and old are the last.
+		this.lastPositions.unshift({'x': x, 'y': y});
+		if(this.lastPositions.length > this.lastPositionsMax) this.lastPositions.length = this.lastPositionsMax;
+		if(!SHIFT) {this.lastPositions.pop(); this.lastPositions.pop()}
+		this.RunAnimation();
+   }
+   
+   this.RunAnimation = function(){
+	var length = this.lastPositionsMax;
+	for(var i=0; i < this.lastPositions.length; i++)
+	{
+		var pos = this.lastPositions[i];
+		var alphaEffect = 5.0; // The larger the more light the effect is
+		var factor = (((i*length)+1)*alphaEffect);
+		var aplha = length/factor;
+		var c = this.runColors;
+		ctx.fillStyle = "rgba("+c.r+","+c.g+","+c.b+","+aplha+")";
+		ctx.fillRect(pos.x, pos.y, this.size, this.size);
+	}
    }
    
    this.BlinkAnimation = function() 
