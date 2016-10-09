@@ -16,6 +16,7 @@ The original game <em>Block Run</em>, was created as a simple platform game in P
   <li>Added Spikes</li>
   <li>Player death system improved</li>
   <li>Added player ducking ability</li>
+  <li>Added player running animation</li>
 </ul>
 
 <h3><em>v0.30</em></h3>
