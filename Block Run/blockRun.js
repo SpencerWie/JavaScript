@@ -2,7 +2,7 @@ var level_1 = [
    '#################################################################################                ',
    '#             #                   # o           o #                             #                ',
    '#             # o                 #####   o   #####      o      o               #                ',
-   '#         o    #                                                                #                ',
+   '#              #                                                                #                ',
    '#               ######                   ###            ##      ##              #                ',
    '#  o                      E             #####               o                   #                ',
    '#           #             ######       ## o ##            E              o o    #                ',
@@ -24,7 +24,7 @@ var level_1 = [
    '#                                                o                                       ######  ',   
    '#                                              E            oo                    o o    ######  ',   
    '###                                            ######      ####          o o       K     ######  ',   
-   '####                        ####        ####              ########                 o o    ######  ',   
+   '####                        ####        ####              ########                 o o   ######  ',   
    '####                       #####E     ######            ##########E     ######           ######  ',   
    '###############################################################################################  ', 
    '###############################################################################################  ',    
@@ -32,9 +32,9 @@ var level_1 = [
 
 var level_2 = [
    '######################################################################################################',
-   '#           o                                       ooo                            #      o         K#',
-   '#                            0                   #########                         #     ###       ###',
-   '#####     #####             ###        o        #        #            #            #          o      #',
+   '#           o                                       ooo                            #      o          #',
+   '#                            0                   #########                         #     ###       K #',
+   '#####     #####             ###        o        #        #            #            #          o    ###',
    '#   #       #     #####   ## # ##      o      ##         #        #########        #o        ###     #',
    '#    #    oo#                #        ###     #    o     #            #            ##                #',
    '#         ###                #vvvvvvvvvvvvvvvv#   ooo    #            #        #####     ##vvvvvvvvvv#',
@@ -46,7 +46,7 @@ var level_2 = [
    '#                              ##                           o     o     o   #    #        ###        #', 
    '#                              #     E                #   E      E          #   ##    ########       #', 
    '#    P                         #     ######          ## #####################    #      L            #', 
-   '###########                    #                    ###        #####        ##   ###    ##           #', 
+   '###########                    #                    ###                     ##   ###    ##           #', 
    '############                   ###                 ######                   #           #   KK       #', 
    '#############                  L         #E       #####o   E                L  E     ####vvv##vvvvvvv#',    
    '######################################################################################################',   
@@ -61,7 +61,7 @@ var level_3 = [
    '#          ###     ##      ##       ##     o   o   #      #       #           vv            o        #           o     o     o                               #     #',
    '#         ####                             #####   #vvvvvvvvvvvvvv#oo##  vv   ##           ooo       #    ##<   >#<    o    >#<   ##         o               #     #',
    '#        #####                                     ##################    ##   ##     K      o        #   ###<   >#<   >#<   >#<   ###        v               #     #',
-   '#       ######vvvvvvvvvvvvvvvvvvvvv vvvvvvvvvvvvvoo#             #   L   ##         ###              L  ####vvvvv#vvvvv#vvvvv#vvvv####E     >#<E             L  P  #',
+   '#       ######vvvvvvvvvvvvvvvvvvvvv vvvvvvvvvvvvvvv#             #   L   ##         ###              L  ####vvvvv#vvvvv#vvvvv#vvvv####E     >#<E             L  P  #',
    '################################### ##############################  ###################################################################################o  ##########', 
    '###################################  K o o o o o o o o o o o o o H  ###################################                                               ##  #        #',
    '######################################################################################################                                                #   #        #',   
@@ -74,12 +74,26 @@ var level_3 = [
    '####################################################################################################################################################################',    
 ];
 
+var level_end = [
+   '#                                                                                                                                                                  #',
+   '#                                                                                                                                                                  #',
+   '#                                                                                                                                                                  #',
+   '#                                                                                                                                                                  #',
+   '#                                                                                                                                                                  #',
+   '#               ooo o  o oo                                                                                                                                        #',
+   '#               o   oo o o o                                                                                                                                       #',
+   '#               ooo oo o o o                                                                                                                                       #',
+   '#               o   o oo o o                                                                                                                                       #',
+   '################ooo o  o oo#########################################################################################################################################', 
+   '####################################################################################################################################################################',    
+];
+
 var delay = 28;
 var items = [];
 var player;
 var yLevel = 0;
 var yLevelMax = 288;
-var levels = [level_1, level_2, level_3];
+var levels = [level_1, level_2, level_3, level_end];
 
 LEFT = RIGHT = UP = DOWN = SHIFT = false;
 
@@ -150,7 +164,7 @@ function Player() {
    {   // Push to positions array, new items are the first and old are the last.
 		this.lastPositions.unshift({'x': x, 'y': y});
 		if(this.lastPositions.length > this.lastPositionsMax) this.lastPositions.length = this.lastPositionsMax;
-		if(!SHIFT) {this.lastPositions.pop(); this.lastPositions.pop()}
+		if(!SHIFT || this.ducked ) {this.lastPositions.pop(); this.lastPositions.pop()}
 		this.RunAnimation();
    }
    
@@ -170,7 +184,7 @@ function Player() {
    
    this.BlinkAnimation = function() 
    {
-      if(this.ducked) return;
+      if(this.ducked) { this.timer = 0; return; }
       this.timer++;
 
       for(var i = 0; i < blink_timeframe.length; i++ ) {
@@ -690,7 +704,7 @@ createMap(level_1);
 // main
 timer = setInterval(function()
 {
-   ctx.drawImage(images["background"],-scrollX, scrollY);
+   ctx.drawImage(images["background"],-scrollX, scrollY, canvas.width, canvas.height);
    ctx.fillStyle = player.color;
    player.update();
    handleYscroll();
@@ -698,9 +712,9 @@ timer = setInterval(function()
       items[item].draw();
    player.draw();   
    ctx.fillStyle = "red";
-   ctx.fillText("Beta: V 0.38", 10-scrollX, 10+scrollY);
-   ctx.drawImage(images["coin"], 0,0, 32, 32, 415-scrollX, scrollY, 32, 32);
-   ctx.fillText(" x "+COINS, 440-scrollX,20+scrollY);
-   ctx.drawImage(images["heart"], 0,0, 32, 32, 370-scrollX, scrollY, 32, 32);
-   ctx.fillText(" x "+HEARTS, 395-scrollX,20+scrollY);   
+   ctx.fillText("Beta: V 0.39", 10-scrollX, 10+scrollY);
+   ctx.drawImage(images["coin"], 0,0, 32, 32, canvas.width-65-scrollX, scrollY, 32, 32);
+   ctx.fillText(" x "+COINS, canvas.width-40-scrollX,20+scrollY);
+   ctx.drawImage(images["heart"], 0,0, 32, 32, canvas.width-110-scrollX, scrollY, 32, 32);
+   ctx.fillText(" x "+HEARTS, canvas.width-85-scrollX,20+scrollY);   
 }, delay);
