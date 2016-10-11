@@ -5,7 +5,7 @@ var level_1 = [
    '#              #                                                                #                ',
    '#               ######                   ###            ##      ##              #                ',
    '#  o                      E             #####               o                   #                ',
-   '#           #             ######       ## o ##            E              o o    #                ',
+   '#     ___   #             ######       ## o ##            E              o o    #                ',
    '#  #       ##            ## o  #      ###   ###        ############      o o    #                ',
    '# ###     ###E          ### o        ####   ####       #         H#             #                ',
    '#########################################  #############         ############   #                ',
@@ -134,6 +134,7 @@ function Player() {
    this.ddx = 0; this.ddy = 0;
    this.walk = 7; this.run = 10;
    this.speed = 7;
+	this.minYSpeed = -15; this.maxYSpeed = 12;
    this.jumpPower = 10;
    this.frameX = 0; // X frame on tilemap sprite
    this.frameY = 0; // Y frame on tilemap sprite
@@ -169,17 +170,18 @@ function Player() {
    }
    
    this.RunAnimation = function(){
-	var length = this.lastPositionsMax;
-	for(var i=0; i < this.lastPositions.length; i++)
-	{
-		var pos = this.lastPositions[i];
-		var alphaEffect = 5.0; // The larger the more light the effect is
-		var factor = (((i*length)+1)*alphaEffect);
-		var aplha = length/factor;
-		var c = this.runColors;
-		ctx.fillStyle = "rgba("+c.r+","+c.g+","+c.b+","+aplha+")";
-		ctx.fillRect(pos.x, pos.y, this.size, this.size);
-	}
+		if(DOWN) return;
+		var length = this.lastPositionsMax;
+		for(var i=0; i < this.lastPositions.length; i++)
+		{
+			var pos = this.lastPositions[i];
+			var alphaEffect = 5.0; // The larger the more light the effect is
+			var factor = (((i*length)+1)*alphaEffect);
+			var aplha = length/factor;
+			var c = this.runColors;
+			ctx.fillStyle = "rgba("+c.r+","+c.g+","+c.b+","+aplha+")";
+			ctx.fillRect(pos.x, pos.y, this.size, this.size);
+		}
    }
    
    this.BlinkAnimation = function() 
@@ -202,7 +204,7 @@ function Player() {
    this.verticalMovement = function()
    {
       if(DEAD) return;
-      // Arrow Key detection.
+      // Arrow Key detection, if we jumped from the ground.
       if(UP && this.jump && !DOWN){  
          this.dy = -this.jumpPower; 
          this.ddy = -1;
@@ -213,29 +215,30 @@ function Player() {
       
       this.dy += this.ddy; // Update variables
       this.y += this.dy;
+		
+		//TODO: We need to be able to drop from a plateform by just using DOWN instead of jump+DOWN
       
       // Vertical Block collisions. (needs to be seperate from horizonal for proper collisions)
       for(item in items) {
+			// If we touched the plateform and are not ducking.
+			var platformCollision = !DOWN && isItem(items[item],'platform') && this.y+this.height <= items[item].y+this.maxYSpeed;
+			// For upwards collision check if we are moving up and hit a block, if so place player at the bottom of block and halt verticle motion.
          if(this.dy < 0 && collide(this,items[item]) && isItem(items[item],'block')) {
             this.dy = 0;
             this.ddy = 0;
-            var oldY = this.y;
             this.y = items[item].y + this.size;
-            var diff = oldY - this.y
-         }
-         else if(this.dy > 0 && collide(this,items[item]) && isItem(items[item],'block')) {
+         }// For downwards collision check if we are moving down and hit a block, if so place player at the top of block and halt verticle motion.
+         else if(this.dy > 0 && collide(this,items[item]) && (isItem(items[item],'block') || platformCollision)) {
             this.dy = 0;
             this.ddy = 0;
-            var oldY = this.y;
             this.y = items[item].y - this.size;
-            var diff = oldY - this.y
             this.jump = true;
          }
       }
       
       //Speed limits
-      if(this.dy > 12) this.dy = 12;          
-      if(this.dy < -15) this.dy = -15;   
+      if(this.dy > this.maxYSpeed) this.dy = this.maxYSpeed;          
+      if(this.dy < this.minYSpeed) this.dy = this.minYSpeed;   
    }
    
    this.horizontalMovement = function()
@@ -292,7 +295,7 @@ function Player() {
    this.handleCollisions = function() 
    {
       for(item in items) {
-        var isSolidBlock = (isItem(items[item],'block') || isItem(items[item],'lock')  || isItem(items[item],'platform'));  
+        var isSolidBlock = (isItem(items[item],'block') || isItem(items[item],'lock'));  
         
          if( isItem(items[item],'key') && collide(this,items[item]) ) {
             items.splice(item, 1);
@@ -304,7 +307,7 @@ function Player() {
             KEYS--;
          }                 
          // Blocks
-         if(RIGHT && collide(this,items[item]) && isSolidBlock ) {
+         if(RIGHT && collide(this,items[item]) && (isSolidBlock)) {
             // Reposition player to be place right next to block, then get the difference and apply that to scrolling of canvas.
             var oldX = this.x;
             this.x = items[item].x - this.size;
@@ -312,7 +315,7 @@ function Player() {
             ctx.translate(diff, 0);
             scrollX += diff;
          }
-         else if(LEFT && collide(this,items[item]) && isSolidBlock ) {
+         else if(LEFT && collide(this,items[item]) && (isSolidBlock)) {
             var oldX = this.x;
             this.x = items[item].x + this.size;
             var diff = oldX - this.x
@@ -439,34 +442,35 @@ function Block(x, y) {
    this.width = 30; this.height = 30;
    
    this.draw = function() {
-      ctx.drawImage(this.image, this.x, this.y);
+      ctx.drawImage(this.image, this.x, this.y, this.width+2, this.height+2);
    }
 }
 
 function Platform(x, y) {
    Block.call(this, x, y);
    this.image = images['platform'];
-   this.height = 5
+	this.height = 5;
 }
 
 function MovingBlock(x, y) {
-    Block.call(this, x, y);
-    this.speed = 5;
+	Block.call(this, x, y);
+	this.speed = 5;
+	this.height = 10;
     
-    this.move = function() {
+   this.draw = function() {
+		ctx.drawImage(this.image, this.x, this.y);
       for(item in items) {
-          if( isItem(items[item],'block') && collide(this,items[item])) {   
-            speed *= -1;
-            if(speed > 0)
-              this.x = items[item].x - this.width;
-            else
-              this.x = items[item].x + this.width;
-              
-            break;
-          }
+			if( this != items[item] && isItem(items[item],'block') && collide(this,items[item])) {   
+				this.speed *= -1;
+				/*if(this.speed > 0)
+				  this.x = items[item].x - this.width;
+				else
+				  this.x = items[item].x + this.width;*/
+				break;
+			}
       }
-      this.x += speed;      
-    }
+      this.x += this.speed;      
+   }
 }
 
 function Heart(x, y) {
@@ -604,7 +608,7 @@ function createMap(map) {
          else if(map[Y].charAt(X) == 'P')   
               items.push(new Portal(X*SIZE, Y*SIZE, "", ""));
          else if(map[Y].charAt(X) == 'M')
-            items.push(new MovingBlock(X*SIZE, Y*SIZE));
+			  items.push(new MovingBlock(X*SIZE, Y*SIZE));
          else if(map[Y].charAt(X) == 'L') {  
               var lock = new Block(X*SIZE, Y*SIZE);
               lock.image = images["lock"];
