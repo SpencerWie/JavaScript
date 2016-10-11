@@ -153,11 +153,11 @@ function Player() {
    
    this.update = function() 
    {
-      this.BlinkAnimation();
+		this.BlinkAnimation();
       this.verticalMovement();
       this.horizontalMovement();
       this.handleCollisions();
-	  this.recordPosition(this.x, this.y);
+	   this.recordPosition(this.x, this.y);
       if(DEAD) { this.frameX = 0; this.frameY = 2; }
    }
    
@@ -170,7 +170,7 @@ function Player() {
    }
    
    this.RunAnimation = function(){
-		if(DOWN) return;
+		if(this.ducked) return;
 		var length = this.lastPositionsMax;
 		for(var i=0; i < this.lastPositions.length; i++)
 		{
@@ -186,7 +186,7 @@ function Player() {
    
    this.BlinkAnimation = function() 
    {
-      if(this.ducked) { this.timer = 0; return; }
+      if(!this.ducked || this.dy > 0) { this.timer = 0; this.step = 0; this.frameX = 0; return; }
       this.timer++;
 
       for(var i = 0; i < blink_timeframe.length; i++ ) {
