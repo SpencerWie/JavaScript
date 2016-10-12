@@ -1,6 +1,6 @@
 <h1>Block Run Beta</h1>
 
-<p><a href="http://cs.iupui.edu/~spdwiecz/JavaScript/Block%20Run/blockRun.html"> Click here to play the lastest version of the game</a></p>
+<p><a href="https://rawgit.com/SpencerWie/JavaScript/master/Block%20Run/blockRun.html"> Click here to play the lastest version of the game</a></p>
 
 <img src="screenshot.PNG" style="display:block; margin: auto" alt="Game Play Example" />
 
