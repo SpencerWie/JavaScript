@@ -5,7 +5,7 @@ var level_1 = [
    '#              #                                                                #                ',
    '#               ######                   ###            ##      ##              #                ',
    '#  o                      E             #####               o                   #                ',
-   '#     ___   #             ######       ## o ##            E              o o    #                ',
+   '#     ___   T             ######       ## o ##            E              o o    #                ',
    '#  #       ##            ## o  #      ###   ###        ############      o o    #                ',
    '# ###     ###E          ### o        ####   ####       #         H#             #                ',
    '#########################################  #############         ############   #                ',
@@ -88,6 +88,20 @@ var level_end = [
    '####################################################################################################################################################################',    
 ];
 
+var level_test = [
+   'T                                T',
+   'T                                T',
+   'T                                T',
+   'T                                T',
+   'T                                T',
+   'T                                T',
+   'T   TT                    TT     T',
+   'T                                T',
+   'T                                T',
+   'TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT', 
+   'TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT',    
+];
+
 var delay = 28;
 var items = [];
 var player;
@@ -103,6 +117,7 @@ HEARTS = 3;
 LEVEL = 1;
 KEYS = 0;
 DEAD = false;
+ALPHA_INTENSITY = 25.0; // Higher value means better vision of blocks.
 
 var groundPoint = { x: 0, y: 0 , color: 'red', height: 4, width: 28};
 var portalIndex = 0; // index of the portal in the items
@@ -452,6 +467,15 @@ function Platform(x, y) {
 	this.height = 5;
 }
 
+function GhostBlock(x, y) {
+	Block.call(this, x, y);
+   this.draw = function() {
+		ctx.globalAlpha = Math.pow(1/distance(this, player), 2.5)*(ALPHA_INTENSITY*1000);
+      ctx.drawImage(this.image, this.x, this.y, this.width+2, this.height+2);
+		ctx.globalAlpha = 1.0;
+   }
+}
+
 function MovingBlock(x, y) {
 	Block.call(this, x, y);
 	this.speed = 5;
@@ -606,9 +630,11 @@ function createMap(map) {
          else if(map[Y].charAt(X) == 'E') 
             items.push(new Enemy(X*SIZE, Y*SIZE, 40, 52, images["enemies"], 4, 5, 2, "RedBlock"));
          else if(map[Y].charAt(X) == 'P')   
-              items.push(new Portal(X*SIZE, Y*SIZE, "", ""));
+				items.push(new Portal(X*SIZE, Y*SIZE, "", ""));
          else if(map[Y].charAt(X) == 'M')
-			  items.push(new MovingBlock(X*SIZE, Y*SIZE));
+				items.push(new MovingBlock(X*SIZE, Y*SIZE));
+		   else if(map[Y].charAt(X) == 'T')
+				items.push(new GhostBlock(X*SIZE, Y*SIZE));
          else if(map[Y].charAt(X) == 'L') {  
               var lock = new Block(X*SIZE, Y*SIZE);
               lock.image = images["lock"];
@@ -638,6 +664,10 @@ function collide(a, b) {
         ((a.x + a.width) >= b.x) &&
         (a.x <= (b.x + b.width)) 
     );
+}
+
+function distance(a, b) {
+	return Math.sqrt((a.x-b.x)*(a.x-b.x) + (a.y-b.y)*(a.y-b.y));
 }
 
 document.addEventListener("keydown", function(e) { 
@@ -674,25 +704,25 @@ function isItem(check, item) {
 }
 
 function handleYscroll() {
-   if(player.y > 288*2 && yLevel == 1){
+   if(player.y > yLevelMax*2 && yLevel == 1){
       scrollY+= yLevelMax;
       ctx.translate(0, -yLevelMax);
       yLevel = 2;
       images["background"].src = "ground_deep.jpg";
    }
-   else if(player.y > 288 && yLevel == 0){
+   else if(player.y > yLevelMax && yLevel == 0){
       scrollY+= yLevelMax;
       ctx.translate(0, -yLevelMax);
       yLevel = 1;
       images["background"].src = "ground.jpg";
    }
-   else if(player.y <= 288 && yLevel == 1){
+   else if(player.y <= yLevelMax && yLevel == 1){
       scrollY-= yLevelMax;
       ctx.translate(0, yLevelMax);
       yLevel = 0;
       images["background"].src = "clouds.jpg";
    }   
-   else if(player.y <= 288*2 && yLevel == 2){
+   else if(player.y <= yLevelMax*2 && yLevel == 2){
       scrollY-= yLevelMax;
       ctx.translate(0, yLevelMax);
       yLevel = 1;
@@ -716,7 +746,7 @@ timer = setInterval(function()
       items[item].draw();
    player.draw();   
    ctx.fillStyle = "red";
-   ctx.fillText("Beta: V 0.40", 10-scrollX, 10+scrollY);
+   ctx.fillText("Beta: V 0.41", 10-scrollX, 10+scrollY);
    ctx.drawImage(images["coin"], 0,0, 32, 32, canvas.width-65-scrollX, scrollY, 32, 32);
    ctx.fillText(" x "+COINS, canvas.width-40-scrollX,20+scrollY);
    ctx.drawImage(images["heart"], 0,0, 32, 32, canvas.width-110-scrollX, scrollY, 32, 32);

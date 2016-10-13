@@ -12,6 +12,7 @@ The original game <em>Block Run</em>, was created as a simple platform game in P
 <ul>
   <li>Added Platforms</li>
   <li>Fixed Bugs</li>
+  <li>Added Ghost Block (Get more transpart with distance)
 </ul>
 
 <h3><em>v0.40</em></h3>
