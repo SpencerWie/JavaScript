@@ -8,6 +8,15 @@
 The original game <em>Block Run</em>, was created as a simple platform game in Python (using pyGame). It was the first "real" game that I've created, because of this things were not done in the most effiecent way. Now I'm doing a new and improved <em>Block Run</em> written in JavaScript using the HTML5 Canvas. 
 </p>
 
+<h3>How to Play:</h3>
+<ul>
+	<li><em>Left/Right Arrow keys:</em> moves player left and right.</li>
+	<li><em>Up Arrow key:</em> Jump.</li>
+	<li><em>Down Arrow key:</em> Duck.</li>
+	<li><em>Shift (Hold):</em> Sprint.</li>
+	<li><em>Space:</em> Move to next level (<em>must be inside an end of level portal</em>).</li>
+</ul>
+
 <h3>Current Version: <strong><em>v0.41</em></strong></h3>
 <ul>
   <li>Added Platforms</li>
