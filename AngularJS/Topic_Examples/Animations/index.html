@@ -1,0 +1,41 @@
+<html>
+	<head>
+	<title>ng-hide/ng-show css animations</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0-beta.5/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0-beta.5/angular-animate.min.js"></script>
+    <script src="app.js"></script>
+    <style>
+        .box-one, .box-two {
+          margin:10px 0 20px 0;
+          padding:10px;
+          border:1px solid rgba(0,0,0,0.4);
+          background:#00f;
+          color:#fff;
+          border-radius:3px;
+
+          -webkit-transition:all linear 0.5s;
+          transition:all linear 0.5s;
+        }
+
+        .box-two {
+            background:#f00 !important;
+        }
+
+        .box-one.ng-hide {
+          opacity:0;
+          transform: scale(0.9); 
+        }
+    </style>
+	</head>
+	<body ng-app="app" ng-controller="TestCtrl as test">
+    <button ng-click="test.toggle(0)">Toggle Box One</button>
+    <button ng-click="test.toggle(1)">Toggle Box Two</button>
+    
+    <div class="box-one" ng-show="test.showBoxes[0]">
+      Hello! I am <b>box one</b>.
+    </div>
+    <div class="box-one" ng-show="test.showBoxes[1]">
+      Hello! I am <b>box two</b>.
+    </div>
+	</body>
+</html>
