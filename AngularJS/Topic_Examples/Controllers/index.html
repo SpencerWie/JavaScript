@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>AngularJS Controllers</title>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0-beta.5/angular.min.js"></script>
+    <script type="text/javascript" src="app.module.js"></script>
+	<script type="text/javascript" src="app.controller.js"></script>
+	<style>
+		.rmBtn { color: red; border: none; background:none; }
+		.rmBtn:hover { color: pink; cursor: pointer; }
+	</style>
+  </head>
+  <body>
+    <div ng-app="app">
+      <h1>Controllers</h1>
+	  <div ng-controller="MessageController">
+		<h3>Update to new variable</h3>
+		<p>
+			{{ text }}
+		</p>
+		<form ng-submit="changeMessage(newMessage)">
+			<input type="text" ng-model="newMessage">
+			<button type="submit">Update Message</button>
+		</form>
+	  </div>
+	  <hr />
+	  <div ng-controller="DirectController">
+		<h3>Direct variable modification</h3>
+		<input type="text" ng-model="text">
+		<p>
+			{{ text }}
+		</p>
+	  </div>
+	  <hr />
+    </div>
+  </body>
+</html>
