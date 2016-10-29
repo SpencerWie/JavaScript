@@ -10,11 +10,11 @@ The original game <em>Block Run</em>, was created as a simple platform game in P
 
 <h3>How to Play:</h3>
 <ul>
-	<li><em>Left/Right Arrow keys:</em> moves player left and right.</li>
-	<li><em>Up Arrow key:</em> Jump.</li>
-	<li><em>Down Arrow key:</em> Duck.</li>
-	<li><em>Shift (Hold):</em> Sprint.</li>
-	<li><em>Space:</em> Move to next level (<em>must be inside an end of level portal</em>).</li>
+	<li><em><strong>Left/Right Arrow keys:</strong></em> Moves player left and right.</li>
+	<li><em><strong>Up Arrow key:</strong></em> Jump.</li>
+	<li><em><strong>Down Arrow key:</strong></em> Duck.</li>
+	<li><em><strong>Shift (Hold):</strong></em> Sprint.</li>
+	<li><em><strong>Space:</strong></em> Move to next level (<em>must be inside an end of level portal</em>).</li>
 </ul>
 
 <h3>Current Version: <strong><em>v0.41</em></strong></h3>
