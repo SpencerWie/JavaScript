@@ -1,0 +1,107 @@
+body{
+   background-color: #DDDDDD;
+}
+
+a{ text-decoration:none; color:#888888; }
+a:hover{ text-decoration:none; color:#000000; }
+
+.container-fluid{
+   padding: 5px;
+   background-color: #FFFFFF;
+   border-radius: 5px;
+   margin: auto;
+   max-width: 80%;
+}
+
+.btn-long{
+   width: 100%;
+   /*margin: 3px;*/
+}
+
+.center{
+   display: block;
+   margin:auto;
+}
+
+
+.btnPlaceHolder{
+   height: 10px;
+}
+
+.sig{
+   //position: absolute;
+   margin-right: 10%;
+   float: right;
+   color: #BBBBBB;
+   font-family: Impact, Fantasy;
+}
+
+.challenge{
+   color: #DD3333;
+   font-family: Impact, Fantasy;
+   font-style: italic;
+   font-size: 120%;
+   
+}
+
+.slider{
+   position: fixed;
+   top: 10%;
+   left: 0px;
+   height: 80%;
+   width: 20px;
+   border: 1px solid #347;
+   background-color: #bcf;
+   border-top-right-radius:10px;
+   border-bottom-right-radius:10px;
+   z-index:1000;
+}
+
+.slider:hover{
+   background-color: #cdf;
+   cursor: hand;
+   cursor: pointer;
+}
+
+#space-code{ position:relative;margin-left: 25px; margin-top:5px; width:95%; height: 90%;}
+
+#code{
+   font-family: monospace;
+   position: relative;
+   height:95%;
+   width:95%;
+}
+
+#run{ margin-left:25px; }
+
+#code-box{
+   position: fixed;
+   top: 10%;
+   left: 0px;
+   border: 1px solid black;
+   height: 80%;
+   width: 0px;
+   background-color: white;
+   border-top-right-radius:10px;
+   border-bottom-right-radius:10px;
+   z-index:999;
+}
+
+.plus{
+position: relative;
+top:50%;
+bottom:50%;
+margin-bottom: 7px;
+display: block;
+margin-left: auto;
+margin-right:auto;
+}
+
+@media (min-width: 768px) { 
+  .btnNav{
+    position: fixed;
+  } 
+  .btnPlaceHolder{
+   height: 150px;
+}
+}

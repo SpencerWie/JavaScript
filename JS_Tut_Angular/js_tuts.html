@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-responsive.css" />
+<link rel="stylesheet" type="text/css" href="css/js_tuts.css" />
+<script src="js/jquery.min.js" ></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="js/js_tuts.js"></script>
+<title>JS Tutorial</title>
+</head>
+<body>
+<br />
+<div id="code-box">
+<div id="space-code">
+<textarea id="code">
+
+</textarea><br />
+</div>
+<button class="btn" id="run">Run</button>
+</div>
+<div class="slider"><i class="icon-plus plus"></i></div>
+<div class="container-fluid">
+   <div class="row-fluid">
+      <div class="span2 btnNav">
+         <br />
+         <a href="js_tuts_preface.html"><button class="btn btn-long btn-warning center">Preface</button></a><br />
+         <button class="btn btn-long btn-info center" disabled>The Basics</button><br />
+         <a href="js_tuts2.html"><button class="btn btn-long btn-info center" >Data & Functions</button></a><br />
+         <a href="js_tuts_branch.html"><button class="btn btn-long btn-info center">Branching</button></a><br />
+         <a href="js_tuts_oop.html"><button class="btn btn-long btn-info center" >OOP</button></a><br />
+         <a href="js_tuts_events.html"><button class="btn btn-long btn-info center" >JS Events & Objects</button></a><br />
+         <a href="js_tuts_gui.html"><button class="btn btn-long btn-info center">Canvas GUI</button></a><br />
+      </div>
+      <div class="span2 btnPlaceHolder"></div>
+      <div class="span9 background-color:#00FF00">
+         <h1>The Basics</h1>
+         <p>Programing is the ability to create complex systems that can do anything, to do this we string together logical operations. It does not matter what programing language we use, all language do essentially the same thing. In our case we will be using JavaScript, a high level object oriented scripting language for web browsers.</p>
+         <br />
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+        <h3>The Setup</h3>
+      </a>
+    </div>
+    <div id="collapseOne" class="accordion-body collapse in">
+      <div class="accordion-inner">
+         <p>First thing is setting up our JavaScript environment, so we can run javascript. To add JavaScript in HTML we simply use the &lt;script&gt tag, and place JavaScript code inside of it:</p>
+         <pre>
+&lt;script&gt;  
+   My JavaScript Code  
+&lt;/script&gt;</pre>
+         <p>This is known as <strong>internal JavaScript</strong>, which is JavaScript within your HTML file. But it's better practice to separate your HTML from your JavaScript (Just like separating CSS from HTML). Below is an example of <strong>external JavaScript</strong>:</p>
+<pre>
+&lt;script src="myExternalScript.js"&gt;&lt;/script&gt;     
+</pre>
+         <p>And in our "myExternalScript.js" we would have just our JavaScript. It would be the same thing as the first example but without the &lt;script&gt; tags:</p>
+         <div><em>&nbsp;myExternalScript.js</em></div>
+<pre>
+My JavaScript Code    
+</pre>
+         <br/>
+         <div class="alert alert-info">Note: "myExternalScript.js" needs to be in the same directory as your HTML file in this example.</div>
+      </div>
+    </div>
+  </div>
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+        <h3>Comments</h3>
+      </a>
+    </div>
+    <div id="collapseTwo" class="accordion-body collapse">
+      <div class="accordion-inner">
+         <p>Comments are very useful in programing. They are basically ways to make notes in your code to understand what you are doing. It's a good idea to write comments about how you will do something before you write it out in code. There are two types of comments in JavaScript, single-line comments and multi-line comments:</p>
+<pre>
+&lt;script&gt;  
+
+   //This is a single line comment, this single line is ignored.
+
+   /*
+   This is a Multi-line comment.
+   All these lines are between the comment are ignored. 
+   They are between the asterisks. 
+   */
+   
+&lt;/script&gt;
+</pre>
+      </div>
+    </div>
+  </div>
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFour">
+        <h3>Hello World</h3>
+      </a>
+    </div>
+    <div id="collapseFour" class="accordion-body collapse">
+      <div class="accordion-inner">
+
+<p>Hello World is the most basic and simple program that we write when we first start programing in any language. It's just the most basic way we do output. We will be using the <strong>alert(string)</strong> function for that; we will talk more about functions later. For now just put some text inside the parentheses. For example:</p>
+      <pre>
+alert("Hello World");     
+</pre>
+      <button class="btn btn-success"onclick="helloWorldAlert();">Run</button>
+      <br /><br />
+      <p>Another basic way for output is <strong>document.write(string)</strong>. Note that you need to run document.write() before your DOM (Document Object Model) loads, or more generally before your page is done loading. You are writing HTML to the page, so write as if you are writing HTML. Here is an example:</p>
+<pre>document.write("&lt;p&gtHello World&lt;/p&gt");</pre>
+       <div class="alert alert-danger">Note: Running document.write() before the DOM loads will overwrite your current DOM. Erasing everything, so be careful.</div>
+       <p>document.write() should be used to only write HTML directly into the document, for example; This is the <em>correct</em> way to use document.write():</p>
+       <div><em>&nbsp;HTML File</em></div>
+<pre>
+...
+&lt;ul&gt
+&lt;li&gtItem 1&lt;/li&gt
+&lt;li&gtItem 2&lt;/li&gt
+&lt;script&gt; document.write("&lt;li&gtItem 3&lt;/li&gt"); &lt;/script&gt;
+&lt;/ul&gt
+...
+</pre>
+       <div><em>&nbsp;Output:</em></div>
+       <br />
+         <ul>
+            <li>Item 1</li>
+            <li>Item 2</li>
+            <script> document.write("<li>Item 3</li>"); </script>
+         </ul>      
+         <div class="alert alert-info">Note: The semi-colon <strong>;</strong> separates statements in our code. In JavaScript statements are automatically separated when you move to a new line. While they are good practice, they are not necessary (unless we will have multiple statements on a single line). </div>
+
+      </div>
+    </div>
+  </div>
+  
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFive">
+        <h3>DOM Manipulation</h3>
+      </a>
+    </div>
+    <div id="collapseFive" class="accordion-body collapse">
+      <div class="accordion-inner">
+
+        <p>The DOM means Document Object Model. It is just a tree of all your HTML elements. w3schools has a good image of the DOM here to give you a better understanding:</p>
+       <img src="http://www.w3schools.com/htmldom/htmltree.gif" alt="w3schools DOM Tree" class="center"/>
+       <p>We can use this in our JavaScript to access elements from the DOM. In our case we will just be using <strong>id</strong>. So for example if we had this HTML:</p>
+<pre>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lthead&gt; ... &lt;/head&gt;
+&ltbody&gt;
+...
+&ltp id="myElement"&gt;Test&lt/p&gt;
+...
+&lt/body&gt;
+&lt/html&gt;
+</pre>  
+      <p>To get elements by id we use: <strong>document.getElementById(string)</strong></p> 
+      <p>We can do alot of things with this, but for now just for HTML output we will be using <strong>.innerHTML</strong> on our id's. For example:</p>
+      <pre>document.getElementById("myElement").innerHTML = "Hello World";</pre>
+      <p id="myElement">Test</p>
+      <button class="btn btn-success"onclick="helloWorldDOM();">Run</button>&nbsp;<button onclick="resetHelloDom()" class="btn btn-info">Reset</button>
+      
+      </div>
+    </div>
+  </div>
+  
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseSix">
+        <h3>JavaScript Placement</h3>
+      </a>
+    </div>
+    <div id="collapseSix" class="accordion-body collapse">
+      <div class="accordion-inner">
+      
+  <p>It's good to know where to run your JavaScript while going through your HTML file. Problems can occur if JavaScript is not placed properly, such as trying to change an element that does not exist yet. For example:</p>
+<div><em>&nbsp;myExternalScript.js</em></div>
+<pre>document.getElementById("myElement").innerHTML = "Hello World";</pre>
+<pre>
+...
+<font color="#FF0000">&lt;script src="myExternalScript.js"&gt;&lt;/script&gt;</font>
+&ltp id="myElement"&gt;Test&lt/p&gt;
+...
+</pre>
+      <div class="alert alert-danger">Note: We are running the JavaScript before we made the element. So the element we are trying to change does not exist yet.</div>
+      <p>The basic solution to this problem is placing your JavaScript file at the very end of your &lt;body&gt; tag:</p>
+<pre>
+&ltbody&gt;
+...
+&ltp id="myElement"&gt;Test&lt/p&gt;
+...
+&lt;script src="myExternalScript.js"&gt;&lt;/script&gt;
+&lt/body&gt;
+</pre>  
+      <p>And this will properly change the element's text into "Hello World". Another way is to use: <strong>window.onload</strong></p>
+<div><em>&nbsp;myExternalScript.js</em></div>
+<pre>
+window.onload=function(){
+   document.getElementById("myElement").innerHTML = "Hello World";
+}
+</pre>
+         <p>Now we can place our JavaScript file anywhere we want and it will still wait for the page to be done. Although it is commonly placed inside the &lthead&gt tag.</p>
+         <div class="alert alert-info">Note: If that first line looks like a bunch of gibberish to you that's fine. Just know that it means we are running that code when the page is done loading. And the code that runs is within these brackets { ... }. Once we get into learning functions many of these things will make much more sense.</div>
+         <div class="alert alert-info">Adv Info: window.onload will fire when the entire page loads (images and external files). Another way is document.onload, which fires when the DOM is finished (Images and external files may still be loading though). Generally window.onload is often safer to use, although is a bit slower than document.onload. window.onload is known as the standard for most modern web browsers.</div>
+
+      </div>
+    </div>
+  </div>
+  
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseSeven">
+        <h3>Review</h3>
+      </a>
+    </div>
+    <div id="collapseSeven" class="accordion-body collapse">
+      <div class="accordion-inner">
+
+      <p>We learned a lot, so I'm going to skim over the important points in this section. All other sections will also have a "Review" at the end.</p>
+      <ul>
+      <li>JavaScript can be placed both externally and internally on a web page. (External JavaScript is preferred)</li>
+      <li>Comments are a good way to make notes and think out your logic:
+         <ul>
+            <li>// This is a single line comment</li>
+            <li> /* This is a multi-line comment  */</li>
+         </ul>
+      </li>
+      <li>We talked about 3 ways to write output in JavaScript. alert(string) being the most basic.
+         <ul>
+            <li><strong>alert(</strong>"Hello World"<strong>)</strong>;</li>
+            <li><strong>document.write(</strong>"&lt;p&gtHello World&lt;/p&gt"<strong>)</strong>;</li>
+            <li><strong>document.getElementById(</strong>"myElement"<strong>).innerHTML</strong> = "Hello World";</li>
+         </ul>
+      </li>
+      <li>Lastly we talked about places to place your JavaScript. Which is recommended and commonly placed:
+         <ul>
+            <li>As the <strong>last element</strong> in the &ltbody&gt tag.</li>
+            <li>In the &lthead&gt tag using <strong>window.onload</strong> inside the JavaScript file.</li>
+         </ul>
+      </li>
+      </ul>
+      
+      </div>
+    </div>
+  </div>
+  
+</div>
+      
+  </div>
+ </div>
+</div>
+
+<div class="sig">Spencer Wieczorek</div>
+<script>
+function helloWorldAlert(){
+   alert("Hello World"); 
+}
+function helloWorldWrite(){
+   document.write("<p>Hello World</p>");
+   document.write("<p>Notice everything was overwritten? This is a common mistake for begginers using document.write(). You need to make sure to use document.write() <b>before</b> the page is done loading.</p>");
+   document.write("<p>This code was written after the page loaded. Everything was wiped and replaced.</p>");
+   document.write('<a href="https://cs.iupui.edu/~spdwiecz/JavaScript/Tutorials/js_tuts.html">Go Back</a> ');
+}
+function helloWorldDOM(){
+document.getElementById("myElement").innerHTML = "Hello World";
+}
+function resetHelloDom(){
+document.getElementById("myElement").innerHTML = "Test";
+}
+$(".accordion").on("shown",function(){ // This is to scroll to the top of the accordion group when shown
+        var offset = $(".accordion-body.collapse.in").position().top - 80;
+        $("html, body").animate({ scrollTop: offset+"px" });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+        <p>The DOM means Document Object Model. It is just a tree of all your HTML elements. w3schools has a good image of the DOM here to give you a better understanding:</p>
+       <img src="http://www.w3schools.com/htmldom/htmltree.gif" alt="w3schools DOM Tree" class="center"/>
+       <p>We can use this in our JavaScript to access elements from the DOM. In our case we will just be using <strong>id</strong>. So for example if we had this HTML:</p>
+<pre>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lthead&gt; ... &lt;/head&gt;
+&ltbody&gt;
+...
+&ltp id="myElement"&gt;Test&lt/p&gt;
+...
+&lt/body&gt;
+&lt/html&gt;
+</pre>  
+      <p>To get elements by id we use: <strong>document.getElementById(string)</strong></p> 
+      <p>We can do alot of things with this, but for now just for HTML output we will be using <strong>.innerHTML</strong> on our id's. For example:</p>
+      <pre>document.getElementById("myElement").innerHTML = "Hello World";</pre>
+      <p id="myElement">Test</p>
+      <button class="btn btn-success"onclick="helloWorldDOM();">Run</button>&nbsp;<button onclick="resetHelloDom()" class="btn btn-info">Reset</button>

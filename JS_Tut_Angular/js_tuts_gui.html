@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-responsive.css" />
+<link rel="stylesheet" type="text/css" href="js_tuts.css" />
+<script src="jquery.min.js" ></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="js_tuts.js"></script>
+<title>JS Tutorial</title>
+<style>
+canvas{ border: 1px solid black; display: block; margin: auto }
+</style>
+</head>
+<body>
+<br />
+<div id="code-box">
+<div id="space-code">
+<textarea id="code">
+
+</textarea><br />
+</div>
+<button class="btn" id="run">Run</button>
+</div>
+<div class="slider"><i class="icon-plus plus"></i></div>
+<div class="container-fluid">
+   <div class="row-fluid">
+      <div class="span2 btnNav">
+         <br />
+         <a href="js_tuts_preface.html"><button class="btn btn-long btn-warning center">Preface</button></a><br />
+         <button class="btn btn-long btn-info center">The Basics</button><br />
+         <a href="js_tuts2.html"><button class="btn btn-long btn-info center" >Data & Functions</button></a><br />
+         <a href="js_tuts_branch.html"><button class="btn btn-long btn-info center">Branching</button></a><br />
+         <a href="js_tuts_oop.html"><button class="btn btn-long btn-info center" >OOP</button></a><br />
+         <a href="js_tuts_events.html"><button class="btn btn-long btn-info center" >JS Events & Objects</button></a><br />
+         <a href="js_tuts_gui.html"><button class="btn btn-long btn-info center" disabled>Canvas GUI</button></a><br />
+      </div>
+      <div class="span2 btnPlaceHolder"></div>
+      <div class="span9 background-color:#00FF00">
+         <h1>Canvas GUI</h1>
+         <p>In this section we will look at how to implement the HTML5 Canvas tag to create a GUI (Graphic User Interface), along with the audio tag to create full fledged applications on the browser. This opens us up to many new interesting opportunities such as making games.</p>
+         <br />
+      <div class="accordion" id="accordion2">
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+        <h3>The Canvas</h3>
+      </a>
+    </div>
+    <div id="collapseOne" class="accordion-body collapse in">
+      <div class="accordion-inner">
+         <p>The HTML5 Canvas tag is a rectangular element that we can draw on using JavaScript, with it we can make a varaity of things such as : graphs, animations, images, etc. Here is the setup:</p>
+         <pre>&lt;canvas id="myCanvas" width="100" height="100"&gt;</canvas></pre>
+         <p>And our canvas is created:</p>
+         <canvas id="myCanvas" width="100" height="100" style=""></canvas>
+         <p>As you can see the canvas is transparent, the canvas tag can have CSS applied to it like all other elements. It's very common to place a border around the canvas or center it:</p>
+         <p><em>CSS:</em>
+         <pre>canvas{ 
+   border: 1px solid black; // Place border around canvas
+   display: block; // change to block-level so we can margin.
+   margin: auto; // center canvas horizontally 
+}</pre></p>
+         <canvas id="myCanvas2" width="100" height="100" ></canvas>
+         <br />
+         <p>The Canvas uses a cartesian coordinate system such that <b>(0,0)</b> is the top left, <b>(width, 0)</b> is top right, <b>(width, height)</b> is bottom right, and <b>(0, height)</b> is bottom left.</p>
+         <div class="alert alert-warning">Note: That applying CSS to the canvas <em>width</em> and <em>height</em> will make the canvas scale draw items to it's default size: <b>150x300</b>. Mostly we don't want this behavior; be sure to apply <em>width</em> and <em>height</em> directly in the canvas HTML without using <em>CSS</em> or <em>style</em>, like the examples above.</div>         
+      </div>
+    </div>
+  </div>
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+        <h3>Drawing to the Canvas</h3>
+      </a>
+    </div>
+    <div id="collapseTwo" class="accordion-body collapse">
+      <div class="accordion-inner">
+<p>In order to draw on the Canvas we need to get it and it's context:</p>
+<pre>
+var canvas = document.getElementById("myCanvas");   // The HTML canvas element
+var ctx = canvas.getContext("2d");   // ctx (context) is the 2d drawing context of the canvas.
+</pre>
+         <p>The context objects has a varaity of methods and properties to use for drawing on the canvas, here are some common ones:</p>
+         <ul>
+            <li>
+            Rectangle:
+             <ul>
+              <li><b>ctx.fillRect(x, y, width, height)</b> - Draws a filled rectangle.</li>
+              <li><b>ctx.strokeRect(x, y, width, height)</b> - Draws a outlined rectangle.</li>
+              <li><b>ctx.clearRect(x, y, width, height)</b> - Clears a rectangle from the canvas.</li>
+             </ul>
+            </li>
+            <li>
+            Paths:
+             <ul>
+              <li><b>ctx.beginPath()</b> - Starts a path.</li>
+              <li><b>ctx.moveTo(x, y)</b> - Line starting point.</li>
+              <li><b>ctx.lineTo(x, y)</b> - Line ending point.</li>
+              <li><b>ctx.arc(x, y, r, start, end)</b> - draws a arc with raduis r, from start to end in radians.</li>
+              <li><b>ctx.closePath()</b> - Ends a path.</li>
+              <li><b>ctx.stroke()</b> - Draws path as an outline.</li>
+              <li><b>ctx.fill()</b> - Fills path as a soild shape.</li>
+             </ul>
+            </li>
+            <li>
+            Text:
+             <ul>
+              <li><b>ctx.font = "20px Arial"</b> - Sets the size and font-faimly of text. </li>
+              <li><b>ctx.fillText(string ,x, y)</b> - Draw soild text</li>
+              <li><b>ctx.strokeText(string ,x, y)</b> - Draw outlined text</li>
+             </ul>
+            </li>
+            <li>
+            Colors and Properties:
+             <ul>
+              <li><b>ctx.fillStyle = "#FF0000"</b> - Sets color of filled items. (red)</li>
+              <li><b>ctx.strokeStyle = "rgb(0,0,255)"</b> - Sets color of stroked items. (blue)</li>
+              <ul><li> ... = "rgba(int, int, int, float)" - [Red 0-255, Green 0-255, Blue 0-255, Aplha 0.0-1.0]</li></ul>
+              <li><b>ctx.lineWidth = int</b> - Sets the width of drawn lines.</li>
+             </ul>
+            </li>
+            <li>
+            Images:
+            <ul><li><b>ctx.drawImage(image, x, y)</b> - Draws an Image on the Canvas.</li></ul>
+            </li>
+         </ul>
+         <hr />
+         <canvas id="myCanvas3" width="450" height="135"></canvas>
+         <br />
+         <p>Code that produces Canvas drawings:</p>
+<pre>
+   var canvas = document.getElementById("myCanvas3"); // Canvas element
+   var ctx = canvas.getContext("2d"); // Canvas context.
+   
+   ctx.fillRect(20,20,30,30);        // Draw filled Rect
+   ctx.strokeRect(105,20,30,30);     // Draw outlined Rect
+   
+   ctx.beginPath();                  // Draw Lines
+   ctx.moveTo(170,20);
+   ctx.lineTo(200,30);
+   ctx.lineTo(190,10);
+   ctx.stroke();
+   
+   ctx.beginPath();                  // Draw lines 
+   ctx.moveTo(250,20);
+   ctx.lineTo(280,30);
+   ctx.lineTo(270,10);
+   ctx.closePath();                  // Close path
+   ctx.fill();                       // Fill-in closed path 
+   
+   ctx.beginPath();               
+   ctx.arc(370,38,20,0,Math.PI*2);   // Draw circle
+   ctx.stroke();
+
+   ctx.font = "28px Arial";          // Set font to 28px
+   ctx.fillText("Hello",10,100)      // Draw filled text "Hello"
+   ctx.strokeText("Hello",90,100)    // Draw outlined text "Hello"
+   
+   ctx.font = "8px Arial";
+   ctx.fillText('A',177,90);         // Draw text 'A' with 8px size 
+   ctx.font = "30px Arial";
+   ctx.fillText('A',170,120);        // Draw text 'A' with 30px size
+
+   ctx.fillStyle = "#FF0000";        // Set fills to be red 
+   ctx.fillRect(280,80,30,30);       // Draw red rect
+   
+   var crate = new Image();          // Create Image
+   crate.src = 'crate.png';          // Set Image source 
+   crate.onload = function(){        // Draw Image when it loads 
+      ctx.drawImage(crate, 348, 70, 45, 45);
+   }; 
+</pre>
+      </div>
+    </div>
+  </div>
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFour">
+        <h3>Updating the Canvas</h3>
+      </a>
+    </div>
+    <div id="collapseFour" class="accordion-body collapse">
+      <div class="accordion-inner">
+         <p>A static canvas is nice, although often we will want to make it more dynamic. For <em>animation</em> we will want a way to update the canvas, we will look into how to redraw to the canvas and using timers and events to do so. Now lets look exactly what is going on by updating the canvas.</p>
+         <p>Here is a common process on how we do this:</p>
+            <ol>
+               <li>Draw items to canvas</li>
+               <li>Wait a small amount of time (ex: timer)</li>
+               <li>Update items (ex: positions)</li>
+               <li>Clear the canvas</li>
+               <li>Draw our updated items to the canvas</li>
+               <li>Wait a small amount of time</li>
+               <li>Update items</li>
+               <li>And so on ...</li>
+            </ol>
+            <p>Here is a basic example of a moving box. While simple we will be doing the same thing for all our programs, so be sure you understand this example well:</p>
+<pre>
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+ctx.fillStyle = "#FF0000";
+
+var myBox = new Box(10,10,30); // x = 10  y = 50  size = 30
+
+function main()
+{
+    // * Clear the Canvas
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    
+    // * Update Items
+    
+    // If our box hits the sides of the canvas reverse it's direction.
+    if(myBox.x > canvas.width - myBox.size || myBox.x < 0)
+        myBox.vel = -myBox.vel;
+    
+    myBox.moveX();
+    
+    // * Draw Items
+    myBox.draw();
+}
+
+function Box(x, y, size)
+{
+    this.x = x;
+    this.y = y;
+    this.size = size;
+    this.vel = 3; // speed and direction for our box
+    
+    this.moveX = function() {
+         this.x += this.vel; 
+    }
+    this.draw = function() {
+         ctx.fillRect(this.x, this.y, this.size, this.size); 
+    }
+}
+
+
+setInterval(function(){main()}, 30); // Call main every 30 milliseconds
+          
+</pre>
+         <canvas id="ex_canvas" width=300 height=50></canvas>
+         <br />
+         <p>Feel free to experiment and see what you can do with this, perhaps make it move and reflex in with the X and Y directions. <a href="http://jsfiddle.net/a6Xp7/">HERE</a> is the code.</p>
+         <p>In this program we are first creating a Box object. We give it: <b>x</b> and <b>y</b> for it's position, <b>size</b> for how big it is, and <b>vel</b> for how fast it moves. The two methods this Box object has is <b>draw()</b>, which draws the box to the canvas, and <b>moveX()</b>, which changes our <b>x</b> position base on our <b>vel</b>. For the <b>main()</b> function we are performing <b>3</b> steps: <em>clearing</em>, <em>updating</em>, and <em>drawing</em>. For <em>clearing</em> we simply paint the screen white. Next for <em>updating</em> we are first checking if our box is past the canvas side edges, if it is then we change the direction of our box. Then we move our box by <b>vel</b>(3) pixels. Finally for <em>drawing</em> we simple draw the box to the canvas. Note if we had more then one box we would need to go though them and draw each one (we could for example use an aray for that).</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFive">
+        <h3>Keyboard & Mouse Input</h3>
+      </a>
+    </div>
+    <div id="collapseFive" class="accordion-body collapse">
+      <div class="accordion-inner">
+         <p>For this section we will be looking into how to utilize keyboard and mouse input to be used as user input for the canvas. First let me introduce a few new event handlers:</p>
+         <h4>Keyboard Input</h4>
+         <ul>
+            <li><b>keydown</b>: A key is pressed down</li>
+            <li><b>keyup</b>: A key is released</li>
+            <li><em>keypress</em>: A character key is pressed</li>
+         </ul>
+         <p>We will be adding an <em>event listener</em> to our document, even listeners are basically things that listen to events. Such that if we have a keyboard event a keyboard listener would fire whenever we have some type of keyboard input. Here is an example for <b>keydown</b>:</p>
+<pre>
+document.addEventListener("keydown", function(e) { 
+   // Do stuff
+});
+</pre>
+         <p>The parameter given in the function is an object about the key information, I've given it the name <b>e</b> short for <b>event</b>, while there are a few properties I will only talk about the most commonly used ones: <em>e.keyCode</em> and <em>e.charCode</em>.</p>
+         <ul>
+            <li><b>keyCode</b>: <em>Scan code</em> of keyboard input, given by your keyboard driver itself for the physical keys themselves. For example "a" and "A" are the same.</li>
+            <li><em>charCode</em>: The key input based on it's ASCII value. </li>
+         </ul>
+         <p>Here is a basic example of printing the keyCode text to the canvas, press a key on your keyboard and it will show the keyCode on the canvas below:</p>
+<pre>
+var canvas = document.getElementById("keyCanvas");
+var ctx = canvas.getContext("2d");
+ctx.font = "20px Arial";
+ctx.fillText("keyCode = ",5,40);
+ctx.font = "30px Arial";
+
+document.addEventListener("keydown", function(e) { 
+    ctx.clearRect(100,0,canvas.width,canvas.height);
+    ctx.fillText(e.keyCode,110,40);
+});
+</pre>
+         <canvas id="keyCanvas" height="70" width="180"></canvas>
+         <p><a href="http://jsfiddle.net/e4Spu/">HERE</a> is the fiddle example.</p>
+         <br />
+         <hr />
+         <h4>Mouse Input</h4>
+         <p>When we have mouse event listeners the <b>e</b> argument (<em>event</em>), from it we can get our X and Y mouse coordinates of the window by using <b>e.clientX</b> and <b>e.clientY</b>. The only problem to this is these are repect to the window and not the canvas, we want (0,0) to be the top left corner of the canvas. To solve this we first get the coordinates (in the form of a rectangle object) of the canvas with respect to the client window by using <b>canvas.getBoundingClientRect()</b>, then we subract the window positions(clientX, clientY) from the canvas positions(left, top):</p>
+<pre>
+var canvas = document.getElementById("mouseCanvas");
+var ctx = canvas.getContext("2d");
+ctx.font = "20px Arial";
+
+canvas.addEventListener("mousemove", function(e) 
+{ 
+    var cRect = canvas.getBoundingClientRect();
+    var canvasX = e.clientX - cRect.left;
+    var canvasY = e.clientY - cRect.top;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillText("X: "+canvasX+", Y: "+canvasY, 10, 30);
+});
+</pre>
+      <p>Move your mouse over the canvas and it will show your mouse positions:</p>
+      <canvas id="mouseCanvas" width="400" height="200"></canvas>
+      <br />
+       <div class="alert alert-info">Note: Sometimes you may need to slightly manipulate the calculated X and Y positions. If we have a complex webpage sometimes the margins may not be whole numbers, this can cause decimals on the numbers. We can fix this be either using <b>Math.round()</b>, <b>Math.floor()</b>, and <b>Math.ceil()</b> as we see fit. In my case <b>canvasX</b> and <b>canvasY</b> have round() applied to it.</div>         
+
+      </div>
+    </div>
+  </div>
+  
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseSix">
+        <h3>Audio</h3>
+      </a>
+    </div>
+    <div id="collapseSix" class="accordion-body collapse">
+      <div class="accordion-inner">
+         <p>Along with a GUI, we would also like sound in our applications. I will give you a short introduction to the <b>HTML5 Audio</b> tag, we will be using this for our music and sound:</p>
+<pre>
+&lt;audio controls&gt;
+  &lt;source src="fileName.mp3" type="audio/mp3"&gt;
+  Your browser does not support the audio tag.
+&lt/audio&gt;
+</pre>
+<audio controls>
+  <source src="drip.mp3" type="audio/mp3">
+  Your browser does not support the audio tag.
+</audio>
+      <p>The audio tag supports 3 formats: <b>mp3</b>, <b>wav</b>, and <b>ogg</b>. To have it not show an interface simply remove the <b>control</b> attribute. To play it's sound we call the <b>play()</b> method:</p>
+<pre>
+var canvas = document.getElementById("soundCanvas");
+var ctx = canvas.getContext("2d");
+ctx.font = "20px Arial";
+ctx.fillText("Click to play",20,30);
+
+canvas.addEventListener("click", function(e) { 
+    document.getElementById("audioPlayer").play();
+});
+</pre>      
+      <canvas id="soundCanvas" width=150 height=50></canvas>
+      <audio id="audioPlayer"><source src="drip.mp3" type="audio/mp3"></audio>
+      </div>
+    </div>
+  </div>
+  
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseSeven">
+        <h3>Review</h3>
+      </a>
+    </div>
+    <div id="collapseSeven" class="accordion-body collapse">
+      <div class="accordion-inner">
+
+         <ul>
+         <li><b><em>The Canvas</em></b>
+            <ul>
+            <li>The HTML5 Canvas tag is a rectangular element that we can draw on using JavaScript.</li>
+            <li>Canvas uses a cartesian coordinate system such that (0,0) is the top left.</li>
+            </ul>
+         </li>
+         <li><b><em>Drawing to the Canvas</em></b>
+            <ul>
+            <li>We need to get the context area of the canvas by doing: <b>canvas.getContext("2d")</b></li>
+            <li>We can draw: Rectangles, Paths, Text, Images, and adjust properties.</li>
+            </ul>
+         </li>
+         <li><b><em>Updating the Canvas</em></b>
+            <ul>
+            <li>Steps to updating the Canvas are as followed, normally we use a timer if we want to always keep updating:
+               <ul>
+               <li>Draw items to canvas</li>
+               <li>Wait a small amount of time (ex: timer)</li>
+               <li>Update items (ex: positions)</li>
+               <li>Clear the canvas</li>
+               <li>repeat...</li>
+               </ul>
+            </li>
+            <li>For timers we perform three steps: <b>Clearing</b>, <b>Updating</b>, then <b>Drawing</b>.</li>
+            </ul>
+         </li>
+         <li><b><em>Keyboard & Mouse Input</em></b>
+            <ul>
+            <li>For events we use <b>Event Listeners</b>, that check for and fire for only certain events:</li>
+            <li><em>document.addEventListener("keydown", function(e) { ... });</em></li>
+            <ul>
+            <li>For the keyboard:
+               <ul>
+               <li><b>keydown</b>: A key is pressed down</li>
+               <li><b>keyup</b>: A key is released</li>
+               <li><b>keyCode</b>: Scan code of keyboard input, given by your keyboard driver itself for the physical keys themselves</li>
+               </ul>
+            </li>
+            <li>For the Mouse:
+               <ul>
+               <li><b>canvas.getBoundingClientRect()</b>: Gets the Canvas as a window rectangle object.</li>
+               <li><b>e.clientX</b>: Gets the X position of the mouse with respect to the window</li>
+               <li><b>e.clientY</b>: Gets the Y position of the mouse with respect to the window</li>
+               </ul>
+            </li>
+            </ul>
+            </ul>
+         </li>
+         <li><b><em>Audio</em></b>
+            <ul>
+            <li>The audio tag is used for sound and music for an HTML5 webpage.</li>
+            <li>It support the following formats: <em>mp3</em>, <em>wav</em>, and <em>ogg</em></li>
+            <li>We can use the <b>play()</b> method to play the sound file.</li>
+            </ul>
+         </li>
+         </ul>
+      
+      </div>
+    </div>
+  </div>
+  
+</div>
+      
+  </div>
+ </div>
+</div>
+
+<div class="sig">Spencer Wieczorek</div>
+<script>
+
+var canvas = document.getElementById("ex_canvas");
+var ctx = canvas.getContext("2d");
+ctx.fillStyle = "#FF0000";
+
+var myBox = new Box(10,10,30); // x = 10  y = 50  size = 10
+
+function main()
+{
+    // * Clear the Canvas
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    
+    // * Update Items
+    
+    // If our box hits the sides of the canvas reverse it's direction.
+    if(myBox.x > canvas.width - myBox.size || myBox.x < 0)
+        myBox.vel = -myBox.vel;
+    
+    myBox.moveX();
+    
+    // * Draw Items
+    myBox.draw();
+}
+
+function Box(x, y, size)
+{
+    this.x = x;
+    this.y = y;
+    this.size = size;
+    this.vel = 3; // speed and direction for our box
+    
+    this.moveX = function() {
+         this.x += this.vel; 
+    }
+    this.draw = function() {
+         ctx.fillRect(this.x, this.y, this.size, this.size); 
+    }
+}
+
+
+setInterval(function(){main()}, 30);
+
+var k_canvas = document.getElementById("keyCanvas");
+var k_ctx = k_canvas.getContext("2d");
+k_ctx.font = "20px Arial";
+k_ctx.fillText("keyCode = ",5,40);
+k_ctx.font = "30px Arial";
+
+document.addEventListener("keydown", function(e) { 
+    k_ctx.clearRect(100,0,k_canvas.width,k_canvas.height);
+    k_ctx.fillText(e.keyCode,110,40);
+});
+
+var m_canvas = document.getElementById("mouseCanvas");
+var m_ctx = m_canvas.getContext("2d");
+m_ctx.font = "20px Arial";
+
+m_canvas.addEventListener("mousemove", function(e) { 
+    var cRect = m_canvas.getBoundingClientRect();
+    var canvasX = Math.round(e.clientX - cRect.left);
+    var canvasY = Math.round(e.clientY - cRect.top);
+    m_ctx.clearRect(0,0,m_canvas.width,m_canvas.height);
+    m_ctx.fillText("X: "+canvasX+", Y: "+canvasY,10,30);
+});
+
+var a_canvas = document.getElementById("soundCanvas");
+var a_ctx = a_canvas.getContext("2d");
+a_ctx.font = "20px Arial";
+a_ctx.fillText("Click to play",20,30);
+
+a_canvas.addEventListener("click", function(e) { 
+    document.getElementById("audioPlayer").play();
+});
+
+function drawGrid(){
+   var canvas = document.getElementById("myCanvas2");
+   var ctx = canvas.getContext("2d");
+   ctx.fillStyle = "#222288";
+   ctx.font = "15px Arial";
+   ctx.fillText("(0,0)",3,15);
+   ctx.fillText("(w,0)",65,15);
+   ctx.fillText("(w,h)",65,90);
+   ctx.fillText("(0,h)",3,90);
+   ctx.fillRect(1,1,2,2);
+   ctx.fillRect(97,1,2,2);
+   ctx.fillRect(97,97,2,2);
+   ctx.fillRect(1,97,2,2);
+}
+
+function drawExample(){
+   var canvas = document.getElementById("myCanvas3");
+   var ctx = canvas.getContext("2d");
+   ctx.font = "10px Arial";
+   
+   ctx.fillRect(20,20,30,30);
+   ctx.fillText("ctx.fillRect(..)",10,15);
+   ctx.strokeRect(105,20,30,30);
+   ctx.fillText("ctx.strokeRect(..)",80,15);
+   
+   ctx.beginPath();
+   ctx.moveTo(170,20);
+   ctx.lineTo(200,30);
+   ctx.lineTo(190,10);
+   ctx.fillText("ctx.moveTo(..)",160,45);
+   ctx.fillText("ctx.lineTo(..)",160,58);
+   ctx.fillText("ctx.stroke(..)",160,71);
+   ctx.stroke();
+   
+   ctx.beginPath();
+   ctx.moveTo(250,20);
+   ctx.lineTo(280,30);
+   ctx.lineTo(270,10);
+   ctx.closePath();
+   ctx.fill();
+   ctx.fillText("ctx.beginPath(..)",240,45);
+   ctx.fillText("ctx.closePath(..)",240,58);
+   ctx.fillText("ctx.fill(..)",240,71);
+   
+   ctx.beginPath();
+   ctx.arc(370,38,20,0,Math.PI*2);
+   ctx.stroke();
+   ctx.fillText("ctx.arc(x,y,r,0,Math.PI*2)",320,12);
+
+   ctx.font = "28px Arial";
+   ctx.fillText("Hello",10,100)
+   ctx.strokeText("Hello",90,100)
+   ctx.font = "10px Arial";
+   ctx.fillText("ctx.fillText(..)",10,120)
+   ctx.fillText("ctx.strokeText(..)",85,120)
+   
+   ctx.font = "8px Arial";
+   ctx.fillText('A',177,90);
+   ctx.font = "30px Arial";
+   ctx.fillText('A',170,120);
+   
+   ctx.font = "10px Arial";
+   ctx.fillText("(ctx.font = 5)",195,90);
+   ctx.fillText("(ctx.font = 30)",195,120);
+
+   ctx.fillStyle = "#FF0000";
+   ctx.fillRect(280,80,30,30);
+   ctx.fillStyle = "#111111";
+   ctx.fillText("ctx.fillStyle", 273,125);
+   
+   var crate = new Image();   
+   crate.src = 'crate.png';
+   crate.onload = function(){
+      ctx.drawImage(crate, 348, 70, 45, 45);
+   }; 
+   ctx.fillText("ctx.drawImage(...)", 335,128);
+}
+
+drawGrid();
+drawExample();
+
+$(".accordion").on("shown",function(){ // This is to scroll to the top of the accordion group when shown
+        var offset = $(".accordion-body.collapse.in").position().top - 80;
+        $("html, body").animate({ scrollTop: offset+"px" });
+});
+</script>
+</body>
+</html>
