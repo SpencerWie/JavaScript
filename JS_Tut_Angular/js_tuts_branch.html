@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-responsive.css" />
+<link rel="stylesheet" type="text/css" href="js_tuts.css" />
+<script src="jquery.min.js" ></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="js_tuts.js"></script>
+<title>JS Tutorial</title>
+<style>
+.output{ border: 1px solid black; padding: 10px }
+</style>
+</head>
+<body>
+<br />
+<div id="code-box">
+<div id="space-code">
+<textarea id="code">
+
+</textarea><br />
+</div>
+<button class="btn" id="run">Run</button>
+</div>
+<div class="slider"><i class="icon-plus plus"></i></div>
+<div class="container-fluid">
+   <div class="row-fluid">
+      <div class="span2 btnNav">
+         <br />
+         <a href="js_tuts_preface.html"><button class="btn btn-long btn-warning center">Preface</button></a><br />
+         <a href="js_tuts.html"><button class="btn btn-long btn-info center">The Basics</button></a><br />
+         <a href="js_tuts2.html"><button class="btn btn-long btn-info center" >Data & Functions</button></a><br />
+         <button class="btn btn-long btn-info center" disabled>Branching</button><br />
+         <a href="js_tuts_oop.html"><button class="btn btn-long btn-info center" >OOP</button></a><br />
+         <a href="js_tuts_events.html"><button class="btn btn-long btn-info center" >JS Events & Objects</button></a><br />
+         <a href="js_tuts_gui.html"><button class="btn btn-long btn-info center">Canvas GUI</button></a><br />
+      </div>
+      <div class="span2"></div>
+      <div class="span9 background-color:#00FF00">
+         <h1>Branching</h1>
+         <p>Normally our programs flow line-by-line, in which the commands flows from the first line and goes downwards (known as being Sequential). The first lines runs first, then the second line, then the third line, etc. Branching is when we manipulate this flow in a different way. For example when we call a function it goes to the function and back to the normal flow of the program. In this section we will go over several different ways to branch: loops, if/else statements, and conditions.</p>
+         <br />
+ 
+<div class="accordion" id="accordion2">
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+        <h3>Conditions</h3>
+      </a>
+    </div>
+    <div id="collapseOne" class="accordion-body collapse in">
+     <div class="accordion-inner">
+         <p><strong>Conditions</strong> are expressions that will come out as either true or false. This comes from comparing two items which will turn out as either <b>true</b> or <b>false</b>. Remember that the assignment operator is "<b>a = b</b>"(a is b), to compare two items we use either "<b>a == b</b>"(does a equal b?). Or we can use "<b>a === b</b>"(is a strictly equal to b?). Here is a list of comparison operators:</p>
+         <ul>
+            <li><b>a == b</b> - ( a is equal to b )</li>
+            <li><b>a === b</b> - ( a is strictly equal to b [JS will not try and change data types temporarily] )</li>
+            <li><b>a != b</b> - ( a is not equal to b )</li>
+            <li><b>a > b</b> - ( a is greater-than b )</li>
+            <li><b>a < b</b> - ( a is less-than b  )</li>
+            <li><b>a >= b</b> - ( a is greater-than or equal to b )</li>
+            <li><b>a <= b</b> - ( a is less-than or equal to b  )</li>
+         </ul>
+<pre>var x = 3;
+var y = 2;
+alert(x==y); // --> false;
+alert(x != y); // != means NOT EQUALS --> true
+alert(x > y); // --> true;
+alert(x < y); // --> false;
+var y = "3";
+alert(x===y); // num(3) == str("3") --> false;
+alert(x==y) // num(3) == [num(3)] --> true;</pre>
+      <button class="btn btn-success"onclick="conditionEx();">Run</button><br /><br />    
+      <div class="alert alert-info"> == and === are not the same. == will filter you data-types so they are the same while JavaScript is in the process of comparison, while === will not. So different datatypes will never be the same using ===.</div>
+     </div>
+    </div>
+  </div>
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+        <h3>IF Statements</h3>
+      </a>
+    </div>
+    <div id="collapseTwo" class="accordion-body collapse">
+    <div class="accordion-inner">
+      <p>The most basic branch is the <b>IF STATEMENT</b>. Which will run a code if the statement is true, otherwise will not run the code if the statement is false. The code that the IF statement executes is between two brackets. Here is an outline:</p>
+<pre>
+if( condition ){ // <-- Start IF
+   // Code that runs if condition is true.
+} // <-- End IF.
+</pre>
+      <p>Here is some example code:</p>
+<pre>
+var x = 5;
+if(x == 5){
+   alert("x is 5"); // x is 5 => true. So the alert statement will run.
+}
+</pre>
+      <button onclick="functionIf_1()" class="btn btn-success">Run</button>
+      <p>Here is an example of a if statement that does not run.</p>
+<pre>
+var x = 10;
+if(x < 10){
+   alert("x is less than 10"); // (10 < 10) => false. So the alert statement will not run.
+}
+alert("End");
+</pre>
+      <button onclick="functionIf_2()" class="btn btn-success">Run</button>
+      <hr>
+      <p>A add-on to the if statement is an <b>IF-ELSE</b> Statement. It will run the code in the if statement when the condition is true, otherwise if the condition is false it will run the code in the else statement:</p>
+<pre>
+if( condition ){
+   //Code to run on condition is true
+} else {
+   //Code to run on condition is false
+}
+</pre>
+      <p>And here is some example code:</p>
+<pre>
+
+function checkEvenOdd(num){
+   if(num%2 == 0){ // Remember '%' means Modulus (division remainder). 
+      alert(num+" is even"); // If num%2 is 0 it means the number is even.
+   } else {
+      alert(num+" is odd");
+   }
+}
+
+checkEvenOdd(7); // 7 is odd
+checkEvenOdd(12); // 12 is even
+</pre>
+      <button onclick="functionIf_3()" class="btn btn-success">Run</button>
+      <hr>
+      <p>Finnally we have the <b>IF-ELSE IF-ELSE</b> statement. You can think of it as a stack of <em>if statements</em> with an <em>else</em> at the bottom. Checking through a list of conditions and running unique code based on which condition we have met. Note that the <em>else if</em> part can be repeated, here is an outline:</p>
+<pre>
+if( condition1 ){
+   // Code for condition1 is true
+} else if( condition2 ){
+   // Code for condition2 is true, if condition 1 was false.
+} else {
+   // If all the conditions were false run this.
+}
+</pre>
+      <p>And here is some example code (Note : This uses a Object to get the current time in hours)</p>
+<pre>
+var time = new Date().getHours(); // time is the current hour of the day from( 0 to 23)
+if(time < 12){
+   alert("Good morning!");    // From mid-night to 11AM. 
+} else if(time <= 16){
+   alert("Good afternoon!");  // From noon to 4PM
+} else if(time <= 20){ 
+   alert("Good evening!");    // From 5PM to 8PM
+} else {
+   alert("Good night!");      // From 9PM to 11PM
+}
+</pre>
+    <button onclick="functionIf_4()" class="btn btn-success">Run</button>
+    </div>
+    </div>
+  </div>
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFour">
+        <h3>Switch-Case</h3>
+      </a>
+    </div>
+    <div id="collapseFour" class="accordion-body collapse">
+      <div class="accordion-inner">
+
+         <p>Another branch structure that has very similar functionality as the <em>if-else if-else</em> stucture is the <b>Switch-Case</b> structure. Here is an outline and it will be explained below:</p>
+  <pre>
+switch( variable ) 
+{
+case 1:
+  // Execute block if (variable === 1)
+  break;
+case 2:
+  // Execute block if (variable === 2)
+  break;
+default:
+  // Execute code if all cases fail 
+}
+</pre>
+      <p>Switch-Case uses a variable to compare to and checks the strict equality of that variable to each case. In this case if the variable is 1 then the first block will execute. The <em>default</em> is like the <em>else</em> in the if-type structures, such that if all cases are false then default will run. <b>break</b> is to exit some block of code early. It is used in this case so it does not run into other cases (since code is naturally sequential) .</p>
+      <p>For a better understanding lets put a <em>if-else if-else</em> structure next to a <em>switch-case</em> that do the same thing:</p>
+      <div style="width:50%; float:left">
+<pre>
+switch( x ) 
+{
+case "one":
+  alert("x is one");
+  break;
+case "two":
+  alert("x is two");
+  break;
+default:
+  alert("x is not one or two.");
+}
+ 
+</pre>
+      </div>
+      <div style="width:50%; float:left">
+<pre>
+if(x === "one")
+   {
+   alert("x is one");
+   } 
+else if(x === "two")
+   {
+   alert("x is two");
+   }
+else
+   {
+   alert("x is not one or two");
+   }
+</pre>
+      </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFive">
+        <h3>For Loop</h3>
+      </a>
+    </div>
+    <div id="collapseFive" class="accordion-body collapse">
+      <div class="accordion-inner">
+
+         <p>In programing <b>loops</b> are blocks of code that repeat. Arrays almost always use loops to go through them, for example lets say we have an array:</p>
+         <pre>// How would we go through this?
+var myArray = ["one","two","three","four","five"]; </pre>
+         <p>We could always write and output it line-by-line, but that would be cumbersom, definitely for large arrays.</p>
+<pre>
+output( myArray[0] );
+output( myArray[1] );
+output( myArray[2] );
+output( myArray[3] );
+output( myArray[4] );
+</pre>
+         <p>The first loop we will talk about is the <b>FOR loop</b>:</p>
+<pre>
+for( init ; condition ; step ){
+   // Code Block.
+}
+</pre>
+         <ul>
+         <li><b>init</b>: Code ran at the start of the loop (often defining a variable).</li>
+         <li><b>condition</b>: Condition to check to run the loop, if true run the loop.</li>
+         <li><b>step</b>: Code ran at the end of each iteration of the loop (often changing variable).</li>
+         </ul>
+         <p>A <em>for loop</em> goes through <b>init</b> and checks <b>condition</b>, at the end of the loop it goes through <b>step</b>, and then <b>condition</b> again. If <b>condition</b> is true go through the loop again. The solution to the problem above would be using a <em>for loop</em>:</p>
+<pre>
+for(var i=0; i&lt;myArray.length; i++){
+   output( myArray[i] );
+}
+</pre>
+      <div class="output">one  two  three  four  five</div>
+      <br />
+      <p>A simpler to write and read loop exclusively for going through arrays or objects is the <b>for-in</b> loop:</p>
+<pre>
+for( item in myArray ){
+   output( myArray[item] );
+}
+</pre>
+      <p>This gives the same output as the normal <em>for loop</em> above. </p>
+      <hr>
+      <p>You can also place a <em>for loop</em> inside of a <em>for loop</em>, this is known as a <b>nested for loop</b>. For example let's say we have a 2D array(an array within an array), known as a matrix in mathmatics. We would use nested for loops to get every element:</p>
+<pre>
+var myTable = [
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+];
+for( item in myTable){
+   for( subItem in myTable ){
+      output( myArray[item][subItem] );
+   }
+}
+</pre>
+      <div class="output">1  2  3  4  5  6  7  8 9</div>
+      <br />
+      <div class="alert alert-success">output() is not a function in JavaScript, I'm using it as a theodical function to show output. So we don't have so many alerts, a way to replace these examples is using: <b>console.log()</b> instead. This will output to the console of the browser.</div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseSix">
+        <h3>While Loop</h3>
+      </a>
+    </div>
+    <div id="collapseSix" class="accordion-body collapse">
+      <div class="accordion-inner">
+
+         <p>Another common loop is the <b>while loop</b>, in which will repeat some block of code as long as some condition is true:</p>
+<pre>
+while( condition ){
+   //Block of code that runs while condition is true.
+}
+</pre>
+         <p>So for example we could do something similar to a <em>for loop</em> using the <em>while loop</em></p>
+<pre>
+var list = [1,2,3,4,5];
+var i = 0;
+while(i < list.length){
+   output(list[i]);
+   i++;
+}
+</pre>
+         <div class="output">1 2 3 4 5</div><br />
+         <p>As you can see we are doing exactly what we do in a for loop but more manually. The <em>while loop</em> is often used when we don't know how many times the loop will repeat, while the <em>for loop</em> is used when we know exactly how many times the loop will repeat.</p>
+         <hr>
+         <p>A <b>infinite loop</b> is a loop that never stops. And is when the condition in a loop is never false, you will mostly want to avoid infinite loops as much as possible. Here are two examples of infinite loops mistakes:</p>
+<pre>
+var list = [1,2,3,4];
+for(var i = 1; <font style="color:#FF0000">i!=4</font>; <font style="color:#ff6100">i+=2</font>){
+   output(list[i]);
+}
+</pre>
+         <div class="output">2 4 error error error error error error ...</div><br />
+         <p>The first problem we notice is (i!=4), notice i will be: 1,3,5,7,9,... So it will always not be 4, this causes our infinite loop. It's much safter to use less-than or greater-than.</p>
+<pre>
+while(<font style="color:#FF0000">true</font>){
+   alert("hello");
+}
+</pre>
+         <div class="output">hello hello hello hello hello hello ...</div><br />
+         <p>In this case the condition will always be true, unless we break out of the loop within the block of code inside the loop it will be an infinite loop. Although it does not mean it will always be an infite loop, we could use a <em>break</em> statement, for example:</p>
+<pre>
+var num = 0;
+while(true){
+   num += 2;
+   if(num>=12){ break; }
+   output( num );
+}
+</pre>
+         <div class="output">2 4 6 8 10</div><br />
+      </div>
+    </div>
+  </div>
+  
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseSeven">
+        <h3>Review</h3>
+      </a>
+    </div>
+    <div id="collapseSeven" class="accordion-body collapse">
+      <div class="accordion-inner">
+         <ul>
+         <li><b>Conditions</b>: Are statements that can evaulate to be ethier <b>true</b> or <b>false</b>.</li>
+         <li><b>Branches</b> are pieces of code that mainpluate the flow of the program:
+            <ul>
+            <li><em>IF</em> Statement</li>
+            <li><em>ELSE-IF</em> statement</li>
+            <li><em>IF-ELSE IF-ELSE</em> statement</li>
+            <li>*<em>break</em> statement</li>
+            </ul>
+         </li>
+         <li><b>Loops</b>: Are segments of code that are repeated
+            <ul>
+            <li><em>FOR</em> loops</li>
+            <li><em>WHILE</em> loops</li>
+            </ul>
+         </li>
+         <li><em>Infinite Loops</em>: are loops that never stop.</li>
+         </ul>
+      </div>
+    </div>
+  </div>
+  
+</div>
+      
+  </div>
+ </div>
+</div>
+</div>
+
+<div class="sig">Spencer Wieczorek</div>
+<script>
+function functionIf_1(){
+var x = 5;
+if(x == 5){
+   alert("x is 5"); // x is 5 => true. So the alert statement will run.
+}
+}
+
+function functionIf_2(){
+var x = 10;
+if(x < 10){
+   alert("x is less than 10"); // (10 < 10) => false. So the alert statement will not run.
+}
+alert("End");
+}
+
+function functionIf_3(){
+
+function checkEvenOdd(num){
+   if(num%2 == 0){ // Remember '%' means Modulus (division remainder). If x%2 is 0 it means the number is even.
+      alert(num+" is even");
+   } else {
+      alert(num+" is odd");
+   }
+}
+
+checkEvenOdd(7); // 7 is odd
+checkEvenOdd(12); // 12 is even
+}
+
+function functionIf_4(){
+var time = new Date().getHours(); // time is the current hour of the day from( 0 to 23)
+if(time < 12){
+   alert("Good morning!");    // From mid-night to 11AM. 
+} else if(time <= 16){
+   alert("Good afternoon!");  // From noon to 4PM
+} else if(time <= 20){ 
+   alert("Good evening!");    // From 5PM to 8PM
+} else {
+   alert("Good night!");      // From 9PM to 11PM
+}
+}
+
+$(".accordion").on("shown",function(){ // This is to scroll to the top of the accordion group when shown
+        var offset = $(".accordion-body.collapse.in").position().top - 80;
+        $("html, body").animate({ scrollTop: offset+"px" });
+});
+</script>
+</body>
+</html>

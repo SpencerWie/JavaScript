@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-responsive.css" />
+<link rel="stylesheet" type="text/css" href="js_tuts.css" />
+<script src="jquery.min.js" ></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="js_tuts.js"></script>
+<title>JS Tutorial</title>
+<style>
+.smallCode{ clear: both; border: 1px solid #999999; padding: 10px ; background-color: #F5F5F5; border-radius: 2px; float: left; position: relative ; bottom: 10px;  margin: 5px}
+.divBlock{ 
+   border: 1px solid #999999; 
+   background-color: #DDDDDD; 
+   width: 150px; height: 20px; 
+   margin: auto; 
+   text-align: center; 
+   font-size:20px; 
+   padding:40px; 
+   user-select: none; 
+   cursor: pointer; 
+   -webkit-touch-callout: none;
+   -webkit-user-select: none;
+   -khtml-user-select: none;
+   -moz-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+}
+</style>
+</head>
+<body>
+<br />
+<div id="code-box">
+<div id="space-code">
+<textarea id="code">
+
+</textarea><br />
+</div>
+<button class="btn" id="run">Run</button>
+</div>
+<div class="slider"><i class="icon-plus plus"></i></div>
+<div class="container-fluid">
+   <div class="row-fluid">
+      <div class="span2 btnNav">
+         <br />
+         <a href="js_tuts_preface.html"><button class="btn btn-long btn-warning center">Preface</button></a><br />
+         <a href="js_tuts.html"><button class="btn btn-long btn-info center">The Basics</button></a><br />
+         <a href="js_tuts2.html"><button class="btn btn-long btn-info center" >Data & Functions</button></a><br />
+         <a href="js_tuts_branch.html"><button class="btn btn-long btn-info center" >Branching</button></a><br />
+         <a href="js_tuts_events.html"><button class="btn btn-long btn-info center">OOP</button></a><br />
+         <a href="js_tuts_events.html"><button class="btn btn-long btn-info center" disabled>JS Events & Objects</button></a><br />
+         <a href="js_tuts_gui.html"><button class="btn btn-long btn-info center">Canvas GUI</button></a><br />
+      </div>
+      <div class="span2"></div>
+      <div class="span9 background-color:#00FF00">
+         <h1>JavaScript Events & Objects</h1>
+         <p>In this section I will explain more about interaction with the DOM (Known as Events), and some other important and useful objects in JavaScript. Events gives more interaction for the user in which makes things happen on the web page. In this section I will cover: Math, Timers, Date, and page events.</p>
+
+<div class="accordion" id="accordion2">
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+        <h3>JS Objects</h3>
+      </a>
+    </div>
+    <div id="collapseOne" class="accordion-body collapse in">
+     <div class="accordion-inner">
+         <p>Along with the Array, Numbers, Strings, and Booleans Objects. JavaScript has some other built-in objects that are very useful. The <b>Math</b> object is used to to a number of mathematical operations: roots, rounding, random numbers, powers, trigonometry, and more! Unlike other objects we do not need to create and instance as there is an already defined objects called "Math", so we would do <em>Math.method</em> or <em>Math.property</em> . Here are some of the commonly used ones:</p>
+         <p><em>Methods:</em></p>
+         <ul>
+         <li><b>Math.random()</b> - Returns a random number between 0.0 and 1.0 : <em>range [0,1) </em></li>
+         <li><b>Math.round(number)</b> - Returns the number given to the nearest integer.</li>
+         <ul><li>Math.floor(number) - Returns an integer rounded down (3.8 -> 3)</li>
+         <li>Math.ceil(number) - Returns an integer rounded up (3.2 -> 4)</li></ul>
+         <li><b>Math.sin(num) , Math.cos(num), Math.tan(num) , ...</b> - Applys trigonometric functions to the number.</li>
+         <li><b>Math.max(num1,num2,...) , Math.min(num1,num2,...)</b> - Returns the max/min of a list( but not an array) of numbers.</li>
+         <ul><li>Math.max.apply(0,array) - This will work for an array</li></ul>
+         <li><b>Math.abs(number)</b> - Returns the absolute value of the number.</li>
+         <li><b>Math.log(number)</b> - Returns the natural logarithm of a number.</li>
+         <li><b>Math.sqrt(number)</b> - Returns the square root of a number.</li>
+         <li><b>Math.pow(num, exp)</b> - Returns the number taken the the power of the exp.</li>
+         </ul>
+         <p><em>Properties:</em> Which are all mathematical constants (constants are often capitalized)</p>
+         <ul>
+         <li><b>Math.PI</b> - Returns &pi; (~3.14159)</li>
+         <li><b>Math.E</b> - Returns e (~2.718)</li>
+         </ul>
+<pre>
+Math.floor( Math.random()*10 + 1 ); // => Random number from [1,10]
+Math.sin( Math.PI ); // => 0
+Math.cos( Math.PI ); // => -1
+Math.floor(2.99); // => 2
+Math.ceil(2.01); // => 3
+Math.sqrt( Math.pow(x2-x1, 2) + Math.pow(y1-y2, 2) ); // Distance between (x1,y1) and (x2,y2)
+</pre>
+         <hr>
+         <p>Another one is the <b>Date</b> objects, which is used to get the Date and Time based on your system's clock. Unlike the Math object we do need to create an instance of the Date Class:</p>
+         <pre>var date = new Date(); // There are more ways to create a date but this is the most common.</pre>
+         <p><em>Common Methods:</em></p>
+         <ul>
+         <li>date.<b>getDate()</b> - Returns the day of the month (1 to 31)</li>
+         <li>date.<b>getDay()</b> - Returns the day of the week ( 0[Sun] to 6[Sat] )</li>
+         <li>date.<b>getMonth()</b> - Returns the current month (0 to 11)</li>
+         <li>date.<b>getYear()</b> - Returns the current year ( YYYY , ex: 2014)</li>
+         <li>date.<b>getHours()</b> - Returns the current hour (0 to 23)</li>
+         <li>date.<b>getMinutes()</b> - Returns the current minute (0 to 59)</li>
+         <li>date.<b>getSeconds()</b> - Returns the current second (0 to 59)</li>
+         <li>date.<b>getMilliseconds()</b> - Returns the current millisecond (0 to 999)</li>
+         <li>date.<b>toLocaleDateString()</b> - Returns a formatted date as a string (ex: "1/10/2014")</li>
+         <li>date.<b>toLocaleTimeString()</b> - Returns a formatted date as a string (ex: "10:45 AM")</li>
+         </ul>
+         <p>Here is an example of getting the current day of the week:</p>
+<pre>
+var weekdays = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+var date = new Date();
+var day = date.getDay();
+alert("Today is "+weekdays[day]);
+</pre>
+      <p><button class="btn btn-success" onclick="getWeekday()">Get Weekday</button> </p>
+     </div>
+    </div>
+  </div>
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+        <h3>DOM Events</h3>
+      </a>
+    </div>
+    <div id="collapseTwo" class="accordion-body collapse">
+      <div class="accordion-inner">
+         <p>We can execute JavaScript with the interactions of DOM elements on the page, such as: clicking, on focus, mouse over, key stroke, webpage as loaded, etc (known as <b>event handlers</b>). In this way we can make our webpage a bit more interesting then just a static webpage.</p>
+         <p>The <strong>onclick</strong> events happens when we click an element.</p>
+         <div class="divBlock" id="block1">Click</div>
+         <br />
+         <p>Events can be applied to objects in two ways, either within the HTML or within your JavaScript:</p>
+         <p><em>In HTML</em></p>
+         <pre>&lt;element onclick="myFunction()"&gt; ... &lt;/element&gt;</pre>
+         <p><em>In JavaScript</em></p>
+         <pre>document.getElementById("myElement").onclick = function(){ ... }</pre>
+         <p><em>This same syntax goes for all DOM events</em>. In fact all the buttons you have seen have the <em>onclick</em> event on them. Here is an example: Let's assume that we have a button with the id="myButton", we want to alert "Hello World" when it's clicked. Here is how you would do it:</p>
+         <pre>document.getElementById("myButton").onclick = function(){ alert("Hello World") }</pre>
+         <button id="myButton" class="btn btn-success">Run</button><br /><br />
+         <p>Or we could do it in the HTML ( <em>although generally it a better idea to do it in JavaScript</em> ):</p>
+         <pre>&lt;button onclick="alert('Hello World')"&gt; Run &lt;/button&gt;</pre>
+         <hr>
+         <p>Some other commonly used events are:</p>
+         <ul>
+            <li><b>onload</b> - Triggers when the entire webpage loads.</li>
+            <li><b>onmouseover</b> - Triggers when the mouse is over an element.</li>
+            <li><b>onmouseout</b> - Triggers when the mouse leaves an element.</li>
+            <li><b>onmousedown</b> - Triggers when the mouse is pressed on an element.</li>
+            <li><b>onmouseup</b> - Triggers when the mouse is released from an element.</li>
+            <li><b>onmousemove</b> - Triggers when the mouse is moved inside an element.</li>
+            <li><b>onfocus</b> - Trigers when an element is focused on (like clicking an input box).</li>
+         </ul>
+         <p>Here is an example of <em>onmouseout</em> and <em>onmouseover</em></p>
+         <div class="divBlock" id="block2">Hello</div><br />
+<pre>
+document.getElementById("block2").onmouseover = function(){
+   this.innerHTML = "Mouse Over";
+}
+
+document.getElementById("block2").onmouseout = function(){
+   this.innerHTML = "Mouse Out";
+}
+</pre>
+      <div class="alert alert-info">Remember window.onload = function() { ... } ? Yes it is a DOM event. </div>
+      </div>
+    </div>
+  </div>
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFour">
+        <h3>Timers</h3>
+      </a>
+    </div>
+    <div id="collapseFour" class="accordion-body collapse">
+      <div class="accordion-inner">
+         <p>In some languages timers can be quite complex or hard to use, although in JavaScript timers are quite simple and easy to use. The two timing events in JavaScript are:</p>
+         <ul>
+         <li>setInterval(function, milliseconds)</li>
+         <li>setTimeout(function, milliseconds)</li>
+         </ul>
+         <p><strong>setInterval()</strong> Keeps executing the the given function at a time interval based on the milliseconds given. Note that it will keep executing the function, over and over, until we tell it to stop.
+         <div class="divBlock" id="counter">0</div><br />
+<pre>
+var count = 0;
+var myTimer = setInterval(function(){ counter() },1000);
+
+function counter(){
+   count++;
+   document.getElementById("counter").innerHTML = count;
+}
+</pre>
+       <button onclick="countFunction()" id="run1" class="btn btn-success">Run</button>&nbsp;<button onclick="stopCount()" class="btn btn-danger">Stop</button><br /><br />
+       <p>We can use the <strong>clearInterval( timer )</strong> function to stop the timer from going on forever. In this case the Stop button does this:</p>
+       <pre>clearInterval(myTimer);</pre>
+       <p>Note: You will need to make your timer variables such as "myTimer" global variables.</p>
+       <hr>
+       <p>The <strong>setTimeout()</strong> function will wait a specified number of milliseconds, then execute a function once. Here is an example of an alert that will wait 5 seconds before executing:</p>
+       <pre>myTimer2 = setTimeout(function(){ alert("Hello World") }, 5000);</pre>
+       <button onclick="outFunction()" id="run2" class="btn btn-success">Run</button>&nbsp;<button onclick="stopTime()" class="btn btn-danger">Stop</button><br /><br />
+       <p>We can use <strong>clearTimerout( timer )</strong> to stop the function from calling. This is what the stop button does in this case:</p>
+       <pre>clearTimeout(myTimer2);</pre>
+       <hr>
+       <p>I'm sure you noticed that I disabled my Run buttons when you clicked them. It's very important <b>not</b> to create a <em>setInterval()</em> or <em>setTimeout()</em> on the same variable before the first one is finished or cleared. Because it will only be possible to stop the last call and not the runs before, which can lead to serious problems with infinite timers. Here is the modified code for the last event that disables the run button:</p>
+<pre>
+var myTimer2;
+
+function outFunction(){ // Called when Run button is clicked
+   myTimer2 = setTimeout(function(){ 
+      alert("Hello World");
+      document.getElementById("run2").disabled = false;   
+   }, 5000);
+   document.getElementById("run2").disabled = true;
+}
+
+function stopTime(){ // Called when Stop button is clicked
+   clearTimeout(myTimer2);
+   document.getElementById("run2").disabled = false;  
+}
+</pre>
+      <div class="alert alert-info">Both the timer events are DOM window events, they are actually called as: window.setTimeout(...). But they don't need to be written with the window prefix.</div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFive">
+        <h3>Storage</h3>
+      </a>
+    </div>
+    <div id="collapseFive" class="accordion-body collapse">
+      <div class="accordion-inner">
+         <p>In that past we normally used cookies as storage on the clients machine, although cookies were small and not too secure. With HTML 5 becoming the standard there is a new way to store client-side information known as <b>Web Storage</b> or <b>DOM Storage</b>, there are two JavaScript objects that support HTML5 storage:</p>
+         <ul>
+         <li><b>localStorage</b> - Stores the information cliently on a database, information is not lost when the browser is closed.</li>
+         <li><b>sessionStorage</b> - Store the information temporarily in a page session, but the information is lost when the page is closed.</li>
+         </ul>
+         <p>Currently we can store up to 5 Megabytes of information, much more than what cookies could store. HTML5 storage is also more secure that cookie storage.</p>
+         <p>Here is how to create a <em>variable</em> that uses localStorage:</p>
+         <pre>localStorage.myVariable = ... ;</pre>
+         <p>Here is how to create a <em>variable</em> that uses sessionStorage:</p>
+         <pre>sessionStorage.myVariable = ... ;</pre>
+         <p>And here is how you can check if a particular localStorage or sessionStorage variable exist or not:</p>
+<pre>
+if(localStorage.myVariable){
+   // It exist, change it.
+} else {
+   // It doesn't exist, make it.
+}
+</pre>
+         <p>Now for a simple example I will store button clicks in both session and local storage:</p>
+         <button id="localStore" class="btn btn-success">Local Clicks : 0</button><br /><br />
+         <button id="sessionStore" class="btn btn-success">Session Clicks : 0</button><br /><br />
+         <p>And here is the code below:</p>
+<pre>
+function localStore(){
+   if(localStorage.clicks){
+      localStorage.clicks++;
+   } else {
+      localStorage.clicks = 1;
+   }
+   document.getElementById("localStore").innerHTML = "Local Clicks : " + localStorage.clicks;
+}
+
+function sessionStore(){
+   if(sessionStorage.clicks){
+      sessionStorage.clicks++;
+   } else {
+      sessionStorage.clicks = 1;
+   }
+   document.getElementById("sessionStore").innerHTML = "Session Clicks : " + sessionStorage.clicks;
+}
+
+document.getElementById("localStore").onclick = function(){ localStore(); }
+document.getElementById("sessionStore").onclick = function(){ sessionStore(); }
+</pre>
+      </div>
+    </div>
+  </div>
+  
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseSeven">
+        <h3>Review</h3>
+      </a>
+    </div>
+    <div id="collapseSeven" class="accordion-body collapse">
+      <div class="accordion-inner">
+         <p>Here are some important points we went over:</p>
+         <p><em>JS Objects</em> : Built-in JS objects that we can use.</p>
+            <ul>
+            <li><b>Math</b> - Used to perform common mathematical operations. (Math.sin(n) , Math.round(n), Math.PI, ...)</li>
+            <li><b>Date</b> - Uses the System Clock to find the current Date along with (seconds,minutes, ... ,Day,Month,...)</li>
+            </ul>
+         <p><em>DOM Events</em> : Even triggers that provides interaction with the web page.</p>
+            <ul>
+            <li><b>onclick</b> : Triggered when you click the mouse button on an element.</li>
+            <li><b>onmouseover</b> : Triggered when the mouse is over an element.</li>
+            <li><b>onmouseout</b> : Triggered when the mouse leaves an element.</li>
+            </ul>
+         <p><em>Timers</em>: Events used for timing with JavaScript.</p>
+            <ul>
+            <li><b>setInterval(function, milliseconds)</b> - Keeps executing the the given function at a time interval.</li>
+            <li><b>setTimeout(function, milliseconds)</b> - Wait the given number of milliseconds then execute the function.</li>
+            </ul>
+         <p><em>Storage</em> : Used to store information cliently.</p>
+            <ul>
+            <li>localStorage - Stores the information permanently in a client-side database.</li>
+            <li>sessionStorage - Stores information for the current browsers session, but is lost when it's session ends.</li>
+            </ul>
+         <hr>
+         <p>Thank you for reading my introduction to Programing with JavaScript tutorial! If you have any (questions/comments/criticism) you can e-mail me at : <a href="mailto:spdwiecz@iupui.edu">spdwiecz@iupui.edu .</p>
+      </div>
+    </div>
+  </div>
+  
+</div>
+      
+  </div>
+ </div>
+</div>
+
+<div class="sig">Spencer Wieczorek</div>
+<script>
+document.getElementById("block1").style.backgroundColor = "#DDDDDD";
+
+document.getElementById("myButton").onclick = function(){ alert("Hello World") }
+
+function getWeekday(){
+var weekdays = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+var date = new Date();
+var day = date.getDay();
+alert("Today is "+weekdays[day]);
+}
+
+document.getElementById("block1").onclick = function(){
+   //We need to check both RGB and HEX, since browers do it differently.
+   if(this.style.backgroundColor == "#DDDDDD" || this.style.backgroundColor == "rgb(221, 221, 221)"){
+      this.style.backgroundColor = "#44DD44"; // If grey turn green
+   } else {
+      this.style.backgroundColor = "#DDDDDD";// If it was green turn it grey
+   }
+}
+
+document.getElementById("block2").onmouseover = function(){
+   this.innerHTML = "Mouse Over";
+}
+
+document.getElementById("block2").onmouseout = function(){
+   this.innerHTML = "Mouse Out";
+}
+
+var count = 0;
+var myTimer;
+var myTimer2;
+
+function countFunction(){
+   count = 0;
+   document.getElementById("run1").disabled = true;
+   myTimer = setInterval(function(){ counter() },1000);
+
+   function counter(){
+      count++;
+      document.getElementById("counter").innerHTML = count;
+   }
+}
+
+function stopCount(){
+   clearInterval(myTimer);
+   document.getElementById("run1").disabled = false;
+}
+
+function outFunction(){
+   myTimer2 = setTimeout(function(){ 
+      alert("Hello World");
+      document.getElementById("run2").disabled = false;   
+   }, 5000);
+   document.getElementById("run2").disabled = true;
+}
+
+function stopTime(){
+   clearTimeout(myTimer2);
+   document.getElementById("run2").disabled = false;  
+}
+
+function localStore(){
+   if(localStorage.clicks){
+      localStorage.clicks++;
+   } else {
+      localStorage.clicks = 1;
+   }
+   document.getElementById("localStore").innerHTML = "Local Clicks : " + localStorage.clicks;
+}
+
+function sessionStore(){
+   if(sessionStorage.clicks){
+      sessionStorage.clicks++;
+   } else {
+      sessionStorage.clicks = 1;
+   }
+   document.getElementById("sessionStore").innerHTML = "Session Clicks : " + sessionStorage.clicks;
+}
+
+document.getElementById("localStore").onclick = function(){ localStore(); }
+document.getElementById("sessionStore").onclick = function(){ sessionStore(); }
+
+if(localStorage.clicks){ document.getElementById("localStore").innerHTML = "Local Clicks : " + localStorage.clicks; }
+if(sessionStorage.clicks){ document.getElementById("sessionStore").innerHTML = "Session Clicks : " + sessionStorage.clicks; }
+
+$(".accordion").on("shown",function(){ // This is to scroll to the top of the accordion group when shown
+        var offset = $(".accordion-body.collapse.in").position().top - 80;
+        $("html, body").animate({ scrollTop: offset+"px" });
+});
+</script>
+</body>
+</html>
