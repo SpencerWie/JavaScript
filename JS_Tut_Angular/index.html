@@ -12,6 +12,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular-route.min.js"></script>
 <script src="js/app.module.js"></script>
 <script src="js/app.directive.js"></script>
+<script src="js/app.controller.js"></script>
 <title>JS Tutorial</title>
 </head>
 <body ng-app="app">
@@ -42,21 +43,13 @@
          <h1>The Basics</h1>
          <p>Programing is the ability to create complex systems that can do anything, to do this we string together logical operations. It does not matter what programing language we use, all language do essentially the same thing. In our case we will be using JavaScript, a high level object oriented scripting language for web browsers.</p>
          <br />
-        <div class="accordion" id="accordion2">
-          <div class="accordion-group">
-            <div class="accordion-heading">
-              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-                <h3>The Setup</h3>
-              </a>
-            </div>
-            <div id="collapseOne" class="accordion-body collapse in">
-              <div class="accordion-inner">
-                <tutsection htmlSource="The_Basics/TheSetup.html" ></tutsection>
-              </div>
-            </div>
-          </div>
+        <div class="accordion" id="accordion2" ng-controller="sectionCtrl">
+          <tutsection data-htmlSource="The_Basics/TheSetup.html" data-title="The Setup" data-id="collapseOne" data-in="in" ></tutsection>
+          <tutsection data-htmlSource="The_Basics/Comments.html" data-title="Comments" data-id="collapseTwo" ></tutsection>
+          <tutsection data-htmlSource="The_Basics/HelloWorld.html" data-title="Hello World" data-id="collapseThree" ></tutsection>
+          <tutsection data-htmlSource="The_Basics/JavaScriptPlacement.html" data-title="JavaScript Placement" data-id="collapseFour" ></tutsection>
+          <tutsection data-htmlSource="The_Basics/Review.html" data-title="Review" data-id="collapseFive" ></tutsection>
         </div>
-      </div>
   </div>
 </div>
 

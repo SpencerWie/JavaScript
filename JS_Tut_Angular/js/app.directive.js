@@ -1,20 +1,33 @@
 var app = angular.module('app');
 /*
 The `tutSection` directive holds the information for a section in this tutorial (being HTML).
+
+title:       This is the title of the section
+id:          The id of this element which maps to the accordian
+htmlsource:  The HTML content of this section
+in:          Used to show this content first (will almost always be used for the first element)
+*parent:     This is what the parent element is, do NOT fillout this value as it's found automatically.
 */
 
 // This is a custome made HTML element
-app.directive('tutsection',  function(){
+app.directive('tutsection',  function($templateCache){
 	return {
-		/*scope: {
-			htmlSource: '='                     // A one-time read of the `htmlSource` attribute to get the templateUrl
-		},*/
-		restrict: 'E',                         // Needs to be an HTML element
-		link: function(scope, element, attrs) {
-		   // some ode
+		scope: {
+			title: "@",
+			id: "@",
+			parent: "@",
+			htmlsource: "@",
+			in: "@"
+		},
+		restrict: 'E',
+        replace: true,
+        transclude: true,
+		link: function(scope, ele, attrs) {
+	   		// Get the parent of this element, so it knows what accordian it's in.
+	   		scope.parent = ele.parent().attr('id');
 		},
 		templateUrl: function(ele,attrs) {
-			return attrs.htmlsource;            // A Template is a string or HTML file given and renders as HTML
+			return "section.html";
 		}
 	};
 });
