@@ -1,0 +1,26 @@
+[
+	{
+		"htmlSource":"The_Basics/TheSetup.html",
+		"title":"The Setup" 
+	},
+	{
+		"htmlSource":"The_Basics/Comments.html",
+		"title":"Comments" 
+	},
+	{
+		"htmlSource":"The_Basics/HelloWorld.html",
+		"title":"Hello World" 
+	},
+	{
+		"htmlSource":"The_Basics/DOM_Manipulation.html",
+		"title":"DOM Manipulation" 
+	},
+	{
+		"htmlSource":"The_Basics/JavaScriptPlacement.html",
+		"title":"JavaScript Placement" 
+	},
+	{
+		"htmlSource":"The_Basics/Review.html",
+		"title":"Review" 
+	}
+]
