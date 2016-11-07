@@ -10,7 +10,7 @@ in:          Used to show this content first (will almost always be used for the
 */
 
 // This is a custome made HTML element
-app.directive('tutsection',  function($templateCache){
+app.directive('tutsection',  function($templateCache, $route){
 	return {
 		scope: {
 			title: "@",
