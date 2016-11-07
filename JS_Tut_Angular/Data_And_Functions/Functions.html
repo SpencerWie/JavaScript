@@ -1,0 +1,50 @@
+         <p>Functions are <em>blocks of code</em> that can accept values (known as <b>arguments or parameters</b>). We can use functions to separate out our program and focus on one part at a time, in a much more organized fashion. In JavaScript the syntax of functions is: </p>
+         <pre>function nameOfFunction(arg1*,arg2*,...){ /* JavaScript Code */ }</pre>
+         <p>The brackets <b>{</b> and <b>}</b> are known as <strong>branches</strong>, which in this case means they are a separate piece of code away from our main code. We will talk alot more about branching (along with a better definition) in the next section. Just know that those squiggly brackets are where we put our code for a function.</p>
+         <p>Note that when we make a function it does not do anything until we use it, known as calling a function. Here is an example:</p>
+<pre>
+function sayHello(){
+   alert("Hello World");
+}
+sayHello(); // <-- This calls the function</pre>
+         <button class="btn btn-success" onclick="sayHello();">Run Function</button>
+         <p>All variables that are made inside a function <b>are gone</b> once we leave that function. This is known as <b>local variables</b> (Which are variables stored in the <em>Stack</em> - You don't need to know what that means).So for example this code will not work:</p>
+<pre>
+function sayBye(){
+   var imGone = "Bye!";
+   alert(imGone); // <-- This is fine
+}
+sayBye();
+alert(imGone); <-- We arn't in the function, we don't know what imGone is.</pre>
+      <p>This will output alert("Bye!"), but then you will get an error message like: imGone is not defined. </p>
+      <p><b>Global variables</b> are variables we define outside of functions, we can use these values outside and inside functions fine:</p>
+<pre>
+var imGone = "Bye!";
+function sayBye(){
+   alert(imGone); // This works!
+}
+sayBye();
+alert(imGone); //<-- This works too!</pre>
+         <button class="btn btn-success" onclick="globalEx();">Run Function</button><br /><br />
+      <p>The locality of variables and where they are defined is called the <b>scope</b>. For global variables the scope is the entire program, globals are defined everywhere. Although for local variables they are only defined within their scope or where they were made between the brackets { ...variable... } .</p>
+      <p><strong>Parameters:</strong></p>
+      <p>We can also can give variables for our functions to work with (known as <em>passing a value to a function</em>). The values are known as arguments or parameters, and they are separated by commas:</p>
+<pre>
+function addStuff(x,y){
+   var sum = x + y;
+   alert(sum); 
+}
+addStuff(5,10) // 5+10 = 15</pre>
+         <button class="btn btn-success" onclick="addStuff(10,5);">Run Function</button>  
+               <br /><br />
+         <p><strong>Returning Values:</strong></p>
+         <p>We can also give out values with our functions, by saying <b>return item</b>. If we look back we can see many functions we used above does this ( toString() , valueOf(), slice() ). For example:</p>    
+<pre>
+function giveStuff(x,y){
+   var sum = x + y;
+   return sum; 
+}
+var theSum = giveStuff(5,10) ;
+/* giveStuff(...) gives a value, 15 in thie case, it's like: var theSum = 15; */
+alert(theSum);</pre>
+      <button class="btn btn-success" onclick="returnEx();">Run Function</button> 

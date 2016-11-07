@@ -1,0 +1,24 @@
+         <p>Strings in there basic form are actually an array of characters, although they are a bit more than advanced than that in high level languages (like JavaScript). So for example we could look at ['H','e','l','l','o'] being similar to "Hello". So it is no surprise that strings have many methods that arrays have:</p>
+         <ul>
+         <li>var str = "Hello" --> <b>str[0] is 'H' , str[1] is 'e'</b> , ...</li>
+         <li><b>string.indexOf(element)</b> - Returns the character at the index.</li>
+         <li><b>string.length</b> --> "Hello".length is 5.</li>
+         <li><b>string.slice([start_index], [end_index]-1)</b> - Returns a sub-array of strings (shallow copy) from a base string.</li>
+         </ul>
+         <p>Strings also have a property known as <strong>concatenation</strong>, which means we merging two strings together. This is used by the <b>+</b> symbol:</p>
+         <pre>var hello = "HELLO";
+var world = " WORLD"; //notice the space.
+var statement = hello+world; // statement is "HELLO WORLD"</pre>
+         <p>Some other things that strings can do:</p>
+         <ul>
+         <li><b>string.toLowerCase()</b> - Returns a string that has all the characters in the given string to be lower-case.</li>
+         <li><b>string.toUpperCase()</b> - Returns a string that has all the characters in the given string to be upper-case.</li>
+         <li><b>string.split(para)</b> - Returns an array sub-strings being separated by the parameter.</li>
+         <li><b>string.replace(original, replacement)</b> - Returns a string that Finds and replaces something in the original string.</li>
+         <li><b>string.match(str)</b> - If it finds the item in the parameter it returns it, otherwise return null.</li>
+         </ul>
+<pre>var myStr = "Hello World";
+myStr = myStr.toLowerCase(); // => "hello world"
+myStr = myStr.toUpperCase(); // => "HELLO WORLD"
+myStr = myStr.replace("WORLD","INTERNET"); // => "HELLO INTERNET"
+var anotherStr = myStr.split("E") // anotherStr => ["H","LLO INT","RN","T"]</pre>

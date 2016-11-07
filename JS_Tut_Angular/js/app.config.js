@@ -11,5 +11,9 @@ app.config(function($routeProvider, $locationProvider){
 	    {
 	      templateUrl: "/The_Basics/index.html"
 	    })
+   	.when("/DataAndFunctions",                                   
+	    {
+	      templateUrl: "/Data_And_Functions/index.html"
+	    })
   	.otherwise({ templateUrl: "/Preface/index.html" }); 
 });	
