@@ -1,0 +1,51 @@
+<p>Out of all the data types we talked about Arrays are definitely the most complex. An <em>array is a list of items</em>. In all programing languages  an array's particular elements can be accessed by their index( Where the item is in the array ). The <b>index starts at 0</b>, and a item in an array can be access by the notation: <b>Array[index]</b>. For example.</p>
+<pre>//              0       1        2       3
+var array = ["Apple","Banana","Peach","Orange"]
+</pre>
+<ul>
+<li>array[0] = "Apple"</li>
+<li>array[1] = "Banana"</li>
+<li>array[2] = "Peach"</li>
+<li>array[3] = "Orange"</li>
+</ul>
+<p>You can also alert an array and JavaScript will give you a nice representation of the array:<br /> <strong>alert(array) --> "Apple,Banana,Peach,Orange"</strong></p>
+<p>You can find the number of elements in an array by saying: <b>array.length</b>, in our example the array with elements ["Apple","Banana","Peach","Orange"] has a length of 4. There are plenty of methods you can use with an array, which can always be looked up online, so you don't have to memorize these: </p>
+<ul>
+<li><b>array.indexOf(element)</b> - Returns the index of some element in an array.</li>
+<li><b>array.slice([start_index], [end_index]-1)</b> - Returns a sub-array (shallow copy) from an array.</li>
+<li><b>array.pop()</b> - Removes an element from the end of an array</li>
+<li><b>array.push(element)</b> - Adds an element to the end of an array</li>
+<li><b>array.sort()</b> - Sorts an array in ascending, alphabetical, or numerical order depending on the elements in the array.</li>
+</ul>
+<p class="challenge">Challenge:</p>
+<p>What will be alerted?</p>
+<pre>
+var array = ["Apple","Banana","Peach","Orange","Cherry"];
+array.sort();
+array.pop();
+array.push("Lemon");
+var newArray = array.slice(1,5); 
+alert(newArray);
+</pre>
+<button class="btn btn-success"onclick="arrayChallenge();">Click for Solution</button>    
+<hr>
+<p>You can place any datatype into an array, even another array. Known as a <b>multi-dimensional</b> arrays, for example an array within an array is a 2D array. Which can be treated like a table, grid, or matrix. For example:</p>
+<pre>
+var Array2D = [
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+];
+</pre>
+<p>Since there is an array inside the array we need two brackets, one two go into the outer array then the next to go into each inner array, or it maybe easier to see it as a table with rows and columns.</p>
+<ul>
+   <li>Array within Array :<b>2dArray[outerArray_index][innerArray_index]</b></li>
+   <li>A Table :<b>2dArray[row][col]</b></li>
+</ul>
+<p>Here is some examples of getting elements:</p>
+<pre>
+Array2D[1]    => [4,5,6]
+Array2D[1][0] => 4
+Array2D[1][1] => 5
+Array2D[0][2] => 3
+</pre>

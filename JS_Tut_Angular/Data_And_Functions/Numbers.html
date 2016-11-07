@@ -1,0 +1,16 @@
+<p>Numbers along with Booleans are simple data types. Numbers can be either whole numbers(Integers) or real numbers(Doubles in JS). We perform Arithmetic operations on numbers with add( <b>+</b> ), subtract( <b>-</b> ), multiplication( <b>*</b> ), and division( <b>/</b> ):</p>
+<pre>var x = 10; // x is 10</pre>
+<p>Basic Arithmetic:</p>
+<pre>var x = 10/2; // => 5
+x = x * 3; // x = x*3 => 15
+x++; // This means x = x + 1, so => 16
+x+=4; // This means x = x + 4 => 20, the same thing goes with x-=n -> x = x - n.
+</pre>
+<p>Numbers also have methods(actions):</p>
+<ul>
+<li><b>number.toString()</b> - Returns the number as a string.</li>
+<li><b>number.valueOf()</b> - Returns the primitive number of the variable.</li>
+</ul>
+<p>You can also define all basic data-types as Objects, the format for creating an object is:</p><pre>var obj = new Object(...);</pre>
+<p>For creating numbers as objects we do:</p><pre>var num = new Number(10); // num is 10</pre>
+<p class="alert alert-danger">Creating a variable as an object is not the same as creating a variable as a primitive number. JavaScript will temporarily change variables that are primitive into objects with you call a method with them. Because of this I recommend simply making variables as primitive numbers like: var x = 3; This way we avoid problems with strict equality(===) and Case/Switch statements, both of which we will discuss later.</p>

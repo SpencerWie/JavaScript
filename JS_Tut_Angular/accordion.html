@@ -1,0 +1,4 @@
+<!-- Create sections based on JSON data, `data-in` will b the first element.-->
+<div class="accordion" id="accordion" ng-controller="sectionCtrl">
+	<tutsection ng-repeat="section in data" data-htmlSource="{{section.htmlSource}}" data-title="{{section.title}}" data-id="collapse{{$index}}" data-in="{{$index == 0 && 'in' || undefined }}" ></tutsection>
+</div>

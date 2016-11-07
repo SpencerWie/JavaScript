@@ -1,0 +1,26 @@
+         <p>We know that we can produce output with the <em>alert(string)</em> function. We can also get input from the user with the <strong>prompt(str_message, ~str_text)</strong>. ~ means optional. The Prompt function returns the string you gave it.</p>
+<pre>var name = prompt("What is your name?","Enter name here");
+alert("Hello "+name);</pre>
+         <button class="btn btn-success"onclick="input1();">Run</button>  
+         <hr>
+         <p>Since datatypes are dynamic in JavaScript and can change easily, it's hard to be sure which datatype some variable is. This is mostly always between Strings and Numbers. We will want to convert to either: [Number to String] or [String to Number]. And we have functions for that:</p>
+         <ul>
+         <li><b>parseInt(string)</b> - Converts in a whole number</li>
+         <li>&nbsp; parseFloat(string) - Converts to a decimal number</li>
+         <li><b>datatype.toString()</b> - Converts a datatype into a String</li>
+         </ul>
+         <p>Here is an example of a problem that can happen, lets say we ask for a number for input and we add to it:</p>
+<pre>
+var num = prompt("Enter a number");
+var sum = num + 12;
+alert(num+" + 12 = "+sum);
+</pre>
+         <button class="btn btn-success"onclick="input2();">Run</button> <br /> <br />
+         <p>At first glance this look like it would run fine, but when we test it something is wrong. If I say 4, it tells me that " 4 + 12 = 412 ". Remember that prompt returns a string, so it did a string concatenation: "4" + 12 = "412". In JavaScript: [Number + String = String] and the Number is treated as a string. If we <strong>cast</strong> (change datatype) the input into a Number we will get the right result:</p>
+<pre>
+var num = prompt("Enter a number");
+num = parseInt(num);
+var sum = num + 12;
+alert(num+" + 12 = "+sum);
+</pre>
+         <button class="btn btn-success"onclick="input3();">Run</button> 
