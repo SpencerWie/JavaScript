@@ -1,0 +1,54 @@
+         <p>In programing <b>loops</b> are blocks of code that repeat. Arrays almost always use loops to go through them, for example lets say we have an array:</p>
+         <pre>// How would we go through this?
+var myArray = ["one","two","three","four","five"]; </pre>
+         <p>We could always write and output it line-by-line, but that would be cumbersom, definitely for large arrays.</p>
+<pre>
+output( myArray[0] );
+output( myArray[1] );
+output( myArray[2] );
+output( myArray[3] );
+output( myArray[4] );
+</pre>
+         <p>The first loop we will talk about is the <b>FOR loop</b>:</p>
+<pre>
+for( init ; condition ; step ){
+   // Code Block.
+}
+</pre>
+         <ul>
+         <li><b>init</b>: Code ran at the start of the loop (often defining a variable).</li>
+         <li><b>condition</b>: Condition to check to run the loop, if true run the loop.</li>
+         <li><b>step</b>: Code ran at the end of each iteration of the loop (often changing variable).</li>
+         </ul>
+         <p>A <em>for loop</em> goes through <b>init</b> and checks <b>condition</b>, at the end of the loop it goes through <b>step</b>, and then <b>condition</b> again. If <b>condition</b> is true go through the loop again. The solution to the problem above would be using a <em>for loop</em>:</p>
+<pre>
+for(var i=0; i&lt;myArray.length; i++){
+   output( myArray[i] );
+}
+</pre>
+      <div class="output">one  two  three  four  five</div>
+      <br />
+      <p>A simpler to write and read loop exclusively for going through arrays or objects is the <b>for-in</b> loop:</p>
+<pre>
+for( item in myArray ){
+   output( myArray[item] );
+}
+</pre>
+      <p>This gives the same output as the normal <em>for loop</em> above. </p>
+      <hr>
+      <p>You can also place a <em>for loop</em> inside of a <em>for loop</em>, this is known as a <b>nested for loop</b>. For example let's say we have a 2D array(an array within an array), known as a matrix in mathmatics. We would use nested for loops to get every element:</p>
+<pre>
+var myTable = [
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+];
+for( item in myTable){
+   for( subItem in myTable ){
+      output( myArray[item][subItem] );
+   }
+}
+</pre>
+      <div class="output">1  2  3  4  5  6  7  8 9</div>
+      <br />
+      <div class="alert alert-success">output() is not a function in JavaScript, I'm using it as a theodical function to show output. So we don't have so many alerts, a way to replace these examples is using: <b>console.log()</b> instead. This will output to the console of the browser.</div>

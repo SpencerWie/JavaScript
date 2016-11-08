@@ -1,0 +1,72 @@
+      <p>The most basic branch is the <b>IF STATEMENT</b>. Which will run a code if the statement is true, otherwise will not run the code if the statement is false. The code that the IF statement executes is between two brackets. Here is an outline:</p>
+<pre>
+if( condition ){ // <-- Start IF
+   // Code that runs if condition is true.
+} // <-- End IF.
+</pre>
+      <p>Here is some example code:</p>
+<pre>
+var x = 5;
+if(x == 5){
+   alert("x is 5"); // x is 5 => true. So the alert statement will run.
+}
+</pre>
+      <button onclick="functionIf_1()" class="btn btn-success">Run</button>
+      <p>Here is an example of a if statement that does not run.</p>
+<pre>
+var x = 10;
+if(x < 10){
+   alert("x is less than 10"); // (10 < 10) => false. So the alert statement will not run.
+}
+alert("End");
+</pre>
+      <button onclick="functionIf_2()" class="btn btn-success">Run</button>
+      <hr>
+      <p>A add-on to the if statement is an <b>IF-ELSE</b> Statement. It will run the code in the if statement when the condition is true, otherwise if the condition is false it will run the code in the else statement:</p>
+<pre>
+if( condition ){
+   //Code to run on condition is true
+} else {
+   //Code to run on condition is false
+}
+</pre>
+      <p>And here is some example code:</p>
+<pre>
+
+function checkEvenOdd(num){
+   if(num%2 == 0){ // Remember '%' means Modulus (division remainder). 
+      alert(num+" is even"); // If num%2 is 0 it means the number is even.
+   } else {
+      alert(num+" is odd");
+   }
+}
+
+checkEvenOdd(7); // 7 is odd
+checkEvenOdd(12); // 12 is even
+</pre>
+      <button onclick="functionIf_3()" class="btn btn-success">Run</button>
+      <hr>
+      <p>Finnally we have the <b>IF-ELSE IF-ELSE</b> statement. You can think of it as a stack of <em>if statements</em> with an <em>else</em> at the bottom. Checking through a list of conditions and running unique code based on which condition we have met. Note that the <em>else if</em> part can be repeated, here is an outline:</p>
+<pre>
+if( condition1 ){
+   // Code for condition1 is true
+} else if( condition2 ){
+   // Code for condition2 is true, if condition 1 was false.
+} else {
+   // If all the conditions were false run this.
+}
+</pre>
+      <p>And here is some example code (Note : This uses a Object to get the current time in hours)</p>
+<pre>
+var time = new Date().getHours(); // time is the current hour of the day from( 0 to 23)
+if(time < 12){
+   alert("Good morning!");    // From mid-night to 11AM. 
+} else if(time <= 16){
+   alert("Good afternoon!");  // From noon to 4PM
+} else if(time <= 20){ 
+   alert("Good evening!");    // From 5PM to 8PM
+} else {
+   alert("Good night!");      // From 9PM to 11PM
+}
+</pre>
+    <button onclick="functionIf_4()" class="btn btn-success">Run</button>

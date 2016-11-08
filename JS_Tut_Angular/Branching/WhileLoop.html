@@ -1,0 +1,43 @@
+         <p>Another common loop is the <b>while loop</b>, in which will repeat some block of code as long as some condition is true:</p>
+<pre>
+while( condition ){
+   //Block of code that runs while condition is true.
+}
+</pre>
+         <p>So for example we could do something similar to a <em>for loop</em> using the <em>while loop</em></p>
+<pre>
+var list = [1,2,3,4,5];
+var i = 0;
+while(i < list.length){
+   output(list[i]);
+   i++;
+}
+</pre>
+         <div class="output">1 2 3 4 5</div><br />
+         <p>As you can see we are doing exactly what we do in a for loop but more manually. The <em>while loop</em> is often used when we don't know how many times the loop will repeat, while the <em>for loop</em> is used when we know exactly how many times the loop will repeat.</p>
+         <hr>
+         <p>A <b>infinite loop</b> is a loop that never stops. And is when the condition in a loop is never false, you will mostly want to avoid infinite loops as much as possible. Here are two examples of infinite loops mistakes:</p>
+<pre>
+var list = [1,2,3,4];
+for(var i = 1; <font style="color:#FF0000">i!=4</font>; <font style="color:#ff6100">i+=2</font>){
+   output(list[i]);
+}
+</pre>
+         <div class="output">2 4 error error error error error error ...</div><br />
+         <p>The first problem we notice is (i!=4), notice i will be: 1,3,5,7,9,... So it will always not be 4, this causes our infinite loop. It's much safter to use less-than or greater-than.</p>
+<pre>
+while(<font style="color:#FF0000">true</font>){
+   alert("hello");
+}
+</pre>
+         <div class="output">hello hello hello hello hello hello ...</div><br />
+         <p>In this case the condition will always be true, unless we break out of the loop within the block of code inside the loop it will be an infinite loop. Although it does not mean it will always be an infite loop, we could use a <em>break</em> statement, for example:</p>
+<pre>
+var num = 0;
+while(true){
+   num += 2;
+   if(num>=12){ break; }
+   output( num );
+}
+</pre>
+         <div class="output">2 4 6 8 10</div><br />

@@ -1,0 +1,49 @@
+
+         <p>Another branch structure that has very similar functionality as the <em>if-else if-else</em> stucture is the <b>Switch-Case</b> structure. Here is an outline and it will be explained below:</p>
+  <pre>
+switch( variable ) 
+{
+case 1:
+  // Execute block if (variable === 1)
+  break;
+case 2:
+  // Execute block if (variable === 2)
+  break;
+default:
+  // Execute code if all cases fail 
+}
+</pre>
+      <p>Switch-Case uses a variable to compare to and checks the strict equality of that variable to each case. In this case if the variable is 1 then the first block will execute. The <em>default</em> is like the <em>else</em> in the if-type structures, such that if all cases are false then default will run. <b>break</b> is to exit some block of code early. It is used in this case so it does not run into other cases (since code is naturally sequential) .</p>
+      <p>For a better understanding lets put a <em>if-else if-else</em> structure next to a <em>switch-case</em> that do the same thing:</p>
+      <div style="width:50%; float:left">
+<pre>
+switch( x ) 
+{
+case "one":
+  alert("x is one");
+  break;
+case "two":
+  alert("x is two");
+  break;
+default:
+  alert("x is not one or two.");
+}
+ 
+</pre>
+      </div>
+      <div style="width:50%; float:left">
+<pre>
+if(x === "one")
+   {
+   alert("x is one");
+   } 
+else if(x === "two")
+   {
+   alert("x is two");
+   }
+else
+   {
+   alert("x is not one or two");
+   }
+</pre>
+      </div>
