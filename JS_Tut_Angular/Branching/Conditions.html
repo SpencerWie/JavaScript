@@ -1,0 +1,21 @@
+         <p><strong>Conditions</strong> are expressions that will come out as either true or false. This comes from comparing two items which will turn out as either <b>true</b> or <b>false</b>. Remember that the assignment operator is "<b>a = b</b>"(a is b), to compare two items we use either "<b>a == b</b>"(does a equal b?). Or we can use "<b>a === b</b>"(is a strictly equal to b?). Here is a list of comparison operators:</p>
+         <ul>
+            <li><b>a == b</b> - ( a is equal to b )</li>
+            <li><b>a === b</b> - ( a is strictly equal to b [JS will not try and change data types temporarily] )</li>
+            <li><b>a != b</b> - ( a is not equal to b )</li>
+            <li><b>a > b</b> - ( a is greater-than b )</li>
+            <li><b>a < b</b> - ( a is less-than b  )</li>
+            <li><b>a >= b</b> - ( a is greater-than or equal to b )</li>
+            <li><b>a <= b</b> - ( a is less-than or equal to b  )</li>
+         </ul>
+<pre>var x = 3;
+var y = 2;
+alert(x==y); // --> false;
+alert(x != y); // != means NOT EQUALS --> true
+alert(x > y); // --> true;
+alert(x < y); // --> false;
+var y = "3";
+alert(x===y); // num(3) == str("3") --> false;
+alert(x==y) // num(3) == [num(3)] --> true;</pre>
+      <button class="btn btn-success"onclick="conditionEx();">Run</button><br /><br />    
+      <div class="alert alert-info"> == and === are not the same. == will filter you data-types so they are the same while JavaScript is in the process of comparison, while === will not. So different datatypes will never be the same using ===.</div>
