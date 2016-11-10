@@ -89,17 +89,17 @@ var level_end = [
 ];
 
 var level_test = [
-   'T                                T',
-   'T                                T',
-   'T                                T',
-   'T                                T',
-   'T                                T',
-   'T                                T',
-   'T   TT                    TT     T',
-   'T                                T',
-   'T                                T',
-   'TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT', 
-   'TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT',    
+   'T                                                   T',
+   'T                                                   T',
+   'T                                                   T',
+   'T                                                   T',
+   'T                                                   T',
+   'T                                                   T',
+   'T   TT                    TT                        T',
+   'T                                             TTTTTTT',
+   'T                                          TTTTTTTTTT',
+   'TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT', 
+   'TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT',    
 ];
 
 var delay = 28;
