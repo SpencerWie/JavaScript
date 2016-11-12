@@ -89,17 +89,17 @@ var level_end = [
 ];
 
 var level_test = [
-   'T                                                   T',
-   'T                                                   T',
-   'T                                                   T',
-   'T                                                   T',
-   'T                                                   T',
-   'T                                                   T',
-   'T   TT                    TT                        T',
-   'T                                             TTTTTTT',
-   'T                                          TTTTTTTTTT',
-   'TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT', 
-   'TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT',    
+   'T                                                                 H',
+   'T                                                                 TT                 TTT        ToT         T',
+   'T                                                                 T                            TToT         T',
+   'T                                                                 T                           TTToT         T',
+   'T                                                                 TTT      TTT               TTTToT         T',
+   'T                                                                 T                         TTTTTTT         T',
+   'T   TT                    TT                                      T                                         T',
+   'T                                             TTTTTTTTTTTTTTTTTTT T                                         T',                    
+   'T                                          TTTT                        TTTTTTTTTTTTTTTTTTTTTTTT             T',
+   'TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT                       TTTTTTTTTTTTTTTTTTTTTTTTTT            T', 
+   'TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT',    
 ];
 
 var delay = 28;
@@ -107,7 +107,7 @@ var items = [];
 var player;
 var yLevel = 0;
 var yLevelMax = 288;
-var levels = [level_1, level_2, level_3, level_end];
+var levels = [level_1, level_2, level_3, level_test];
 
 LEFT = RIGHT = UP = DOWN = SHIFT = false;
 
