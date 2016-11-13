@@ -89,17 +89,26 @@ var level_end = [
 ];
 
 var level_test = [
-   'T                                                                 H                                         T        >T',
-   'T                                                                 TT                 TTT        To         oT      v>TT',
-   'T                                                                 T                            TToT         To     TTTT',
-   'T                                                                 T                           TTToT        _T__     oTT',
-   'T                                                                 TTT      TTT               TTTTo          T<     __TT',
-   'T                                                                 T                         TTTTTTT      oooTTT     oTT',
-   'T   TT                    TT                                      T            o       o                 TTTTH     __TTTTT',
-   'T                                             TTTTTTTTTTTTTTTTTTT T                                         T__          T',                    
-   'T                                          TTTTooooo                   TTTTTTTTTTTTTTTTTTTTTTTT             TvvvvvvTTTTTTT',
-   'TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTvvvvvvvvvvvvTTTTTTTTTTTTTT', 
-   'TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT',    
+   'T                                                                 H                                         T        >TH  S    o o        TTTTTTTTTT            T',
+   'T                                                                 TT                 TTT        To         oT      v>TT_      _____       TTTTTT                T',
+   'T                                                                 T                            TToT         To     TTTT               _   TTTTTT                T',
+   'T                                                                 T                           TTToT        _T__     oTT                   TTTTTT                T',
+   'T                                                                 TTT      TTT               TTTTo          T<     __TT           _       TTTTTT                T',
+   'T                                                                 T                         TTTTTTT      oooTT      oTT                   TTTTTT                T',
+   'T   TT                    TT                                      T            o       o                 TTTTH      _TTTTTTTTTTTTTTTTTTTT TTTTTT                T',
+   'T                                             TTTTTTTTTTTTTTTTTTT T                                         T__    S                      TTTTTT        K       T',                    
+   'T                                          TTTTooooo                   TTTTTTTTTTTTTTTTTTTTTTTT             TvvvvvvTTTTT  TTTTTTTTTTT  TTTTTTTTT       TTT      T',
+   'TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTH o o o o             TTvvvvvvvvvvvvTTTTTTTTTTTTTTT  L   o o o o o o o L    TTTTTTTTTT  T', 
+   'TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT  TTTTTTTTTTTTTTTTTTTTTTTTTTTTT  TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT_ T',  
+   'T                                                                                                                           T                                   T',  	
+   'T                                                                                                                           T                                   T',   	
+   'T                                                                                                                           T           _                      _T',  
+   'T                                                                                                               S TTTTTTTTTT                   _                T',  
+   'T                                                                                                                TTSK                    ooS         oo         T',  
+   'T                                                                                                               TTT _________      _     __          __      ___T',  
+   'TS                                                                                                    __       TTTT          _                                  T',  
+   'TvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvTTTTTTvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvT', 
+   'TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT',   	
 ];
 
 var delay = 28;
@@ -353,14 +362,14 @@ function Player() {
          }         
          // Monsters
          if( isItem(items[item],'enemies') && collide(items[item], this) ){
-            //Player land on head, enemey is damaged (shift XFrame or die if out of hp)
+            //Red Block Enemy:Player land on head, enemey is damaged (shift XFrame or die if out of hp)
             if( this.y + this.height < items[item].y + this.dy + 5  && this.dy > 0 ) {
                this.dy = -6;
                this.ddy = -1;
                this.jump = true; 
                this.y = items[item].y - 25;
                items[item].hp--;
-               if(items[item].type == "RedBlock" && items[item].hp == 1){ 
+               if(items[item].type == "red block" && items[item].hp == 1){ 
                   items[item].y += 20;
                   items[item].height -= 20; 
                }
@@ -368,6 +377,8 @@ function Player() {
                else items.splice(item, 1);
             } else { this.die(); } 
          }
+			// Spike Enemy: Player dies on hit
+			if( isItem(items[item],'enemy_spike') && collide(items[item], this) ) this.die();
       }     
       groundPoint.x = this.x;
       groundPoint.y = this.y + this.size + 1;  
@@ -414,7 +425,7 @@ function Player() {
 function Enemy(x, y, width, height, image, speed ,walkSteps, hp, type) 
 {
    this.x = x;
-   this.y = y - 20;
+   this.y = y;
    this.frameX = 0; // X frame on tilemap sprite
    this.frameY = 0; // Y frame on tilemap sprite
    this.width = width;
@@ -426,6 +437,9 @@ function Enemy(x, y, width, height, image, speed ,walkSteps, hp, type)
    this.endWalk = this.x + (walkSteps * 32) - (this.width - 32);
    this.hp = hp;
    this.type = type
+	
+	if(type == "red block") this.y -= 20;
+	if(type == "spike") { this.sWidth = 35; this.sHeight = 35; }
    
    this.draw = function(){
       this.update();
@@ -436,17 +450,44 @@ function Enemy(x, y, width, height, image, speed ,walkSteps, hp, type)
    {
       if(DEAD) return;
       // Walking
-      if(this.x >= this.endWalk && this.speed > 0){
-         this.x = this.endWalk;
-         this.speed *= -1;
-         this.frameY = 1;
-      }
-      else if(this.x <= this.startWalk && this.speed < 0){
-         this.x = this.startWalk;
-         this.speed *= -1;
-         this.frameY = 0;
-      }
-      this.x += this.speed
+		if(type == "red block")
+		{
+			if(this.x >= this.endWalk && this.speed > 0){
+				this.x = this.endWalk;
+				this.speed *= -1;
+				this.frameY = 1;
+			}
+			else if(this.x <= this.startWalk && this.speed < 0){
+				this.x = this.startWalk;
+				this.speed *= -1;
+				this.frameY = 0;
+			}
+			this.x += this.speed;
+		}
+		else if(type == "spike")
+		{
+			for(item in items) {
+				var isSolidBlock = (isItem(items[item],'block') || isItem(items[item],'lock'));  
+				if (isSolidBlock && collide(items[item], this)) {
+					if(this.speed > 0)
+						this.x = items[item].x - this.width;
+					else 
+						this.x = items[item].x + this.width;
+					this.speed *= -1;
+					break;
+				}
+			}
+			/*
+			if(this.x >= this.endWalk && this.speed > 0){
+				this.x = this.endWalk;
+				this.speed *= -1;
+			}
+			else if(this.x <= this.startWalk && this.speed < 0){
+				this.x = this.startWalk;
+				this.speed *= -1;
+			}*/
+			this.x += this.speed;
+		}
    }
 }
 
@@ -585,6 +626,7 @@ function loadImages()
    var Key = new Image(); Key.src = "key.png";
    var Spikes = new Image(); Spikes.src = "spikes.png";
    var Platform = new Image(); Platform.src = "platform.png";
+	var Enemy_Spike = new Image(); Enemy_Spike.src = "enemy_spike.png"
    
    images = {
       player_blink: playerBlink,
@@ -597,7 +639,8 @@ function loadImages()
       lock: Lock,
       key: Key,
       spikes: Spikes,
-      platform: Platform
+      platform: Platform,
+		enemy_spike: Enemy_Spike
    }
    
    return images;
@@ -628,7 +671,9 @@ function createMap(map) {
          else if(map[Y].charAt(X) == 'H') 
             items.push(new Heart(X*SIZE, Y*SIZE));            
          else if(map[Y].charAt(X) == 'E') 
-            items.push(new Enemy(X*SIZE, Y*SIZE, 40, 52, images["enemies"], 4, 5, 2, "RedBlock"));
+            items.push(new Enemy(X*SIZE, Y*SIZE, 40, 52, images["enemies"], 4, 5, 2, "red block"));
+         else if(map[Y].charAt(X) == 'S') 
+            items.push(new Enemy(X*SIZE, Y*SIZE, 30, 30, images["enemy_spike"], 4, 5, 2, "spike"));
          else if(map[Y].charAt(X) == 'P')   
 				items.push(new Portal(X*SIZE, Y*SIZE, "", ""));
          else if(map[Y].charAt(X) == 'M')
@@ -746,7 +791,7 @@ timer = setInterval(function()
       items[item].draw();
    player.draw();   
    ctx.fillStyle = "red";
-   ctx.fillText("Beta: V 0.41", 10-scrollX, 10+scrollY);
+   ctx.fillText("Beta: V 0.43", 10-scrollX, 10+scrollY);
    ctx.drawImage(images["coin"], 0,0, 32, 32, canvas.width-65-scrollX, scrollY, 32, 32);
    ctx.fillText(" x "+COINS, canvas.width-40-scrollX,20+scrollY);
    ctx.drawImage(images["heart"], 0,0, 32, 32, canvas.width-110-scrollX, scrollY, 32, 32);
