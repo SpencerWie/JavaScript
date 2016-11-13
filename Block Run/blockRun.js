@@ -89,17 +89,17 @@ var level_end = [
 ];
 
 var level_test = [
-   'T                                                                 H',
-   'T                                                                 TT                 TTT        ToT         T',
-   'T                                                                 T                            TToT         T',
-   'T                                                                 T                           TTToT         T',
-   'T                                                                 TTT      TTT               TTTToT         T',
-   'T                                                                 T                         TTTTTTT         T',
-   'T   TT                    TT                                      T                                         T',
-   'T                                             TTTTTTTTTTTTTTTTTTT T                                         T',                    
-   'T                                          TTTT                        TTTTTTTTTTTTTTTTTTTTTTTT             T',
-   'TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT                       TTTTTTTTTTTTTTTTTTTTTTTTTT            T', 
-   'TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT',    
+   'T                                                                 H                                         T        >T',
+   'T                                                                 TT                 TTT        To         oT      v>TT',
+   'T                                                                 T                            TToT         To     TTTT',
+   'T                                                                 T                           TTToT        _T__     oTT',
+   'T                                                                 TTT      TTT               TTTTo          T<     __TT',
+   'T                                                                 T                         TTTTTTT      oooTTT     oTT',
+   'T   TT                    TT                                      T            o       o                 TTTTH     __TTTTT',
+   'T                                             TTTTTTTTTTTTTTTTTTT T                                         T__          T',                    
+   'T                                          TTTTooooo                   TTTTTTTTTTTTTTTTTTTTTTTT             TvvvvvvTTTTTTT',
+   'TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTvvvvvvvvvvvvTTTTTTTTTTTTTT', 
+   'TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT',    
 ];
 
 var delay = 28;
