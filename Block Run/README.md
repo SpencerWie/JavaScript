@@ -17,12 +17,13 @@ The original game <em>Block Run</em>, was created as a simple platform game in P
 	<li><em><strong>Space:</strong></em> Move to next level (<em>must be inside an end of level portal</em>).</li>
 </ul>
 
-<h3>Current Version: <strong><em>v0.41</em></strong></h3>
+<h3>Current Version: <strong><em>v0.43</em></strong></h3>
 <ul>
   <li>Added Platforms</li>
-  <li>Fixed Bugs</li>
-  <li>Added Ghost Block (Gets more transpart with distance)</li>
-  <li>*Ducking casuing a blinking animation stall has been fixed*</li>
+  <li>Added Ghost Block (<em>Gets more transpart with distance</em>)</li>
+  <li>New Enemy: <strong>Spike</strong></li>
+  <li>Stage 4 (currently in development)</li>
+  <li>Fixed Bugs: <em>Ducking casuing a blinking animation stall has been fixed</em></li>
 </ul>
 
 <h3><em>v0.40</em></h3>
@@ -35,6 +36,7 @@ The original game <em>Block Run</em>, was created as a simple platform game in P
   <li>Added player ducking ability</li>
   <li>Added player running animation</li>
   <li>Balanaced Levels, improved resolution</li>
+  <li>Stage 2 and 3 is complete</li>
 </ul>
 
 <h3><em>v0.30</em></h3>
@@ -56,6 +58,8 @@ The original game <em>Block Run</em>, was created as a simple platform game in P
   <li>Added/fixed Scrolling</li>
   <li>Improved Graphics</li>
   <li>Added Animation</li>
+  <li>Added basic enemy</li>
+  <li>Stage 1 is complete</li>
 </ul>
 
 <h3>Planned Updates: <em>v0.4x</em></h3>
