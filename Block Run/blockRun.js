@@ -89,24 +89,24 @@ var level_end = [
 ];
 
 var level_test = [
-   'T                                                                 H                                         T        >TH  S    o o        TTTTTTTTTT            T',
-   'T                                                                 TT                 TTT        To         oT      v>TT_      _____       TTTTTT                T',
+   'T                ooooooo                                          H                                         T        >TH  S    o o        TTTTTTTTTT            T',
+   'T                TTTTTTT                                          TT                 TTT        To         oT      v>TT_      _____       TTTTTT                T',
    'T                                                                 T                            TToT         To     TTTT               _   TTTTTT                T',
-   'T                                                                 T                           TTToT        _T__     oTT                   TTTTTT                T',
-   'T                                                                 TTT      TTT               TTTTo          T<     __TT           _       TTTTTT                T',
-   'T                                                                 T                         TTTTTTT      oooTT      oTT                   TTTTTT                T',
-   'T   TT                    TT                                      T            o       o                 TTTTH      _TTTTTTTTTTTTTTTTTTTT TTTTTT                T',
+   'T                             T                                   T                           TTToT        _T__     oTT                   TTTTTT                T',
+   'T                                                        TT       TTT      TTT               TTTTo          T<     __TT           _       TTTTTT                T',
+   'T   oo                    oo                           v          T                         TTTTTTT      oooTT      oTT                   TTTTTT                T',
+   'T   TT                    TT                   TE     >T<vvvvvvvT T            o       o                 TTTTH      _TTTTTTTTTTTTTTTTTTTT TTTTTT                T',
    'T                                             TTTTTTTTTTTTTTTTTTT T                                         T__    S                      TTTTTT        K       T',                    
    'T                                          TTTTooooo                   TTTTTTTTTTTTTTTTTTTTTTTT             TvvvvvvTTTTT  TTTTTTTTTTT  TTTTTTTTT       TTT      T',
    'TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTH o o o o             TTvvvvvvvvvvvvTTTTTTTTTTTTTTT  L   o o o o o o o L    TTTTTTTTTT  T', 
    'TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT  TTTTTTTTTTTTTTTTTTTTTTTTTTTTT  TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT_ T',  
    'T                                                                                                                           T                                   T',  	
-   'T                                                                                                                           T                                   T',   	
-   'T                                                                                                                           T           _                      _T',  
-   'T                                                                                                               S TTTTTTTTTT                   _                T',  
-   'T                                                                                                                TTSK                    ooS         oo         T',  
-   'T                                                                                                               TTT _________      _     __          __      ___T',  
-   'TS                                                                                                    __       TTTT          _                                  T',  
+   'T                                                                                          oooo                             T                                   T',   	
+   'T                                                                    TTTTTTTTTTTTTTTT     _TTTT_                            T           _                      _T',  
+   'T                                                     ____                                                      S TTTTTTTTTT                   _                T',  
+   'T P                      ___          >#<                                                                        TTSK                    ooS         oo         T',  
+   'TTTTTTTTTTTTTTTTTTT            ____    ^    ____           ____           E                                     TTT _________      _     __          __      ___T',  
+   'TS                                                                   TTTTTTTTTTTTTTTTS    ______      __       TTTT          _                                  T',  
    'TvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvTTTTTTvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvT', 
    'TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT',   	
 ];
@@ -120,7 +120,7 @@ var levels = [level_1, level_2, level_3, level_test];
 
 LEFT = RIGHT = UP = DOWN = SHIFT = false;
 
-GRAVITY = 0.25;
+GRAVITY = 1.1; // 0.25
 COINS = 0;
 HEARTS = 3;
 LEVEL = 1;
@@ -159,7 +159,7 @@ function Player() {
    this.walk = 7; this.run = 10;
    this.speed = 7;
 	this.minYSpeed = -15; this.maxYSpeed = 12;
-   this.jumpPower = 10;
+   this.jumpPower = 17; // 10
    this.frameX = 0; // X frame on tilemap sprite
    this.frameY = 0; // Y frame on tilemap sprite
    this.image = images['player_blink'];
@@ -235,7 +235,7 @@ function Player() {
          this.jump = false;
       }       
       
-      if(this.dy < 10 && !this.jump) this.ddy += GRAVITY; // Apply Gravity
+      if(this.dy < 10 && !this.jump) this.ddy = GRAVITY; // Apply Gravity
       
       this.dy += this.ddy; // Update variables
       this.y += this.dy;
@@ -364,7 +364,7 @@ function Player() {
          if( isItem(items[item],'enemies') && collide(items[item], this) ){
             //Red Block Enemy:Player land on head, enemey is damaged (shift XFrame or die if out of hp)
             if( this.y + this.height < items[item].y + this.dy + 5  && this.dy > 0 ) {
-               this.dy = -6;
+               this.dy = -this.jumpPower/1.5;
                this.ddy = -1;
                this.jump = true; 
                this.y = items[item].y - 25;
