@@ -5,7 +5,7 @@ var level_1 = [
    '#              #                                                                #                ',
    '#               ######                   ###            ##      ##              #                ',
    '#  o                      E             #####               o                   #                ',
-   '#           #             ######       ## o ##            E              o o    #                ',
+   '#M     M    #             ######       ## o ##            E              o o    #                ',
    '#  #       ##            ## o  #      ###   ###        ############      o o    #                ',
    '# ###     ###E          ### o        ####   ####       #         H#             #                ',
    '#########################################  #############         ############   #                ',
@@ -105,8 +105,8 @@ var level_test = [
    'T                                                                    TTTTTTTTTTTTTTTT     _TTTT_                            T           _                      _T',  
    'T                                                     ____                                                      S TTTTTTTTTT                   _                T',  
    'T P                      ___          >#<                                                                        TTSK                    ooS         oo         T',  
-   'TTTTTTTTTTTTTTTTTTT            ____    ^    ____           ____           E                                     TTT _________      _     __          __      ___T',  
-   'TS                                                                   TTTTTTTTTTTTTTTTS    ______      __       TTTT          _                                  T',  
+   'TTTTTTTTTTTTTTTTTTTS           ____    ^    ____           ____           E                                     TTT _________      _     __          __      ___T',  
+   'T                                                                    TTTTTTTTTTTTTTTTS    ______      __       TTTT          _                                  T',  
    'TvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvTTTTTTvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvT', 
    'TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT',   	
 ];
@@ -258,6 +258,12 @@ function Player() {
             this.y = items[item].y - this.size;
             this.jump = true;
          }
+         if(this.dy > 0 && collide(this,items[item]) && isItem(items[item],'moving_block') && this.y < items[item].y - this.maxYSpeed) {
+            this.dy = 0;
+            this.ddy = 0;
+            this.y = items[item].y - this.size;
+				this.jump = true;
+         }
       }
       
       //Speed limits
@@ -392,6 +398,17 @@ function Player() {
          } else {
             this.jump = false; // Otherwise we keep looking   
          }
+			//Moving Block (only handle top collisions)
+			if( collide(groundPoint,items[item]) &&  isItem(items[item],'moving_block') && this.dy >= 0) {
+            this.jump = true; // When we found a collision move the player with the item
+            var diff = -items[item].speed;
+            this.x -= diff;
+            ctx.translate(diff, 0);
+            scrollX += diff;
+            break;
+         } else {
+            this.jump = false; // Otherwise we keep looking   
+         }
       }
    }
    // When the player dies, subtract a life and place back to start point. Translate camera back as well.
@@ -521,16 +538,15 @@ function MovingBlock(x, y) {
 	Block.call(this, x, y);
 	this.speed = 5;
 	this.height = 10;
+	this.image = images['moving_block'];
     
    this.draw = function() {
 		ctx.drawImage(this.image, this.x, this.y);
       for(item in items) {
-			if( this != items[item] && isItem(items[item],'block') && collide(this,items[item])) {   
+			if( this != items[item] && (isItem(items[item],'block')) && collide(this,items[item])) {   
+				if(this.speed > 0) this.x = items[item].x - this.width;
+				else this.x = items[item].x + items[item].width + 1;
 				this.speed *= -1;
-				/*if(this.speed > 0)
-				  this.x = items[item].x - this.width;
-				else
-				  this.x = items[item].x + this.width;*/
 				break;
 			}
       }
@@ -617,6 +633,7 @@ function loadImages()
 {
    var playerBlink = new Image(); playerBlink.src = "player_blink.png";
    var Block = new Image(); Block.src = "block.png";
+	var MovingBlock = new Image(); MovingBlock.src = "moving_block.png"
    var Coin = new Image(); Coin.src = "coin.png"
    var Heart = new Image(); Heart.src = "heart.png"
    var Background = new Image(); Background.src = "clouds.jpg";
@@ -631,6 +648,7 @@ function loadImages()
    images = {
       player_blink: playerBlink,
       block: Block,
+		moving_block: MovingBlock,
       coin: Coin,
       heart: Heart,
       background: Background,
