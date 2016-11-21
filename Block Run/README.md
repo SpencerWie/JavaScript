@@ -22,7 +22,7 @@ The original game <em>Block Run</em>, was created as a simple platform game in P
   <li>Added Platforms</li>
   <li>Added Ghost Block (<em>Gets more transpart with distance</em>)</li>
   <li>New Enemy: <strong>Spike</strong></li>
-  <li>Stage 4 (currently in development)</li>
+  <li>Stage 4 is complete</li>
   <li>Fixed Bugs: <em>Ducking casuing a blinking animation stall has been fixed</em></li>
 </ul>
 
