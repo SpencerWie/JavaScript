@@ -1,22 +1,22 @@
-My tutorial on JavaScript (in progress) is here:
+<h2>
+JavaScript tutorial (<em>AngularJS</em>).
+</h2>
 
-http://cs.iupui.edu/~spdwiecz/JavaScript/Tutorials/js_tuts_preface.html
+<p>
+The reason for this is to make an application to for tutorials and sections so they are scalable and maintainable. It can easily be extended for any other tutorial. The rest of this section will disscuss how the program works along with how to extend and create your own tutoral pages and sections.
+</p>
 
+<h4>Directory Structure</h4>
 
-Currently the tutorial goes over:
+<h4>Root</h4>
+<p>
+Since this is a Single Page application the entire web application is can inside <em>/index.html</em>, this files loads all intial JavaScript along with our angular application. The contents of this file include section tabs and the view of our application (<em>ng-view</em>em>). The two other files inside the root path are two template HTML files for the page accordion (<em>/accordion.html</em>) and the section of the accordion that a speific tutorial sections resides (<em>/section.html</em>)
+</p>
 
-<ul>
-<li>The Basics (JS Setup, Ouput, JS Placement, DOM manipulation)</li>
-<li>Data and Functions (Datatypes, Data conversions , Input, Function)</li>
-<li>Branching (Conditions, statements[if,else,...], loops)</li>
-<li>OOP (Classes, Objects, Inheritance, Prototypes)</li>
-<li>JS Events and OBjects (Math, Timer, DOM events, web storage)</li>
-<li>Cavnas GUI ( in progress )</li>
-</ul>
-
-Notes: 
-<ul>
-<li>You may need to re-load pages if they are in your cache.</li>
-<li>More proper definition of Computer Science added in preface:
-<ul><li>Computer Science is the study and creation of procedural systems that solves a task (informational algorithms): as in we are interested in the process of the task that leads to the solution, not the solution itself. Computer Science is not about computers, but proccesses with information, in which exist both in computers and naturally in our physical world.</li></ul>
-</li>
+<h4>Tutorial Sections</h4>
+<p>
+Each tutorial page content is included inside a folder. For example the first section of the tutorial is called "The Basics", all the content for that section is included inside the directory <em>/The_Basics</em>. Inside of this folder includes the html template files for each section, for example the HTML for the "Comments" section is inside the file <em>/The_Basics/Comments.html</em>. The <em>index.html</em> file inside each of these folders is the view for that page. This file only contains the page title and intial comment at the top, the rest of this entire page is generated automatically.
+</p>
+<p>
+For page generation inside each tutorial folder haves an file called <em>sections.json</em>, we use this file to know which HTML tempalte to use along with a title for each section on the page. Along with this each folder also contains a <em>script.js</em> file, this contains any JavaScript that is needed on that page.
+</p>
