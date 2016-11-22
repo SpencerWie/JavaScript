@@ -1,0 +1,50 @@
+<p>If the last example was a bit too complex here is a simpler example:</p>
+<pre>
+function Person( name ) // Creates a class called "Person"
+   {
+   // It's ok to use ( this.name = name ) JavaScript can tell the difference.
+   this.name = name; // Makes a property called: name. 
+   
+   this.sayHi = function() // alerts it's name
+      {
+         alert("Hello, my name is " + this.name);
+      } 
+   }
+
+var person1 = new Person("Spencer");
+var person2 = new Person("Calvin");
+
+alert( person1.name ); // => "Spencer"
+person1.sayHi(); // => "Hello, my name is Spencer"
+person2.sayHi(); // => "Hello, my name is Calvin"
+</pre>
+<p><button class="btn btn-success" onclick="objEx_1()">Run</button> </p>
+<hr>
+<p>There is more than one way to create a class in JavaScript, the current why I have been showing you is the simplest in my opinion. Another way to create objects which is slightly more efficient is using: <b>prototype</b>. Which is a property to add methods to objects. For example here is the same Person class setup using prototype with a side-by-side comparison:</p>
+<div style="width:50%; float:left">
+<p><em>Prototype</em></p>
+<pre>
+function Person( name ){
+   this.name = name;
+}
+
+Person.prototype.sayHi = function(){
+   alert("Hello, my name is " + this.name);
+}
+</pre>
+      </div>
+         <div style="width:50%; float:left">
+         <p><em>Without Prototype</em></p>
+<pre>
+function Person( name ){
+   this.name = name;
+   
+   this.sayHi = function(){
+      alert("Hello, my name is " + this.name);
+   }
+}
+</pre>
+</div>
+<p> &nbsp; </p>
+<div class="alert alert-info">The difference between using prototype and non-prototype is how methods are created. When you are not using prototype all methods are re-created for each instance, while prototype keeps a single method to use making it a bit more efficient. One way isn't particularly better than the other, for now I recommend choosing which is comfortable for you.</div>
+      

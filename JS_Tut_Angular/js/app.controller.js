@@ -9,9 +9,22 @@ app.controller('sectionCtrl', ['$scope','Sections',  function($scope, Sections){
 	    Sections.get()
 	      .then(function(res) {
 	        $scope.data = res.data;
-	        console.log($scope.data);
 	      })
 	};
 
+	this.foo = function(){
+		alert("test");
+	}
+
 	this.loadSections();
+
 }]);
+
+app.controller('pageCtrl', ['$scope',  function($scope){
+
+	$scope.getScript = function(script){
+		$.getScript(script);
+	}
+	
+}]);
+
