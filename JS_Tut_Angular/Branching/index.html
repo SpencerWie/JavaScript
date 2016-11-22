@@ -1,4 +1,6 @@
 <h1>Branching</h1>
 <p>Normally our programs flow line-by-line, in which the commands flows from the first line and goes downwards (known as being Sequential). The first lines runs first, then the second line, then the third line, etc. Branching is when we manipulate this flow in a different way. For example when we call a function it goes to the function and back to the normal flow of the program. In this section we will go over several different ways to branch: loops, if/else statements, and conditions.</p>
 <br />
-<ng-include src='"accordion.html"'></ng-include>
+<div ng-controller="pageCtrl">
+	<ng-include src='"accordion.html"' onload="getScript('Branching/script.js')"></ng-include>
+</div>

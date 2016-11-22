@@ -12,10 +12,6 @@ app.controller('sectionCtrl', ['$scope','Sections',  function($scope, Sections){
 	      })
 	};
 
-	this.foo = function(){
-		alert("test");
-	}
-
 	this.loadSections();
 
 }]);
