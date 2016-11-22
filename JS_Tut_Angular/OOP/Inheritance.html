@@ -1,0 +1,53 @@
+<p>Sometimes we want to make a class that inherits the methods and properties of another more abstract class, known as <strong>Inheritance</strong>. For example lets say we have a class called <em>Animal</em>, and we want to make another class called <em>Bird</em> with the same methods and properties, but have a few extra such as fly(). We could also have <em>Mammal</em> and <em>Reptile</em> also be based on <em>Animal</em>. We could set this up in a tree structure known as an: <strong>inheritance tree</strong>.</p>
+<img src="inheritance_tree.png" alt="Inheritance Tree" style="display:block ;margin:auto"></img>
+<ul>
+<li><strong>Child</strong> : A sub-class that was created based on a main-class.</li>
+<li><strong>Parent</strong> : A main-class that all sub-classes were based on.</li>
+</ul>
+<p>Here is an example is a Parent and a Child class implemented in JavaScript:</p>
+<pre>
+function Parent( arg* ){
+   this.P_prop = arg*;
+       
+   this.P_func = function(){
+        // Code for parent method.
+      }
+   }
+
+function Child( arg* ){ // The same arguments as the 'Parent' class.
+    <b>Parent.call(this, arg*);</b> // This creates 'Child' to be based on 'Parent'.
+    
+    this.C_func = function(){
+        // Code for child method.
+    }
+}
+</pre>
+      <p>And here is a implementation on the Parent class Animal, and child class Bird:</p>
+<pre>
+function Animal( name ){
+   this.name = name;
+       
+   this.getName = function(){
+        alert("It's name is "+this.name);
+      }
+   }
+
+function Bird( name ){ 
+    <b>Animal.call(this, name);</b> 
+    
+    this.fly = function(){
+        alert(this.name+" flew up in the sky.");
+    }
+}
+</pre>
+      <p>So the Animal Class as a property: name; and a method: getName(). While the Bird class inherited the property: name and method: getName(), special to it's class it has another method fly().</p>
+<pre>
+var animal = new Animal("Fred");
+var bird = new Bird("Jack");
+
+// Both Animal and Bird have getName.
+animal.getName(); // => Fred
+bird.getName(); // =>  Jack
+//animal.fly(); <-- Animal does not have a fly method
+bird.fly(); // => "Jack flew up in the sky."
+</pre>

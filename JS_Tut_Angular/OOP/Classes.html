@@ -1,0 +1,17 @@
+<p><strong>Classes</strong> are their own structure that contain their own functions (known as <b>methods</b>), and their own variables (known as <b>properties</b>). <strong>Objects</strong> are things created from a class. For example you can look at a class as a <b>(recipe, blueprint, template)</b>, and an object something created with the (recipe, blueprint, template). Like cookies for example, you have a cookie recipe (class) and the cookies (objects). And you could make a variety of cookies from the same recipe: big or small, peanut butter or chocolate chip.</p>
+<p>When you create something from a class it's known as an <strong>instance</strong> (a particular object of the class). Every instance is independent of other instances, changing one will not change others. Here is how to create an object/instance:</p>
+<pre>var obj = new Object(...); // obj is an instance of the Object class.</pre>
+<p>Calling a method from an Object: </p>
+<pre>obj.methodName(...);</pre>
+<p>Getting a property of an Object: </p>
+<pre>obj.propertyName;</pre>
+<p>For example lets look at the our Human Race as a Class, then each human would be an instance of the Human class. Some properties we would have would be: height, gender, and hair color. And some methods might be: run, breath, jump, and dance.</p>
+<p>In fact <em>Numbers, Strings, Arrays, etc, are all Objects</em>. And they can be defined as an instance. For example lets look at a instance of the String class and it's methods and properties (shown in Data & Functions section):</p>
+<pre>
+var myString = new String("Hello world"); // Create a string as an object.
+myString.toUpperCase(); // Method to change the string to uppercase. => "HELLO WORLD"
+myString.indexOf('W'); // Method to get a index in the string. => 6
+myString.length; // returns the length Property of the string. => 11
+</pre>
+<p>The method that is called when an object is created is called a <strong>Constructor</strong>. Often the constructor sets the default values of the properties of instance. In this case the String Constructor [ String(<em>string</em>) ] takes a single argument and sets it's string property to the given argument.</p>
+<div class="alert alert-info">In a classical sense JavaScript does not have classes. Although this is because JavaScript is based on prototyping and not class-based, we can easily create behavior the same as a class and treat it as so. In which I will consider a class in JavaScript for simplicity.</div>
