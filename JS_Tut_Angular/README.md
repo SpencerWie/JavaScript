@@ -20,3 +20,8 @@ Each tutorial page content is included inside a folder. For example the first se
 <p>
 For page generation inside each tutorial folder haves an file called <em>sections.json</em>, we use this file to know which HTML tempalte to use along with a title for each section on the page. Along with this each folder also contains a <em>script.js</em> file, this contains any JavaScript that is needed on that page.
 </p>
+
+<h4>Requirements</h4>
+<p>
+Since we are loading in JSON data a basic HTTP Server for localhost is required for running this web tutorial.
+</p>
