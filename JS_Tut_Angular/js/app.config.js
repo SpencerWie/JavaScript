@@ -25,5 +25,8 @@ app.config(function($routeProvider, $locationProvider){
    	.when("/EventsAndObjects",{
 		  templateUrl: "/EventsAndObjects/index.html"
    		})
+   	.when("/GUI",{
+		  templateUrl: "/GUI/index.html"
+   		})
   	.otherwise({ templateUrl: "/Preface/index.html" }); 
 });	
