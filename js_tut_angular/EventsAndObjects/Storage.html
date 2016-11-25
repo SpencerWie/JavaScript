@@ -1,0 +1,44 @@
+<p>In that past we normally used cookies as storage on the clients machine, although cookies were small and not too secure. With HTML 5 becoming the standard there is a new way to store client-side information known as <b>Web Storage</b> or <b>DOM Storage</b>, there are two JavaScript objects that support HTML5 storage:</p>
+<ul>
+<li><b>localStorage</b> - Stores the information cliently on a database, information is not lost when the browser is closed.</li>
+<li><b>sessionStorage</b> - Store the information temporarily in a page session, but the information is lost when the page is closed.</li>
+</ul>
+<p>Currently we can store up to 5 Megabytes of information, much more than what cookies could store. HTML5 storage is also more secure that cookie storage.</p>
+<p>Here is how to create a <em>variable</em> that uses localStorage:</p>
+<pre>localStorage.myVariable = ... ;</pre>
+<p>Here is how to create a <em>variable</em> that uses sessionStorage:</p>
+<pre>sessionStorage.myVariable = ... ;</pre>
+<p>And here is how you can check if a particular localStorage or sessionStorage variable exist or not:</p>
+<pre>
+if(localStorage.myVariable){
+   // It exist, change it.
+} else {
+   // It doesn't exist, make it.
+}
+</pre>
+<p>Now for a simple example I will store button clicks in both session and local storage:</p>
+<button id="localStore" class="btn btn-success">Local Clicks : 0</button><br /><br />
+<button id="sessionStore" class="btn btn-success">Session Clicks : 0</button><br /><br />
+<p>And here is the code below:</p>
+<pre>
+function localStore(){
+   if(localStorage.clicks){
+      localStorage.clicks++;
+   } else {
+      localStorage.clicks = 1;
+   }
+   document.getElementById("localStore").innerHTML = "Local Clicks : " + localStorage.clicks;
+}
+
+function sessionStore(){
+   if(sessionStorage.clicks){
+      sessionStorage.clicks++;
+   } else {
+      sessionStorage.clicks = 1;
+   }
+   document.getElementById("sessionStore").innerHTML = "Session Clicks : " + sessionStorage.clicks;
+}
+
+document.getElementById("localStore").onclick = function(){ localStore(); }
+document.getElementById("sessionStore").onclick = function(){ sessionStore(); }
+</pre>

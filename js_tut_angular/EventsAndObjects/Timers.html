@@ -1,0 +1,45 @@
+<p>In some languages timers can be quite complex or hard to use, although in JavaScript timers are quite simple and easy to use. The two timing events in JavaScript are:</p>
+<ul>
+<li>setInterval(function, milliseconds)</li>
+<li>setTimeout(function, milliseconds)</li>
+</ul>
+<p><strong>setInterval()</strong> Keeps executing the the given function at a time interval based on the milliseconds given. Note that it will keep executing the function, over and over, until we tell it to stop.
+<div class="divBlock" id="counter">0</div><br />
+<pre>
+var count = 0;
+var myTimer = setInterval(function(){ counter() },1000);
+
+function counter(){
+   count++;
+   document.getElementById("counter").innerHTML = count;
+}
+</pre>
+<button onclick="countFunction()" id="run1" class="btn btn-success">Run</button>&nbsp;<button onclick="stopCount()" class="btn btn-danger">Stop</button><br /><br />
+<p>We can use the <strong>clearInterval( timer )</strong> function to stop the timer from going on forever. In this case the Stop button does this:</p>
+<pre>clearInterval(myTimer);</pre>
+<p>Note: You will need to make your timer variables such as "myTimer" global variables.</p>
+<hr>
+<p>The <strong>setTimeout()</strong> function will wait a specified number of milliseconds, then execute a function once. Here is an example of an alert that will wait 5 seconds before executing:</p>
+<pre>myTimer2 = setTimeout(function(){ alert("Hello World") }, 5000);</pre>
+<button onclick="outFunction()" id="run2" class="btn btn-success">Run</button>&nbsp;<button onclick="stopTime()" class="btn btn-danger">Stop</button><br /><br />
+<p>We can use <strong>clearTimerout( timer )</strong> to stop the function from calling. This is what the stop button does in this case:</p>
+<pre>clearTimeout(myTimer2);</pre>
+<hr>
+<p>I'm sure you noticed that I disabled my Run buttons when you clicked them. It's very important <b>not</b> to create a <em>setInterval()</em> or <em>setTimeout()</em> on the same variable before the first one is finished or cleared. Because it will only be possible to stop the last call and not the runs before, which can lead to serious problems with infinite timers. Here is the modified code for the last event that disables the run button:</p>
+<pre>
+var myTimer2;
+
+function outFunction(){ // Called when Run button is clicked
+   myTimer2 = setTimeout(function(){ 
+      alert("Hello World");
+      document.getElementById("run2").disabled = false;   
+   }, 5000);
+   document.getElementById("run2").disabled = true;
+}
+
+function stopTime(){ // Called when Stop button is clicked
+   clearTimeout(myTimer2);
+   document.getElementById("run2").disabled = false;  
+}
+</pre>
+<div class="alert alert-info">Both the timer events are DOM window events, they are actually called as: window.setTimeout(...). But they don't need to be written with the window prefix.</div>

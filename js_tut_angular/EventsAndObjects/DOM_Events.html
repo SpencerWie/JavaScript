@@ -1,0 +1,37 @@
+<p>We can execute JavaScript with the interactions of DOM elements on the page, such as: clicking, on focus, mouse over, key stroke, webpage as loaded, etc (known as <b>event handlers</b>). In this way we can make our webpage a bit more interesting then just a static webpage.</p>
+<p>The <strong>onclick</strong> events happens when we click an element.</p>
+<div class="divBlock" id="block1">Click</div>
+<br />
+<p>Events can be applied to objects in two ways, either within the HTML or within your JavaScript:</p>
+<p><em>In HTML</em></p>
+<pre>&lt;element onclick="myFunction()"&gt; ... &lt;/element&gt;</pre>
+<p><em>In JavaScript</em></p>
+<pre>document.getElementById("myElement").onclick = function(){ ... }</pre>
+<p><em>This same syntax goes for all DOM events</em>. In fact all the buttons you have seen have the <em>onclick</em> event on them. Here is an example: Let's assume that we have a button with the id="myButton", we want to alert "Hello World" when it's clicked. Here is how you would do it:</p>
+<pre>document.getElementById("myButton").onclick = function(){ alert("Hello World") }</pre>
+<button id="myButton" class="btn btn-success">Run</button><br /><br />
+<p>Or we could do it in the HTML ( <em>although generally it a better idea to do it in JavaScript</em> ):</p>
+<pre>&lt;button onclick="alert('Hello World')"&gt; Run &lt;/button&gt;</pre>
+<hr>
+<p>Some other commonly used events are:</p>
+<ul>
+   <li><b>onload</b> - Triggers when the entire webpage loads.</li>
+   <li><b>onmouseover</b> - Triggers when the mouse is over an element.</li>
+   <li><b>onmouseout</b> - Triggers when the mouse leaves an element.</li>
+   <li><b>onmousedown</b> - Triggers when the mouse is pressed on an element.</li>
+   <li><b>onmouseup</b> - Triggers when the mouse is released from an element.</li>
+   <li><b>onmousemove</b> - Triggers when the mouse is moved inside an element.</li>
+   <li><b>onfocus</b> - Trigers when an element is focused on (like clicking an input box).</li>
+</ul>
+<p>Here is an example of <em>onmouseout</em> and <em>onmouseover</em></p>
+<div class="divBlock" id="block2">Hello</div><br />
+<pre>
+document.getElementById("block2").onmouseover = function(){
+   this.innerHTML = "Mouse Over";
+}
+
+document.getElementById("block2").onmouseout = function(){
+   this.innerHTML = "Mouse Out";
+}
+</pre>
+<div class="alert alert-info">Remember window.onload = function() { ... } ? Yes it is a DOM event. </div>

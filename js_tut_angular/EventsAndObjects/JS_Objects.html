@@ -1,0 +1,52 @@
+<p>Along with the Array, Numbers, Strings, and Booleans Objects. JavaScript has some other built-in objects that are very useful. The <b>Math</b> object is used to to a number of mathematical operations: roots, rounding, random numbers, powers, trigonometry, and more! Unlike other objects we do not need to create and instance as there is an already defined objects called "Math", so we would do <em>Math.method</em> or <em>Math.property</em> . Here are some of the commonly used ones:</p>
+<p><em>Methods:</em></p>
+<ul>
+<li><b>Math.random()</b> - Returns a random number between 0.0 and 1.0 : <em>range [0,1) </em></li>
+<li><b>Math.round(number)</b> - Returns the number given to the nearest integer.</li>
+<ul><li>Math.floor(number) - Returns an integer rounded down (3.8 -> 3)</li>
+<li>Math.ceil(number) - Returns an integer rounded up (3.2 -> 4)</li></ul>
+<li><b>Math.sin(num) , Math.cos(num), Math.tan(num) , ...</b> - Applys trigonometric functions to the number.</li>
+<li><b>Math.max(num1,num2,...) , Math.min(num1,num2,...)</b> - Returns the max/min of a list( but not an array) of numbers.</li>
+<ul><li>Math.max.apply(0,array) - This will work for an array</li></ul>
+<li><b>Math.abs(number)</b> - Returns the absolute value of the number.</li>
+<li><b>Math.log(number)</b> - Returns the natural logarithm of a number.</li>
+<li><b>Math.sqrt(number)</b> - Returns the square root of a number.</li>
+<li><b>Math.pow(num, exp)</b> - Returns the number taken the the power of the exp.</li>
+</ul>
+<p><em>Properties:</em> Which are all mathematical constants (constants are often capitalized)</p>
+<ul>
+<li><b>Math.PI</b> - Returns &pi; (~3.14159)</li>
+<li><b>Math.E</b> - Returns e (~2.718)</li>
+</ul>
+<pre>
+Math.floor( Math.random()*10 + 1 ); // => Random number from [1,10]
+Math.sin( Math.PI ); // => 0
+Math.cos( Math.PI ); // => -1
+Math.floor(2.99); // => 2
+Math.ceil(2.01); // => 3
+Math.sqrt( Math.pow(x2-x1, 2) + Math.pow(y1-y2, 2) ); // Distance between (x1,y1) and (x2,y2)
+</pre>
+<hr>
+<p>Another one is the <b>Date</b> objects, which is used to get the Date and Time based on your system's clock. Unlike the Math object we do need to create an instance of the Date Class:</p>
+<pre>var date = new Date(); // There are more ways to create a date but this is the most common.</pre>
+<p><em>Common Methods:</em></p>
+<ul>
+<li>date.<b>getDate()</b> - Returns the day of the month (1 to 31)</li>
+<li>date.<b>getDay()</b> - Returns the day of the week ( 0[Sun] to 6[Sat] )</li>
+<li>date.<b>getMonth()</b> - Returns the current month (0 to 11)</li>
+<li>date.<b>getYear()</b> - Returns the current year ( YYYY , ex: 2014)</li>
+<li>date.<b>getHours()</b> - Returns the current hour (0 to 23)</li>
+<li>date.<b>getMinutes()</b> - Returns the current minute (0 to 59)</li>
+<li>date.<b>getSeconds()</b> - Returns the current second (0 to 59)</li>
+<li>date.<b>getMilliseconds()</b> - Returns the current millisecond (0 to 999)</li>
+<li>date.<b>toLocaleDateString()</b> - Returns a formatted date as a string (ex: "1/10/2014")</li>
+<li>date.<b>toLocaleTimeString()</b> - Returns a formatted date as a string (ex: "10:45 AM")</li>
+</ul>
+<p>Here is an example of getting the current day of the week:</p>
+<pre>
+var weekdays = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+var date = new Date();
+var day = date.getDay();
+alert("Today is "+weekdays[day]);
+</pre>
+<p><button class="btn btn-success" onclick="getWeekday()">Get Weekday</button> </p>

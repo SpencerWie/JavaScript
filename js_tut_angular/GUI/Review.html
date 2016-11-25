@@ -1,0 +1,57 @@
+<ul>
+<li><b><em>The Canvas</em></b>
+   <ul>
+   <li>The HTML5 Canvas tag is a rectangular element that we can draw on using JavaScript.</li>
+   <li>Canvas uses a cartesian coordinate system such that (0,0) is the top left.</li>
+   </ul>
+</li>
+<li><b><em>Drawing to the Canvas</em></b>
+   <ul>
+   <li>We need to get the context area of the canvas by doing: <b>canvas.getContext("2d")</b></li>
+   <li>We can draw: Rectangles, Paths, Text, Images, and adjust properties.</li>
+   </ul>
+</li>
+<li><b><em>Updating the Canvas</em></b>
+   <ul>
+   <li>Steps to updating the Canvas are as followed, normally we use a timer if we want to always keep updating:
+      <ul>
+      <li>Draw items to canvas</li>
+      <li>Wait a small amount of time (ex: timer)</li>
+      <li>Update items (ex: positions)</li>
+      <li>Clear the canvas</li>
+      <li>repeat...</li>
+      </ul>
+   </li>
+   <li>For timers we perform three steps: <b>Clearing</b>, <b>Updating</b>, then <b>Drawing</b>.</li>
+   </ul>
+</li>
+<li><b><em>Keyboard & Mouse Input</em></b>
+   <ul>
+   <li>For events we use <b>Event Listeners</b>, that check for and fire for only certain events:</li>
+   <li><em>document.addEventListener("keydown", function(e) { ... });</em></li>
+   <ul>
+   <li>For the keyboard:
+      <ul>
+      <li><b>keydown</b>: A key is pressed down</li>
+      <li><b>keyup</b>: A key is released</li>
+      <li><b>keyCode</b>: Scan code of keyboard input, given by your keyboard driver itself for the physical keys themselves</li>
+      </ul>
+   </li>
+   <li>For the Mouse:
+      <ul>
+      <li><b>canvas.getBoundingClientRect()</b>: Gets the Canvas as a window rectangle object.</li>
+      <li><b>e.clientX</b>: Gets the X position of the mouse with respect to the window</li>
+      <li><b>e.clientY</b>: Gets the Y position of the mouse with respect to the window</li>
+      </ul>
+   </li>
+   </ul>
+   </ul>
+</li>
+<li><b><em>Audio</em></b>
+   <ul>
+   <li>The audio tag is used for sound and music for an HTML5 webpage.</li>
+   <li>It support the following formats: <em>mp3</em>, <em>wav</em>, and <em>ogg</em></li>
+   <li>We can use the <b>play()</b> method to play the sound file.</li>
+   </ul>
+</li>
+</ul>

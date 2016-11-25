@@ -1,0 +1,18 @@
+<p>The HTML5 Canvas tag is a rectangular element that we can draw on using JavaScript, with it we can make a varaity of things such as : graphs, animations, images, etc. Here is the setup:</p>
+<pre>&lt;canvas id="myCanvas" width="100" height="100"&gt;</canvas></pre>
+<p>And our canvas is created:</p>
+<canvas id="myCanvas" width="100" height="100" style=""></canvas>
+<p>As you can see the canvas is transparent, the canvas tag can have CSS applied to it like all other elements. It's very common to place a border around the canvas or center it:</p>
+<p><em>CSS:</em>
+<pre>
+canvas{ 
+   border: 1px solid black; // Place border around canvas
+   display: block; // change to block-level so we can margin.
+   margin: auto; // center canvas horizontally 
+}
+</pre>
+</p>
+<canvas id="myCanvas2" width="100" height="100" ></canvas>
+<br />
+<p>The Canvas uses a cartesian coordinate system such that <b>(0,0)</b> is the top left, <b>(width, 0)</b> is top right, <b>(width, height)</b> is bottom right, and <b>(0, height)</b> is bottom left.</p>
+<div class="alert alert-warning">Note: That applying CSS to the canvas <em>width</em> and <em>height</em> will make the canvas scale draw items to it's default size: <b>150x300</b>. Mostly we don't want this behavior; be sure to apply <em>width</em> and <em>height</em> directly in the canvas HTML without using <em>CSS</em> or <em>style</em>, like the examples above.</div> 
