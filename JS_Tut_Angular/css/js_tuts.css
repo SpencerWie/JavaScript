@@ -135,3 +135,6 @@ margin-right:auto;
       height: 150px;
    }
 }
+
+canvas{ border: 1px solid black; display: block; margin: auto }
+#myCanvas { border: 0px solid white; }
