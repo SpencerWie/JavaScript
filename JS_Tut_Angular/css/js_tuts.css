@@ -99,6 +99,24 @@ a:hover{ text-decoration:none; color:#000000; }
    margin: 5px
 }
 
+.divBlock{ 
+   border: 1px solid #999999; 
+   background-color: #DDDDDD; 
+   width: 150px; height: 20px; 
+   margin: auto; 
+   text-align: center; 
+   font-size:20px; 
+   padding:40px; 
+   user-select: none; 
+   cursor: pointer; 
+   -webkit-touch-callout: none;
+   -webkit-user-select: none;
+   -khtml-user-select: none;
+   -moz-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+}
+
 .plus{
 position: relative;
 top:50%;
@@ -110,10 +128,10 @@ margin-right:auto;
 }
 
 @media (min-width: 768px) { 
-  .btnNav{
-    position: fixed;
-  } 
-  .btnPlaceHolder{
-   height: 150px;
-}
+   .btnNav{
+      position: fixed;
+   } 
+   .btnPlaceHolder{
+      height: 150px;
+   }
 }
