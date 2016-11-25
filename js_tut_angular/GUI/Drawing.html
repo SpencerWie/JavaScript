@@ -1,0 +1,95 @@
+<p>In order to draw on the Canvas we need to get it and it's context:</p>
+<pre>
+var canvas = document.getElementById("myCanvas");   // The HTML canvas element
+var ctx = canvas.getContext("2d");   // ctx (context) is the 2d drawing context of the canvas.
+</pre>
+<p>The context objects has a varaity of methods and properties to use for drawing on the canvas, here are some common ones:</p>
+<ul>
+<li>
+Rectangle:
+ <ul>
+  <li><b>ctx.fillRect(x, y, width, height)</b> - Draws a filled rectangle.</li>
+  <li><b>ctx.strokeRect(x, y, width, height)</b> - Draws a outlined rectangle.</li>
+  <li><b>ctx.clearRect(x, y, width, height)</b> - Clears a rectangle from the canvas.</li>
+ </ul>
+</li>
+<li>
+Paths:
+ <ul>
+  <li><b>ctx.beginPath()</b> - Starts a path.</li>
+  <li><b>ctx.moveTo(x, y)</b> - Line starting point.</li>
+  <li><b>ctx.lineTo(x, y)</b> - Line ending point.</li>
+  <li><b>ctx.arc(x, y, r, start, end)</b> - draws a arc with raduis r, from start to end in radians.</li>
+  <li><b>ctx.closePath()</b> - Ends a path.</li>
+  <li><b>ctx.stroke()</b> - Draws path as an outline.</li>
+  <li><b>ctx.fill()</b> - Fills path as a soild shape.</li>
+ </ul>
+</li>
+<li>
+Text:
+ <ul>
+  <li><b>ctx.font = "20px Arial"</b> - Sets the size and font-faimly of text. </li>
+  <li><b>ctx.fillText(string ,x, y)</b> - Draw soild text</li>
+  <li><b>ctx.strokeText(string ,x, y)</b> - Draw outlined text</li>
+ </ul>
+</li>
+<li>
+Colors and Properties:
+ <ul>
+  <li><b>ctx.fillStyle = "#FF0000"</b> - Sets color of filled items. (red)</li>
+  <li><b>ctx.strokeStyle = "rgb(0,0,255)"</b> - Sets color of stroked items. (blue)</li>
+  <ul><li> ... = "rgba(int, int, int, float)" - [Red 0-255, Green 0-255, Blue 0-255, Aplha 0.0-1.0]</li></ul>
+  <li><b>ctx.lineWidth = int</b> - Sets the width of drawn lines.</li>
+ </ul>
+</li>
+<li>
+Images:
+<ul><li><b>ctx.drawImage(image, x, y)</b> - Draws an Image on the Canvas.</li></ul>
+</li>
+</ul>
+<hr />
+<canvas id="myCanvas3" width="450" height="135"></canvas>
+<br />
+<p>Code that produces Canvas drawings:</p>
+<pre>
+   var canvas = document.getElementById("myCanvas3"); // Canvas element
+   var ctx = canvas.getContext("2d"); // Canvas context.
+   
+   ctx.fillRect(20,20,30,30);        // Draw filled Rect
+   ctx.strokeRect(105,20,30,30);     // Draw outlined Rect
+   
+   ctx.beginPath();                  // Draw Lines
+   ctx.moveTo(170,20);
+   ctx.lineTo(200,30);
+   ctx.lineTo(190,10);
+   ctx.stroke();
+   
+   ctx.beginPath();                  // Draw lines 
+   ctx.moveTo(250,20);
+   ctx.lineTo(280,30);
+   ctx.lineTo(270,10);
+   ctx.closePath();                  // Close path
+   ctx.fill();                       // Fill-in closed path 
+   
+   ctx.beginPath();               
+   ctx.arc(370,38,20,0,Math.PI*2);   // Draw circle
+   ctx.stroke();
+
+   ctx.font = "28px Arial";          // Set font to 28px
+   ctx.fillText("Hello",10,100)      // Draw filled text "Hello"
+   ctx.strokeText("Hello",90,100)    // Draw outlined text "Hello"
+   
+   ctx.font = "8px Arial";
+   ctx.fillText('A',177,90);         // Draw text 'A' with 8px size 
+   ctx.font = "30px Arial";
+   ctx.fillText('A',170,120);        // Draw text 'A' with 30px size
+
+   ctx.fillStyle = "#FF0000";        // Set fills to be red 
+   ctx.fillRect(280,80,30,30);       // Draw red rect
+   
+   var crate = new Image();          // Create Image
+   crate.src = 'crate.png';          // Set Image source 
+   crate.onload = function(){        // Draw Image when it loads 
+      ctx.drawImage(crate, 348, 70, 45, 45);
+   }; 
+</pre>

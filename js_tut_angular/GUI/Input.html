@@ -1,0 +1,55 @@
+<p>For this section we will be looking into how to utilize keyboard and mouse input to be used as user input for the canvas. First let me introduce a few new event handlers:</p>
+<h4>Keyboard Input</h4>
+<ul>
+    <li><b>keydown</b>: A key is pressed down</li>
+    <li><b>keyup</b>: A key is released</li>
+    <li><em>keypress</em>: A character key is pressed</li>
+</ul>
+<p>We will be adding an <em>event listener</em> to our document, even listeners are basically things that listen to events. Such that if we have a keyboard event a keyboard listener would fire whenever we have some type of keyboard input. Here is an example for <b>keydown</b>:</p>
+<pre>
+document.addEventListener("keydown", function(e) { 
+   // Do stuff
+});
+</pre>
+<p>The parameter given in the function is an object about the key information, I've given it the name <b>e</b> short for <b>event</b>, while there are a few properties I will only talk about the most commonly used ones: <em>e.keyCode</em> and <em>e.charCode</em>.</p>
+<ul>
+    <li><b>keyCode</b>: <em>Scan code</em> of keyboard input, given by your keyboard driver itself for the physical keys themselves. For example "a" and "A" are the same.</li>
+    <li><em>charCode</em>: The key input based on it's ASCII value. </li>
+</ul>
+<p>Here is a basic example of printing the keyCode text to the canvas, press a key on your keyboard and it will show the keyCode on the canvas below:</p>
+<pre>
+var canvas = document.getElementById("keyCanvas");
+var ctx = canvas.getContext("2d");
+ctx.font = "20px Arial";
+ctx.fillText("keyCode = ",5,40);
+ctx.font = "30px Arial";
+
+document.addEventListener("keydown", function(e) { 
+    ctx.clearRect(100,0,canvas.width,canvas.height);
+    ctx.fillText(e.keyCode,110,40);
+});
+</pre>
+<canvas id="keyCanvas" height="70" width="180"></canvas>
+<p><a href="http://jsfiddle.net/e4Spu/">HERE</a> is the fiddle example.</p>
+<br />
+<hr />
+<h4>Mouse Input</h4>
+<p>When we have mouse event listeners the <b>e</b> argument (<em>event</em>), from it we can get our X and Y mouse coordinates of the window by using <b>e.clientX</b> and <b>e.clientY</b>. The only problem to this is these are repect to the window and not the canvas, we want (0,0) to be the top left corner of the canvas. To solve this we first get the coordinates (in the form of a rectangle object) of the canvas with respect to the client window by using <b>canvas.getBoundingClientRect()</b>, then we subract the window positions(clientX, clientY) from the canvas positions(left, top):</p>
+<pre>
+var canvas = document.getElementById("mouseCanvas");
+var ctx = canvas.getContext("2d");
+ctx.font = "20px Arial";
+
+canvas.addEventListener("mousemove", function(e) 
+{ 
+    var cRect = canvas.getBoundingClientRect();
+    var canvasX = e.clientX - cRect.left;
+    var canvasY = e.clientY - cRect.top;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillText("X: "+canvasX+", Y: "+canvasY, 10, 30);
+});
+</pre>
+<p>Move your mouse over the canvas and it will show your mouse positions:</p>
+<canvas id="mouseCanvas" width="400" height="200"></canvas>
+<br />
+<div class="alert alert-info">Note: Sometimes you may need to slightly manipulate the calculated X and Y positions. If we have a complex webpage sometimes the margins may not be whole numbers, this can cause decimals on the numbers. We can fix this be either using <b>Math.round()</b>, <b>Math.floor()</b>, and <b>Math.ceil()</b> as we see fit. In my case <b>canvasX</b> and <b>canvasY</b> have round() applied to it.</div>  

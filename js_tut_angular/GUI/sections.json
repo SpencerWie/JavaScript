@@ -1,0 +1,26 @@
+[
+	{
+		"htmlSource":"GUI/Canvas.html",
+		"title":"The Canvas" 
+	},
+	{
+		"htmlSource":"GUI/Drawing.html",
+		"title":"Drawing to the Canvas" 
+	},
+	{
+		"htmlSource":"GUI/Updating.html",
+		"title":"Updating the Canvas" 
+	},
+	{
+		"htmlSource":"GUI/Input.html",
+		"title":"Keyboard & Mouse Input" 
+	},
+	{
+		"htmlSource":"GUI/Audio.html",
+		"title":"Audio" 
+	},
+	{
+		"htmlSource":"GUI/Review.html",
+		"title":"Review" 
+	}
+]

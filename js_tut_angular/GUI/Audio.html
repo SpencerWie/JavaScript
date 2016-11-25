@@ -1,0 +1,24 @@
+<p>Along with a GUI, we would also like sound in our applications. I will give you a short introduction to the <b>HTML5 Audio</b> tag, we will be using this for our music and sound:</p>
+<pre>
+&lt;audio controls&gt;
+  &lt;source src="fileName.mp3" type="audio/mp3"&gt;
+  Your browser does not support the audio tag.
+&lt/audio&gt;
+</pre>
+<audio controls>
+  <source src="drip.mp3" type="audio/mp3">
+  Your browser does not support the audio tag.
+</audio>
+<p>The audio tag supports 3 formats: <b>mp3</b>, <b>wav</b>, and <b>ogg</b>. To have it not show an interface simply remove the <b>control</b> attribute. To play it's sound we call the <b>play()</b> method:</p>
+<pre>
+var canvas = document.getElementById("soundCanvas");
+var ctx = canvas.getContext("2d");
+ctx.font = "20px Arial";
+ctx.fillText("Click to play",20,30);
+
+canvas.addEventListener("click", function(e) { 
+    document.getElementById("audioPlayer").play();
+});
+</pre>      
+<canvas id="soundCanvas" width=150 height=50></canvas>
+<audio id="audioPlayer"><source src="drip.mp3" type="audio/mp3"></audio>
