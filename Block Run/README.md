@@ -24,6 +24,7 @@ The original game <em>Block Run</em>, was created as a simple platform game in P
   <li>New Enemy: <strong>Spike</strong></li>
   <li>Stage 4 is complete</li>
   <li>Fixed Bugs: <em>Ducking casuing a blinking animation stall has been fixed</em></li>
+  <li>Bug: <em>Blinking animation no longer cycling (currently being worked on)</em></li>
 </ul>
 
 <h3><em>v0.40</em></h3>

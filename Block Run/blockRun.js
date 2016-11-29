@@ -210,7 +210,7 @@ function Player() {
    
    this.BlinkAnimation = function() 
    {
-      if(!this.ducked || this.dy > 0) { this.timer = 0; this.step = 0; this.frameX = 0; return; }
+      //if(!this.ducked || this.dy > 0) { this.timer = 0; this.step = 0; this.frameX = 0; return; }
       this.timer++;
 
       for(var i = 0; i < blink_timeframe.length; i++ ) {
