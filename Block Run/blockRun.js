@@ -5,7 +5,7 @@ var level_1 = [
    '#              #                                                                #                ',
    '#               ######                   ###            ##      ##              #                ',
    '#  o                      E             #####               o                   #                ',
-   '#M     M    #             ######       ## o ##            E              o o    #                ',
+   '#           #             ######       ## o ##            E              o o    #                ',
    '#  #       ##            ## o  #      ###   ###        ############      o o    #                ',
    '# ###     ###E          ### o        ####   ####       #         H#             #                ',
    '#########################################  #############         ############   #                ',
@@ -88,7 +88,7 @@ var level_end = [
    '####################################################################################################################################################################',    
 ];
 
-var level_test = [
+var level_4 = [
    'T                ooooooo                                          H                                         T        >TH  S    o o        TTTTTTTTTT            T',
    'T                TTTTTTT                                          TT                 TTT        To         oT      v>TT_      _____       TTTTTT                T',
    'T                                                                 T                            TToT         To     TTTT               _   TTTTTT                T',
@@ -111,12 +111,26 @@ var level_test = [
    'TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT',   	
 ];
 
+var level_test = [
+   '#                                                                                                                                                                  #',
+   '#                                                                                                                                                                  #',
+   '#                                                                                                                                                                  #',
+   '#                                                                                                                                                                  #',
+   '#                                                                                                                                                                  #',
+   '#                                                                                                                                                                  #',
+   '#                                                                                                                                                                  #',
+   '#   M    #   M      #                                                                                                                                              #',
+   '#        #          #                                                                                                                                              #',
+   '####################################################################################################################################################################', 
+   '####################################################################################################################################################################',    
+];
+
 var delay = 28;
 var items = [];
 var player;
 var yLevel = 0;
 var yLevelMax = 288;
-var levels = [level_1, level_2, level_3, level_test];
+var levels = [level_1, level_2, level_3, level_4];
 
 LEFT = RIGHT = UP = DOWN = SHIFT = false;
 
