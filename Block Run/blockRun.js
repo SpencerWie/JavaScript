@@ -125,7 +125,7 @@ var level_test = [
    '####################################################################################################################################################################',    
 ];
 
-var delay = 28;
+var delay = 27;
 var items = [];
 var player;
 var yLevel = 0;
@@ -172,7 +172,7 @@ function Player() {
    this.ddx = 0; this.ddy = 0;
    this.walk = 7; this.run = 10;
    this.speed = 7;
-	this.minYSpeed = -15; this.maxYSpeed = 12;
+   this.minYSpeed = -15; this.maxYSpeed = 12;
    this.jumpPower = 17; // 10
    this.frameX = 0; // X frame on tilemap sprite
    this.frameY = 0; // Y frame on tilemap sprite
@@ -191,11 +191,11 @@ function Player() {
    
    this.update = function() 
    {
-		this.BlinkAnimation();
+      this.BlinkAnimation();
       this.verticalMovement();
       this.horizontalMovement();
       this.handleCollisions();
-	   this.recordPosition(this.x, this.y);
+      this.recordPosition(this.x, this.y);
       if(DEAD) { this.frameX = 0; this.frameY = 2; }
    }
    
