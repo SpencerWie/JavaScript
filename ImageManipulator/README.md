@@ -12,10 +12,10 @@ Image manipulation tool with side-by-side copmarison and real-time updates. A us
 
 Click on *"Choose File"* and select an image from your computer, it will be added into the left image element. Currently there are four operations that can be done using the editor:
 
-* Greyscale: Checking this will greyscale the image
-* brightness: The user can change the brightness of the image from -100 to 100, this is the added value on the pixel data
-* contrast: The user can change the brightness of the image from -100 to 100, this is the mulitplied value on the pixel data
-* reset: Will reset the image operations back to default along with the pan and zoom.
+* **Greyscale**: Checking this will greyscale the image
+* **Brightness**: The user can change the brightness of the image from -100 to 100, this is the added value on the pixel data
+* **Contrast**: The user can change the brightness of the image from -100 to 100, this is the mulitplied value on the pixel data
+* **Reset**: Will reset the image operations back to default along with the pan and zoom.
 
 ### Libraries Used:
 
