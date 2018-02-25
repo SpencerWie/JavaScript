@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Image Manipulator</title>
+<link rel="stylesheet" href="css/bootstrapM.min.css" >
+
+<style>
+.col {
+  border-left: 1px solid grey;
+  border-right: 1px solid grey;
+  background-color: lightgrey;
+  max-width: 50%;
+  /*max-height: 100%;*/
+}
+
+.imageContainer {
+  display:inline-block;
+  position: relative;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  background-color: grey;
+  max-width: 100%;
+}
+
+body {
+  background-color: lightgrey;
+}
+
+html, body {
+    margin: 0;
+    height: 100%;
+}
+
+.container-fluid, .row{
+  height: 100%;
+}
+
+</style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="#">Image Manipulator</a>
+    
+    <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        <li class="nav-item active">
+          <form class="form-inline my-2 my-lg-0">
+            <input type="file" id="fileInput" class="form-control mr-sm-2" name="file" />
+          </form>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <div class="imageContainer">
+          <img id="imageSrc" class="panzoom" />
+        </div>
+      </div>
+      <div class="col">
+        <div class="imageContainer">
+          <canvas id="canvasOutput" class="panzoom" ></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.panzoom/3.2.2/jquery.panzoom.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.1/dat.gui.min.js"></script>
+<script src="js/wheelzoom.js"></script>
+<script async src="js/opencv.js"></script>
+<script type="text/javascript">
+var imgElement = document.getElementById('imageSrc');
+var inputElement = document.getElementById('fileInput');
+var $panzoom = $(".panzoom").panzoom();
+var gui;
+
+inputElement.addEventListener('change', (e) => {
+  imgElement.src = URL.createObjectURL(e.target.files[0]);
+}, false);
+
+var ImageObj = function(){
+  this.reset();
+}
+
+ImageObj.prototype.reset = function(){
+	this.greyscale = false;
+	this.brightness = 0.0;
+	this.contrast = 1.0;
+	this.order = ['greyscale', 'brightness', 'contrast'];
+  this.update();
+  $(".panzoom").panzoom("resetZoom");
+  $(".panzoom").panzoom("resetPan");
+}
+
+ImageObj.prototype.update = function(){
+  if(imgElement.src.length == 0) return;
+	this.mat = cv.imread(imgElement);
+	this.apply_greyscale();
+	this.apply_brigtness();
+	this.apply_contrast();
+  for (var i in gui.__controllers) {
+    gui.__controllers[i].updateDisplay();
+  }
+	cv.imshow('canvasOutput', this.mat);
+  $('#canvasOutput').parent('.imageContainer').height($('#imageSrc').parent('.imageContainer').height());
+}
+
+ImageObj.prototype.apply_greyscale = function(){
+	if(this.greyscale)
+		cv.cvtColor(this.mat, this.mat, cv.COLOR_RGBA2GRAY, 0);
+}
+
+ImageObj.prototype.apply_brigtness = function(){
+	this.mat.convertTo(this.mat, -1, 1, this.brightness);
+}
+
+ImageObj.prototype.apply_contrast = function(){
+	this.mat.convertTo(this.mat, -1, this.contrast, 0);
+}
+
+window.onload = function(){
+	gui = new dat.GUI();
+	var img = new ImageObj();
+  
+  var greyscaleSlider = gui.add(img, 'greyscale');
+	var brightnessSlider = gui.add(img, 'brightness', -100, 100);
+	var contrastSlider = gui.add(img, 'contrast', 1, 10);
+  var resetSlider = gui.add(img, 'reset');
+  
+  greyscaleSlider.onChange(() => {img.update()});
+  brightnessSlider.onChange(() => {img.update()});
+  contrastSlider.onChange(() => {img.update()});
+  
+	$panzoom.on('mousewheel.focal', zoom);
+  $panzoom.on("panzoompan", function(e, panzoom, x, y){
+    e.preventDefault();
+    $panzoom.panzoom("pan", x, y, {silent: true});
+  });
+  
+  $('#imageSrc').on('load', function(){ img.update() });
+  
+  $('body').css('padding-top', $('.navbar').outerHeight() + "px");
+  $('.dg.ac').css('top', $('.navbar').outerHeight() + "px");
+  
+  $( window ).resize(function() {
+    $('.dg.ac').css('top', $('.navbar').outerHeight() + "px");
+  });
+}
+
+function zoom(e) {
+  e.preventDefault();
+  var delta = e.delta || e.originalEvent.wheelDelta;
+  var zoomOut = delta ? delta < 0 : e.originalEvent.deltaY > 0;
+  $(this).panzoom('zoom', zoomOut, {
+    increment: 0.1,
+    animate: false,
+    focal: e
+  });
+  var rect = $(this).closest(".col").offset();
+  var otherEle = $(".panzoom").not(this).closest(".col");
+  var otherRect = otherEle.offset();
+  var offsetX = otherRect.left - rect.left;
+  var offsetY = otherRect.top - rect.top;
+  var otherPos = {
+    clientX: e.clientX + offsetX,
+    clientY: e.clientY + offsetY
+  };
+  $(".panzoom").not(this).panzoom('zoom', zoomOut, {
+    increment: 0.1,
+    animate: false,
+    focal: otherPos
+  });
+}
+
+</script>
+</body>
+</html>
