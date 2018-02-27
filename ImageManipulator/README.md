@@ -4,9 +4,9 @@ Image manipulation tool with side-by-side copmarison and real-time updates. A us
 
 [**Click here to run the latest version of Image Manipulator**](https://rawgit.com/SpencerWie/JavaScript/master/ImageManipulator/index.html)
 
-### Version 0.1
+### Version 0.2
 
-![Image Manipulator Example with enhacement of an iamge of a cat.](https://i.imgur.com/ZFQjokB.png)
+![Image Manipulator Example with enhacement of an iamge of a cat.](img/app.PNG)
 
 ### How to use:
 
@@ -15,6 +15,8 @@ Click on *"Choose File"* and select an image from your computer, it will be adde
 * **Greyscale**: Checking this will greyscale the image
 * **Brightness**: The user can change the brightness of the image from -100 to 100, this is the added value on the pixel data
 * **Contrast**: The user can change the brightness of the image from -100 to 100, this is the mulitplied value on the pixel data
+* **Blur**: The user can blur the image by sigma/raduis amount, applying a guassain blur.
+* **Sharpen**: Will apply a blur and subtract that from the oringal image, creating a sharpened image.
 * **Reset**: Will reset the image operations back to default along with the pan and zoom.
 
 ### Libraries Used:
