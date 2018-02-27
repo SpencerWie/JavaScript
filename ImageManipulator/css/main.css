@@ -1,0 +1,30 @@
+.col {
+  border-left: 1px solid grey;
+  border-right: 1px solid grey;
+  background-color: lightgrey;
+  max-width: 50%;
+  /*max-height: 100%;*/
+}
+
+.imageContainer {
+  display:inline-block;
+  position: relative;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  background-color: grey;
+  max-width: 100%;
+}
+
+body {
+  background-color: lightgrey;
+}
+
+html, body {
+    margin: 0;
+    height: 100%;
+}
+
+.container-fluid, .row{
+  height: 100%;
+}
