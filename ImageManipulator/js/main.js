@@ -32,7 +32,8 @@ window.onload = function(){
   
   sharp.open();
   
-  var resetSlider = gui.add(img, 'reset');  
+  gui.add(img, 'reset'); 
+  gui.add(img, 'OCR');   
   
   img.gui = gui;
   

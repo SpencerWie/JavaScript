@@ -73,10 +73,22 @@ ImageObj.prototype.apply_blur = function(sigma, r){
   }
 }
 
-//Sharpenm works by bluring then subtraction that weight as a negative to the current image  
+//Sharpen works by bluring then subtraction that weight as a negative to the current image  
 ImageObj.prototype.apply_sharpen = function(){
   var originalMat = this.mat.clone();
   this.apply_blur(this.sigma_sharpen, this.radius_sharpen);
   cv.addWeighted(originalMat, 1.5, this.mat, -0.5, 0, this.mat);
+}
+
+// Applies OCR using Tessseract on both oringal and processed image items.
+ImageObj.prototype.OCR = function(){
+  Tesseract.recognize($('#imageSrc')[0])
+  .then(function(result){
+      console.log(result)
+  })
   
+  Tesseract.recognize($('#canvasOutput')[0])
+  .then(function(result){
+      console.log(result)
+  })  
 }
