@@ -14,7 +14,6 @@ window.onload = function(){
 	var brightnessSlider = gui.add(img, 'brightness', -100, 100);
 	var contrastSlider = gui.add(img, 'contrast', 1, 10);
   var thresholdtSlider = gui.add(img, 'threshold', -1, 255);
-  var resetSlider = gui.add(img, 'reset');
   
   greyscaleSlider.onChange(() => {img.update()});
   brightnessSlider.onChange(() => {img.update()});
@@ -32,6 +31,8 @@ window.onload = function(){
   sharp.add(img, 'radius_sharpen', 1, 100).step(1).onChange(() => {img.update()});
   
   sharp.open();
+  
+  var resetSlider = gui.add(img, 'reset');  
   
   img.gui = gui;
   
