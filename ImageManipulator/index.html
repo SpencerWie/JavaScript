@@ -23,7 +23,7 @@
       </ul>
     </div>
   </nav>
-  <div class="container-fluid">
+  <div class="container-fluid" id="imageWindow">
     <div class="row">
       <div class="col">
         <div class="imageContainer">
@@ -37,11 +37,21 @@
       </div>
     </div>
   </div>
+  <div class="gutter gutter-vertical"></div>
+  <div id="textWindow">
+   <form class="my-auto d-inline w-100 h-100">
+        <div class="input-group h-100">
+          <textarea id="imgText" class="form-control extractedText" readonly></textarea>
+          <textarea id="canvasText" class="form-control extractedText" readonly></textarea>
+        </div>
+    </form>
+  </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.panzoom/3.2.2/jquery.panzoom.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.1/dat.gui.min.js"></script>
 <script src='https://cdn.rawgit.com/naptha/tesseract.js/1.0.10/dist/tesseract.js'></script>
+<script src="https://unpkg.com/split.js/split.min.js"></script>
 <script src="js/lib/wheelzoom.js"></script>
 <script async src="js/lib/opencv.js"></script>
 <script src="js/panzoom.js"></script>

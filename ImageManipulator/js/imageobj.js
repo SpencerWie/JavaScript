@@ -82,13 +82,16 @@ ImageObj.prototype.apply_sharpen = function(){
 
 // Applies OCR using Tessseract on both oringal and processed image items.
 ImageObj.prototype.OCR = function(){
+  $("textarea").css("background-color", "darkgrey");
   Tesseract.recognize($('#imageSrc')[0])
   .then(function(result){
       console.log(result)
-  })
-  
+      $("#imgText").val(result.text);
+      $("#imgText").css("background-color", "white");
+  });
   Tesseract.recognize($('#canvasOutput')[0])
   .then(function(result){
-      console.log(result)
-  })  
+      $("#canvasText").val(result.text);
+      $("#canvasText").css("background-color", "white");
+  });
 }

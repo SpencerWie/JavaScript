@@ -3,7 +3,6 @@
   border-right: 1px solid grey;
   background-color: lightgrey;
   max-width: 50%;
-  /*max-height: 100%;*/
 }
 
 .imageContainer {
@@ -18,13 +17,34 @@
 
 body {
   background-color: lightgrey;
+  overflow:hidden;
+  min-height: 100% 
 }
 
 html, body {
-    margin: 0;
-    height: 100%;
+  margin: 0;
+  height: 100%;
 }
 
 .container-fluid, .row{
   height: 100%;
+}
+
+.extractedText{
+  resize: none;
+  min-width: 50%;
+  height: 100%;
+}
+
+.gutter.gutter-vertical {
+    background-color: #343a40;
+    cursor: ns-resize;
+}
+
+#textWindow{
+  background-color: grey;
+}
+
+#imageWindow{
+  overflow: hidden;
 }

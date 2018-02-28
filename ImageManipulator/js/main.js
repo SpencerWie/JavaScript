@@ -48,3 +48,10 @@ window.onload = function(){
     $('.dg.ac').css('top', $('.navbar').outerHeight() + "px");
   });
 }
+
+  Split(['#imageWindow', '#textWindow'], {
+        direction: 'vertical',
+        sizes: [100, 0],
+        minSize: 50,
+        snapOffset: 40
+  });  
