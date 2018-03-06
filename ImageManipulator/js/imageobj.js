@@ -85,7 +85,6 @@ ImageObj.prototype.OCR = function(){
   $("textarea").css("background-color", "darkgrey");
   Tesseract.recognize($('#imageSrc')[0])
   .then(function(result){
-      console.log(result)
       $("#imgText").val(result.text);
       $("#imgText").css("background-color", "white");
   });
