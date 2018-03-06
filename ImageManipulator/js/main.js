@@ -49,9 +49,9 @@ window.onload = function(){
   });
 }
 
-  Split(['#imageWindow', '#textWindow'], {
-        direction: 'vertical',
-        sizes: [100, 0],
-        minSize: 50,
-        snapOffset: 40
-  });  
+Split(['#imageWindow', '#textWindow'], {
+      direction: 'vertical',
+      sizes: [100, 0],
+      minSize: 50,
+      snapOffset: 40
+});  
