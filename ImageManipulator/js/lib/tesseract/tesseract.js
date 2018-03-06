@@ -326,7 +326,7 @@ if (process.env.NODE_ENV === "development") {
     defaultOptions.workerPath = location.protocol + '//' + location.host + '/dist/worker.dev.js?nocache=' + Math.random().toString(36).slice(3);
 } else {
     var version = require('../../package.json').version;
-    defaultOptions.workerPath = 'C:/Users/Spencer/Documents/GitHub/JavaScript/ImageManipulator/js/lib/tesseract/worker.js'//'https://cdn.rawgit.com/naptha/tesseract.js/' + version + '/dist/worker.js';
+    defaultOptions.workerPath = 'https://rawgit.com/SpencerWie/JavaScript/master/ImageManipulator/js/lib/tesseract/worker.js'; //'https://cdn.rawgit.com/naptha/tesseract.js/' + version + '/dist/worker.js';
 }
 
 exports.defaultOptions = defaultOptions;
