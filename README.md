@@ -35,4 +35,5 @@
 </li>
 </ul>
 
+<h6>Notice: Updates and migrations are going to be added to new repo's for larger individual projects. This repo's code may be out-of-date, but this README will be updated to inlcude links to the newly created repos.</h6>
 
