@@ -17,14 +17,23 @@ The original game <em>Block Run</em>, was created as a simple platform game in P
 	<li><em><strong>Space:</strong></em> Move to next level (<em>must be inside an end of level portal</em>).</li>
 </ul>
 
-<h3>Current Version: <strong><em>v0.43</em></strong></h3>
+<h3>Current Version: <strong><em>v0.51</em></strong></h3>
+<ul>
+  <li>Walking and Running movements now have acceleration, making the gameplay feel more fluid and smooth.</li>
+  <li>Code Refacor (planned)</li>
+  <li>Bosses: Big Red, Spiker , and Ghost (planned)</li>
+  <li>Shop System for coins (planned): Checkpoint unlocker, hearts, death protector</li>
+  <li>Overworld with level select system</li>
+  <li>Title Sreen with save and load screen</li>
+</ul>
+
+<h3><em>v0.50</em></h3>
 <ul>
   <li>Added Platforms</li>
   <li>Added Ghost Block (<em>Gets more transpart with distance</em>)</li>
   <li>New Enemy: <strong>Spike</strong></li>
   <li>Stage 4 is complete</li>
   <li>Fixed Bugs: <em>Ducking casuing a blinking animation stall has been fixed</em></li>
-  <li><strike>Bug: <em>Blinking animation no longer cycling (currently being worked on)</em></strike></li>
 </ul>
 
 <h3><em>v0.40</em></h3>
