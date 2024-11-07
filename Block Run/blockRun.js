@@ -68,7 +68,7 @@ var level_3 = [
    '#                                                                                                    #                                                #   #        #',
    '#               K                                                                                oooo#                o    vv    o                    #  o#        #',   
    '#                                                       o    oo     o                  o   o     #####               #### >##< ####                   #  ##        #',   
-   '#  ooo       #######                                   >#<  >##<   >#<               #########       #         oo         >##<         oo                          #',
+   '#  ooo       #######                                   >#<  >##<  >##<               #########       #         oo         >##<         oo                          #',
    '#  oHo      #########          #     #    #             ^    ^^     ^               #         #               ####         ^^         ####              o          #', 
    '#  ooo     ###########        ##vvvvv#vvvv#E     #vvvvvvvvvvvvvvvvvvvvvvvv#        #           #   E             #vvvvvvvvvvvvvvvvvvvv#              #######       #',  
    '####################################################################################################################################################################',    
@@ -170,7 +170,10 @@ function Player() {
    this.startY = this.y;
    this.dx = 0; this.dy = 0;
    this.ddx = 0; this.ddy = 0;
-   this.walk = 7; this.run = 10;
+   this.minSpeed = 2; this.walk = 7; this.run = 10;
+   this.accelerateRun = 0; // Speed modifier for acceleration when runnning
+   this.accelerateWalk = 0; // Speed modifier for acceleration when walking
+   this.accelerateBump = 0.2; // Speed bump per frame until run speed is hit
    this.speed = 7;
    this.minYSpeed = -15; this.maxYSpeed = 12;
    this.jumpPower = 17; // 10
@@ -288,9 +291,28 @@ function Player() {
    this.horizontalMovement = function()
    {
       if(DEAD) return;
+
+      if(!SHIFT && (LEFT || RIGHT)) {
+         this.accelerateWalk += this.accelerateBump*5;
+         if(this.accelerateWalk > this.walk) this.accelerateWalk = this.walk;
+         this.speed = this.accelerateWalk;
+      } else {
+         this.accelerateWalk -= this.accelerateBump*5;
+         if(this.accelerateWalk < 0) this.accelerateWalk = 0;
+         this.speed = this.accelerateWalk;
+      } 
+
       // Handle Running (Shift)
-      if(SHIFT) this.speed = this.run;
-      else this.speed = this.walk;
+      var speedDiff = this.run - this.walk;
+      if(SHIFT) {
+         this.accelerateRun += this.accelerateBump;
+         if(this.accelerateRun > speedDiff) this.accelerateRun = speedDiff;
+         this.speed = this.walk + this.accelerateRun;
+      } else {
+         this.accelerateRun -= this.accelerateBump;
+         if(this.accelerateRun < 0) this.accelerateRun = 0;
+         this.speed = this.walk + this.accelerateRun;
+      } 
       
       if(LEFT){ 
          this.dx = this.speed; // Move Left
@@ -300,7 +322,13 @@ function Player() {
          this.dx = -this.speed; // Move Right
          this.frameY = 0; // Face Right
       }
-      if(!LEFT && !RIGHT) this.dx = 0; // If no arrow keys no move hor.
+      if(!LEFT && !RIGHT) {// If no arrow keys no movement if accelerating slow depending on the direction.
+         if(this.frameY == 1) {
+            this.dx = 0 + this.accelerateWalk;
+         } else if (this.frameY == 0) {
+            this.dx = 0 - this.accelerateWalk;
+         } 
+      } 
       this.handleDucking();
       // Update position and move camra.
       player.x -= this.dx;
@@ -339,7 +367,9 @@ function Player() {
    this.handleCollisions = function() 
    {
       for(item in items) {
-        var isSolidBlock = (isItem(items[item],'block') || isItem(items[item],'lock'));  
+         var isSolidBlock = (isItem(items[item],'block') || isItem(items[item],'lock'));
+         var movingRight = this.dx <= 0; 
+         var movingLeft = this.dx > 0; 
         
          if( isItem(items[item],'key') && collide(this,items[item]) ) {
             items.splice(item, 1);
@@ -351,20 +381,22 @@ function Player() {
             KEYS--;
          }                 
          // Blocks
-         if(RIGHT && collide(this,items[item]) && (isSolidBlock)) {
+         if(movingRight && collide(this,items[item]) && (isSolidBlock)) {
             // Reposition player to be place right next to block, then get the difference and apply that to scrolling of canvas.
             var oldX = this.x;
             this.x = items[item].x - this.size;
             var diff = oldX - this.x
             ctx.translate(diff, 0);
             scrollX += diff;
+            this.speed = this.accelerateRun = this.accelerateWalk = 0;
          }
-         else if(LEFT && collide(this,items[item]) && (isSolidBlock)) {
+         else if(movingLeft && collide(this,items[item]) && (isSolidBlock)) {
             var oldX = this.x;
             this.x = items[item].x + this.size;
             var diff = oldX - this.x
             ctx.translate(diff, 0);
             scrollX += diff;
+            this.speed = this.accelerateRun = this.accelerateWalk = 0;
          }
          // Coins
          if( isItem(items[item],'coin') && collide(this,items[item]) ) {
