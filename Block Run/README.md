@@ -1,6 +1,6 @@
 <h1>Block Run Beta</h1>
 
-<p><a href="https://rawgit.com/SpencerWie/JavaScript/master/Block%20Run/blockRun.html"> Click here to play the lastest version of the game</a></p>
+<p><a href="https://spencerwie.github.io/Block%20Run/blockRun.htmll"> Click here to play the lastest version of the game</a></p>
 
 <img src="screenshot.PNG" style="display:block; margin: auto" alt="Game Play Example" />
 
@@ -22,9 +22,11 @@ The original game <em>Block Run</em>, was created as a simple platform game in P
   <li>Walking and Running movements now have acceleration, making the gameplay feel more fluid and smooth.</li>
   <li>Code Refacor (planned)</li>
   <li>Bosses: Big Red, Spiker , and Ghost (planned)</li>
-  <li>Shop System for coins (planned): Checkpoint unlocker, hearts, death protector</li>
-  <li>Overworld with level select system</li>
-  <li>Title Sreen with save and load screen</li>
+  <li>Shop System for coins : Checkpoint unlocker, hearts, death protector (planned)</li>
+  <li>Overworld with level select system (planned)</li>
+  <li>Title Sreen with save and load screen (planned)</li>
+  <li>Falling tiles and ice tiles. (planned)</li>
+  <li>Stage 4 and 5 (planned)</li>
 </ul>
 
 <h3><em>v0.50</em></h3>
