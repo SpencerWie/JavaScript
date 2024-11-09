@@ -8,7 +8,7 @@
 
 <h3>JavaScript tutorial (in progress): </h3>
 <ul>
-<li><a href="https://cdn.rawgit.com/SpencerWie/JavaScript/59a6f16a/JS_Tut/js_tuts_preface.html">JavaScript Tutorial</a></li>
+<li><a href="https://spencerwie.github.io/JS_Tut/js_tuts.html">JavaScript Tutorial</a></li>
 </ul>
 
 <p>Tutorial Examples:</p>
